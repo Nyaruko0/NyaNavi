@@ -128,8 +128,8 @@ export const PORTAL_MESSAGES: PortalMessage[] = [
     place: '提瓦特大陆',
     badge: '传送锚点 · 已解锁',
     body: '前面的区域现在就能探索！应急食品已经背好行囊，准备直接传送到「提瓦特大陆」新锚点吗？',
-    confirmText: '传送锚点',
-    cancelText: '下次一定',
+    confirmText: '〇〇启动！',
+    cancelText: '哈人我先润了',
   },
   {
     id: 'axel',
