@@ -3843,14 +3843,16 @@
     "shortName": "萌姬",
     "url": "https://moechick.com/",
     "category": "anime_community",
-    "description": "清爽好用的二次元综合网址导航参考站。",
+    "description": "二次元综合网址导航参考站",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "参考导航",
       "二次元"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
+    "pinned": false,
     "accent": "#f472b6"
   },
   {
