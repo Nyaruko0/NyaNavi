@@ -115,9 +115,9 @@ export const CATEGORIES: CategoryMeta[] = [
   },
   {
     id: 'dev_work',
-    name: '站长与技术论坛',
-    workName: '站长与技术论坛',
-    description: '开发文档、代码托管、站长工具与 LINUX DO / NodeSeek / 吾爱破解等技术社区',
+    name: '论坛/学习',
+    workName: '论坛/学习',
+    description: '开发文档、算法学习、代码托管与 LINUX DO / NodeSeek / 吾爱破解等技术社区',
     icon: 'Terminal',
     workAllowed: true,
     hideInMoyu: true,
