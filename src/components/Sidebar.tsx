@@ -14,6 +14,7 @@ import {
   Image,
   KeyRound,
   Library,
+  Lock,
   Plus,
   RotateCcw,
   ShieldCheck,
@@ -47,6 +48,7 @@ interface SidebarProps {
 }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Lock,
   Flame,
   Gamepad2,
   FolderArchive,
@@ -84,7 +86,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  const visibleCategories = categories.filter((c) => !(mode === 'work' && c.nsfwOnly));
+  const visibleCategories = categories.filter((c) => {
+    if (mode === 'work' && c.nsfwOnly) return false;
+    if (c.privateOnly && !canManage) return false;
+    return true;
+  });
 
   const handleNavClick = (id: string) => {
     onSelectSection(id);

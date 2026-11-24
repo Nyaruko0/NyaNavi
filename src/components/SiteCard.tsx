@@ -2,6 +2,7 @@ import React from 'react';
 import {
   AlertTriangle,
   ArrowUpRight,
+  Lock,
   Pencil,
   Search,
   Smartphone,
@@ -181,6 +182,15 @@ export const SiteCard: React.FC<SiteCardProps> = ({
         {/* 精简徽标行 */}
         {appearance.showBadges && !isCompact && (
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            {site.privateOnly && (
+              <span
+                title="仅保存在你的私有扩展仓库，访客与公开仓库均不可见"
+                className="inline-flex items-center gap-0.5 rounded-md bg-violet-500/12 px-2 py-0.5 text-xs font-medium text-violet-700 dark:bg-violet-400/15 dark:text-violet-300"
+              >
+                <Lock className="h-3 w-3" />
+                私密
+              </span>
+            )}
             <span
               className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${COST_BADGE_STYLE[site.costTier]}`}
             >

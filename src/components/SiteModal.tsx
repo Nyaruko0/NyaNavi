@@ -42,6 +42,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
   const [clientsText, setClientsText] = useState('');
   const [tagsText, setTagsText] = useState('');
   const [nsfw, setNsfw] = useState(defaultNsfw);
+  const [privateOnly, setPrivateOnly] = useState(false);
   const [accent, setAccent] = useState(ACCENT_PRESETS[0]);
   const [icon, setIcon] = useState('');
 
@@ -60,6 +61,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setClientsText((editingSite.clients || []).join(', '));
       setTagsText((editingSite.tags || []).join(', '));
       setNsfw(editingSite.nsfw);
+      setPrivateOnly(Boolean(editingSite.privateOnly || editingSite.category === 'private_vault'));
       setAccent(editingSite.accent || ACCENT_PRESETS[0]);
       setIcon(editingSite.icon || '');
     } else {
@@ -75,6 +77,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setClientsText('');
       setTagsText('');
       setNsfw(defaultNsfw);
+      setPrivateOnly(false);
       setAccent(ACCENT_PRESETS[Math.floor(Math.random() * ACCENT_PRESETS.length)]);
       setIcon('');
     }
@@ -110,7 +113,8 @@ export const SiteModal: React.FC<SiteModalProps> = ({
         .split(/[,，]/)
         .map((s) => s.trim())
         .filter(Boolean),
-      nsfw,
+      nsfw: privateOnly || category === 'private_vault' ? true : nsfw,
+      privateOnly: privateOnly || category === 'private_vault' ? true : undefined,
       pinned: editingSite?.pinned ?? false,
       accent,
       icon: icon.trim() || undefined,
@@ -186,7 +190,14 @@ export const SiteModal: React.FC<SiteModalProps> = ({
               </label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value as CategoryId)}
+                onChange={(e) => {
+                  const nextCat = e.target.value as CategoryId;
+                  setCategory(nextCat);
+                  if (nextCat === 'private_vault') {
+                    setPrivateOnly(true);
+                    setNsfw(true);
+                  }
+                }}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               >
                 {categories.map((cat) => (
@@ -299,8 +310,8 @@ export const SiteModal: React.FC<SiteModalProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-            <label className="inline-flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-200">
+          <div className="space-y-2 pt-1">
+            <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-200">
               <input
                 type="checkbox"
                 checked={nsfw}
@@ -309,6 +320,22 @@ export const SiteModal: React.FC<SiteModalProps> = ({
               />
               标记为 NSFW（工作模式下自动隐藏）
             </label>
+
+            <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-violet-700 dark:text-violet-300">
+              <input
+                type="checkbox"
+                checked={privateOnly}
+                onChange={(e) => {
+                  setPrivateOnly(e.target.checked);
+                  if (e.target.checked) setNsfw(true);
+                }}
+                className="h-4 w-4 rounded accent-violet-500"
+              />
+              仅存入站长私有扩展仓库（绝不发布到公开站点）
+            </label>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
 
             <div className="flex items-center gap-1.5">
               <span className="text-xs text-slate-400">徽章色：</span>

@@ -1,4 +1,5 @@
 export type CategoryId =
+  | 'private_vault'
   | 'acg_games'
   | 'acg_resources'
   | 'acg_community'
@@ -36,6 +37,8 @@ export interface SiteItem {
   clients?: string[];
   /** 是否属于 NSFW 内容；工作模式下自动隐藏 */
   nsfw: boolean;
+  /** 是否仅存在于站长私有仓库（严禁同步至公开 sites.json，仅站长登录后可见） */
+  privateOnly?: boolean;
   /** 是否用户收藏/置顶 */
   pinned?: boolean;
   /** 卡片左上角图标色系或自定义字母 */
@@ -77,6 +80,7 @@ export interface CategoryMeta {
   description: string;
   icon: string;
   nsfwOnly?: boolean;
+  privateOnly?: boolean;
 }
 
 export type HealthState = 'idle' | 'checking' | 'online' | 'warn' | 'offline';

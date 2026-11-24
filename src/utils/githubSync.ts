@@ -6,6 +6,10 @@ export interface GitHubConfig {
   branch: string;
   path: string;
   token: string;
+  /** 可选：独立私有扩展库仓库名（例如 NyaNavi-Private），仅站长登录后加载 */
+  privateRepo?: string;
+  privateBranch?: string;
+  privatePath?: string;
 }
 
 export interface GitHubVerifyResult {
@@ -42,6 +46,9 @@ export function loadGitHubConfig(): GitHubConfig | null {
         branch: parsed.branch || DEFAULT_GITHUB_CONFIG.branch,
         path: parsed.path || DEFAULT_GITHUB_CONFIG.path,
         token: parsed.token.trim(),
+        privateRepo: typeof parsed.privateRepo === 'string' ? parsed.privateRepo.trim() : '',
+        privateBranch: parsed.privateBranch || 'main',
+        privatePath: parsed.privatePath || 'private-sites.json',
       };
     }
   } catch {
@@ -163,6 +170,117 @@ export async function fetchSitesFromGitHub(
   const parsed = JSON.parse(text);
   if (!Array.isArray(parsed)) return null;
   return { sites: parsed as SiteItem[], sha: data.sha };
+}
+
+export function getPrivateRepoConfig(config: GitHubConfig): GitHubConfig | null {
+  const privateRepo = config.privateRepo?.trim();
+  if (!privateRepo) return null;
+  // 防呆保护：禁止把私密库指向公开主仓库本身
+  if (privateRepo.toLowerCase() === config.repo.trim().toLowerCase()) {
+    return null;
+  }
+  return {
+    owner: config.owner,
+    repo: privateRepo,
+    branch: config.privateBranch?.trim() || 'main',
+    path: config.privatePath?.trim() || 'private-sites.json',
+    token: config.token,
+  };
+}
+
+/**
+ * 校验私有扩展仓库是否真实存在、具备写权限且确实为 Private 私有仓库
+ */
+export async function verifyPrivateRepo(
+  config: GitHubConfig,
+): Promise<{ ok: boolean; isPrivate: boolean; error?: string }> {
+  const priv = getPrivateRepoConfig(config);
+  if (!priv) {
+    return { ok: false, isPrivate: false, error: '私密仓库名不能为空，且不能与公开仓库同名' };
+  }
+  try {
+    const res = await fetch(`https://api.github.com/repos/${priv.owner}/${priv.repo}`, {
+      headers: ghHeaders(priv.token),
+      cache: 'no-store',
+    });
+    if (res.status === 404) {
+      return {
+        ok: false,
+        isPrivate: false,
+        error: `找不到私有仓库 ${priv.owner}/${priv.repo}，或当前 Token 未勾选该仓库权限`,
+      };
+    }
+    if (!res.ok) {
+      return { ok: false, isPrivate: false, error: `私有仓库校验失败 (HTTP ${res.status})` };
+    }
+    const data = await res.json();
+    if (!data?.private) {
+      return {
+        ok: false,
+        isPrivate: false,
+        error: `安全拦截：${priv.owner}/${priv.repo} 是公开仓库！请务必将其设为 Private 私有仓库`,
+      };
+    }
+    const canPush = Boolean(data?.permissions?.push || data?.permissions?.admin);
+    if (!canPush) {
+      return {
+        ok: false,
+        isPrivate: true,
+        error: `当前 Token 对私有仓库 ${priv.repo} 没有写权限（Contents: Read and write）`,
+      };
+    }
+    return { ok: true, isPrivate: true };
+  } catch (err) {
+    return {
+      ok: false,
+      isPrivate: false,
+      error: err instanceof Error ? err.message : '网络请求失败',
+    };
+  }
+}
+
+/**
+ * 从独立私有仓库拉取 private-sites.json（自动打上 privateOnly: true 标记）
+ */
+export async function fetchPrivateSitesFromGitHub(
+  config: GitHubConfig,
+): Promise<SiteItem[]> {
+  const priv = getPrivateRepoConfig(config);
+  if (!priv) return [];
+  const res = await fetchSitesFromGitHub(priv);
+  if (!res) return [];
+  return res.sites.map((s) => ({
+    ...s,
+    nsfw: true,
+    privateOnly: true,
+  }));
+}
+
+/**
+ * 将私密站点写入独立私有仓库 private-sites.json
+ */
+export async function savePrivateSitesToGitHub(
+  config: GitHubConfig,
+  privateSites: SiteItem[],
+): Promise<GitHubSaveResult> {
+  const priv = getPrivateRepoConfig(config);
+  if (!priv) {
+    throw new Error('未配置有效的独立私有仓库');
+  }
+  const check = await verifyPrivateRepo(config);
+  if (!check.ok) {
+    throw new Error(check.error || '私有仓库校验未通过');
+  }
+  const normalized = privateSites.map((s) => ({
+    ...s,
+    nsfw: true,
+    privateOnly: true,
+  }));
+  return saveSitesToGitHub(
+    priv,
+    normalized,
+    `chore(private): update private-sites.json (${normalized.length} sites)`,
+  );
 }
 
 /**

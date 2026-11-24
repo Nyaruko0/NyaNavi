@@ -4,6 +4,14 @@ import { CHROME_SITES } from './chromeSites';
 
 export const CATEGORIES: CategoryMeta[] = [
   {
+    id: 'private_vault',
+    name: '站长私密库',
+    description: '独立存储于 Private 私有仓库，仅站长登录后可见，公开站绝不包含',
+    icon: 'Lock',
+    nsfwOnly: true,
+    privateOnly: true,
+  },
+  {
     id: 'acg_games',
     name: 'ACG 游戏',
     description: 'Galgame、RPG、同人游戏与高命中率汉化源站',

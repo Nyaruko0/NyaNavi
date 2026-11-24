@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import { CheckCircle2, ExternalLink, KeyRound, Loader2, LogOut, ShieldCheck, X } from 'lucide-react';
+import {
+  CheckCircle2,
+  ExternalLink,
+  KeyRound,
+  Loader2,
+  Lock,
+  LogOut,
+  ShieldCheck,
+  X,
+} from 'lucide-react';
 import {
   DEFAULT_GITHUB_CONFIG,
   verifyGitHubToken,
+  verifyPrivateRepo,
   type GitHubConfig,
 } from '../utils/githubSync';
 
@@ -26,6 +36,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [owner, setOwner] = useState(currentConfig?.owner || DEFAULT_GITHUB_CONFIG.owner);
   const [repo, setRepo] = useState(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
   const [branch, setBranch] = useState(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
+  const [privateRepo, setPrivateRepo] = useState(currentConfig?.privateRepo || '');
   const [token, setToken] = useState(currentConfig?.token || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,16 +59,28 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       branch: branch.trim() || DEFAULT_GITHUB_CONFIG.branch,
       path: DEFAULT_GITHUB_CONFIG.path,
       token: token.trim(),
+      privateRepo: privateRepo.trim(),
+      privateBranch: 'main',
+      privatePath: 'private-sites.json',
     };
 
     const res = await verifyGitHubToken(cfg);
-    setLoading(false);
-
     if (!res.valid || !res.canPush) {
+      setLoading(false);
       setError(res.error || '权限验证未通过');
       return;
     }
 
+    if (cfg.privateRepo) {
+      const privRes = await verifyPrivateRepo(cfg);
+      if (!privRes.ok) {
+        setLoading(false);
+        setError(privRes.error || '私有扩展仓库校验未通过');
+        return;
+      }
+    }
+
+    setLoading(false);
     onAuthenticated(cfg, res.username);
     onClose();
   };
@@ -141,6 +164,23 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               </div>
             </div>
           </div>
+
+            <div>
+              <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <Lock className="h-3.5 w-3.5 text-violet-500" />
+                独立私有扩展仓库名（可选，仅站长可见）
+              </label>
+              <input
+                type="text"
+                value={privateRepo}
+                onChange={(e) => setPrivateRepo(e.target.value)}
+                placeholder="例如：NyaNavi-Private（须为 Private 私有仓库）"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-violet-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              />
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
+                填写后自动读取/同步该私有仓库的 <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">private-sites.json</code>，系统会强制校验其为 Private，严禁写入公开仓库。创建 Token 时一并勾选此私有仓库的 Contents 读写权限即可。
+              </p>
+            </div>
 
           <div>
             <div className="mb-1 flex items-center justify-between">

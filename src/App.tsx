@@ -21,9 +21,12 @@ import { cleanSearchQuery } from './utils/cleanQuery';
 import { checkSiteHealth } from './utils/healthCheck';
 import {
   clearGitHubConfig,
+  fetchPrivateSitesFromGitHub,
   fetchSitesFromGitHub,
+  getPrivateRepoConfig,
   loadGitHubConfig,
   saveGitHubConfig,
+  savePrivateSitesToGitHub,
   saveSitesToGitHub,
   verifyGitHubToken,
   type GitHubConfig,
@@ -96,6 +99,7 @@ function loadInitialAppearance(): AppearanceSettings {
 
 export default function App() {
   const [sites, setSites] = useState<SiteItem[]>(DEFAULT_SITES);
+  const [privateSites, setPrivateSites] = useState<SiteItem[]>([]);
   const [localPins, setLocalPins] = useState<Record<string, boolean>>(loadLocalPins);
   const [appearance, setAppearance] = useState<AppearanceSettings>(loadInitialAppearance);
 
@@ -104,6 +108,7 @@ export default function App() {
   const [adminUser, setAdminUser] = useState<string | undefined>(undefined);
   const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
   const [hasUnsynced, setHasUnsynced] = useState<boolean>(false);
+  const [hasUnsyncedPrivate, setHasUnsyncedPrivate] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
 
   const [mode, setMode] = useState<AppMode>(() => {
@@ -161,11 +166,12 @@ export default function App() {
     };
   }, []);
 
-  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取仓库最新 sites.json
+  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取公开库 + 独立私有扩展库
   useEffect(() => {
     if (!ghConfig) {
       setAdminVerified(false);
       setAdminUser(undefined);
+      setPrivateSites([]);
       return;
     }
 
@@ -175,12 +181,21 @@ export default function App() {
       if (res.valid && res.canPush) {
         setAdminVerified(true);
         setAdminUser(res.username);
-        const latest = await fetchSitesFromGitHub(ghConfig).catch(() => null);
+        const [latest, privList] = await Promise.all([
+          fetchSitesFromGitHub(ghConfig).catch(() => null),
+          getPrivateRepoConfig(ghConfig)
+            ? fetchPrivateSitesFromGitHub(ghConfig).catch(() => [])
+            : Promise.resolve([]),
+        ]);
         if (!cancelled && latest && latest.sites.length > 0) {
           setSites(hydrateSites(latest.sites));
         }
+        if (!cancelled) {
+          setPrivateSites(privList);
+        }
       } else {
         setAdminVerified(false);
+        setPrivateSites([]);
         clearGitHubConfig();
         setGhConfig(null);
       }
@@ -264,20 +279,19 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [showToast]);
 
+  // 退出站长模式或切到工作模式时，若当前停留在私密分类，自动切回全部
   useEffect(() => {
-    if (mode === 'work') {
-      const cat = CATEGORIES.find((c) => c.id === activeSection);
-      if (cat?.nsfwOnly) {
-        setActiveSection('all');
-      }
+    const cat = CATEGORIES.find((c) => c.id === activeSection);
+    if ((mode === 'work' && cat?.nsfwOnly) || (cat?.privateOnly && !canManage)) {
+      setActiveSection('all');
     }
-  }, [mode, activeSection]);
+  }, [mode, canManage, activeSection]);
 
-  // 将访客本地收藏叠加到展示状态（站长模式下以 sites.pinned 为准）
+  // 合并展示列表：仅站长登录后合并私有扩展库站点（物理分离，访客不可见）
   const displaySites = useMemo(() => {
-    if (canManage) return sites;
+    if (canManage) return [...privateSites, ...sites];
     return sites.map((s) => (s.id in localPins ? { ...s, pinned: localPins[s.id] } : s));
-  }, [sites, localPins, canManage]);
+  }, [sites, privateSites, localPins, canManage]);
 
   const modeSites = useMemo(() => {
     return mode === 'work' ? displaySites.filter((s) => !s.nsfw) : displaySites;
@@ -376,6 +390,7 @@ export default function App() {
 
     for (const cat of CATEGORIES) {
       if (mode === 'work' && cat.nsfwOnly) continue;
+      if (cat.privateOnly && !canManage) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
       sections.push({
@@ -438,12 +453,19 @@ export default function App() {
     return { online, warn, offline, total: online + warn + offline };
   }, [healthMap, modeSites]);
 
-  // 收藏置顶：站长改全局数据，访客仅改本地收藏
+  // 收藏置顶：站长按归属改公开库或私有库，访客仅改本地收藏
   const handleTogglePin = useCallback(
     (id: string) => {
       if (canManage) {
-        setSites((prev) => prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)));
-        setHasUnsynced(true);
+        if (privateSites.some((s) => s.id === id)) {
+          setPrivateSites((prev) =>
+            prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)),
+          );
+          setHasUnsyncedPrivate(true);
+        } else {
+          setSites((prev) => prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)));
+          setHasUnsynced(true);
+        }
       } else {
         setLocalPins((prev) => {
           const current =
@@ -452,40 +474,79 @@ export default function App() {
         });
       }
     },
-    [canManage, sites],
+    [canManage, privateSites, sites],
   );
 
-  // 站长专属：同步改动至 GitHub 仓库 public/sites.json
+  const anyUnsynced = hasUnsynced || hasUnsyncedPrivate;
+
+  // 站长专属：严格双仓分流同步（私密站点绝不写入公开仓库！）
   const handleSyncToGitHub = useCallback(async () => {
     if (!ghConfig || !canManage || syncing) return;
     setSyncing(true);
     try {
-      const res = await saveSitesToGitHub(ghConfig, sites);
-      setHasUnsynced(false);
-      showToast(`已同步到 GitHub (${res.commitSha})，约 1 分钟后全网生效`);
+      const results: string[] = [];
+
+      // 1. 公开仓库：强制二次过滤，绝对禁止写入任何 privateOnly / private_vault 站点
+      if (hasUnsynced || !hasUnsyncedPrivate) {
+        const safePublicSites = sites.filter(
+          (s) => !s.privateOnly && s.category !== 'private_vault',
+        );
+        const pubRes = await saveSitesToGitHub(ghConfig, safePublicSites);
+        setHasUnsynced(false);
+        results.push(`公开站 (${pubRes.commitSha})`);
+      }
+
+      // 2. 独立私有仓库：仅在配置了有效 Private 仓库且有变动时提交
+      if (hasUnsyncedPrivate) {
+        if (!getPrivateRepoConfig(ghConfig)) {
+          throw new Error('请先在“站长登录”弹窗中填写独立 Private 私有仓库名，再同步私密站点');
+        }
+        const privRes = await savePrivateSitesToGitHub(ghConfig, privateSites);
+        setHasUnsyncedPrivate(false);
+        results.push(`私有库 (${privRes.commitSha})`);
+      }
+
+      showToast(`已同步至 GitHub：${results.join(' · ')}`);
     } catch (err) {
       showToast(err instanceof Error ? `同步失败：${err.message}` : '同步到 GitHub 失败');
     } finally {
       setSyncing(false);
     }
-  }, [ghConfig, canManage, syncing, sites, showToast]);
+  }, [ghConfig, canManage, syncing, hasUnsynced, hasUnsyncedPrivate, sites, privateSites, showToast]);
 
   const handleSaveSite = useCallback(
     (site: SiteItem) => {
       if (!canManage) return;
-      setSites((prev) => {
-        const exists = prev.some((s) => s.id === site.id);
-        if (exists) {
-          return prev.map((s) => (s.id === site.id ? site : s));
-        }
-        return [site, ...prev];
-      });
-      setHasUnsynced(true);
-      showToast(
-        editingSite
-          ? `已更新「${site.name}」，请点顶部“同步到 GitHub”发布`
-          : `已添加「${site.name}」，请点顶部“同步到 GitHub”发布`,
-      );
+      const isPrivate = Boolean(site.privateOnly || site.category === 'private_vault');
+      const normalized: SiteItem = isPrivate
+        ? { ...site, nsfw: true, privateOnly: true }
+        : { ...site, privateOnly: undefined };
+
+      if (isPrivate) {
+        setSites((prev) => prev.filter((s) => s.id !== normalized.id));
+        setPrivateSites((prev) => {
+          const exists = prev.some((s) => s.id === normalized.id);
+          return exists
+            ? prev.map((s) => (s.id === normalized.id ? normalized : s))
+            : [normalized, ...prev];
+        });
+        setHasUnsyncedPrivate(true);
+        showToast(`已存入私密库「${normalized.name}」，点“同步到 GitHub”将仅写入私有仓库`);
+      } else {
+        setPrivateSites((prev) => prev.filter((s) => s.id !== normalized.id));
+        setSites((prev) => {
+          const exists = prev.some((s) => s.id === normalized.id);
+          return exists
+            ? prev.map((s) => (s.id === normalized.id ? normalized : s))
+            : [normalized, ...prev];
+        });
+        setHasUnsynced(true);
+        showToast(
+          editingSite
+            ? `已更新「${normalized.name}」，请点顶部“同步到 GitHub”发布`
+            : `已添加「${normalized.name}」，请点顶部“同步到 GitHub”发布`,
+        );
+      }
     },
     [canManage, editingSite, showToast],
   );
@@ -493,6 +554,14 @@ export default function App() {
   const handleDeleteSite = useCallback(
     (id: string) => {
       if (!canManage) return;
+      const privTarget = privateSites.find((s) => s.id === id);
+      if (privTarget) {
+        if (!window.confirm(`确定从私密库删除「${privTarget.name}」吗？`)) return;
+        setPrivateSites((prev) => prev.filter((s) => s.id !== id));
+        setHasUnsyncedPrivate(true);
+        showToast(`已从私密库移除「${privTarget.name}」，请点顶部“同步到 GitHub”保存`);
+        return;
+      }
       const target = sites.find((s) => s.id === id);
       if (!target) return;
       if (!window.confirm(`确定删除站点「${target.name}」吗？`)) return;
@@ -500,7 +569,7 @@ export default function App() {
       setHasUnsynced(true);
       showToast(`已删除「${target.name}」，点击顶部“同步到 GitHub”即可生效`);
     },
-    [canManage, sites, showToast],
+    [canManage, privateSites, sites, showToast],
   );
 
   const handleExport = useCallback(() => {
@@ -513,7 +582,7 @@ export default function App() {
     a.download = `nyanavi-sites-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('已导出 JSON 配置文件');
+    showToast('已导出公开站点 JSON 配置（不含私密库）');
   }, [sites, showToast]);
 
   const handleImport = useCallback(
@@ -525,9 +594,29 @@ export default function App() {
         if (!Array.isArray(parsed) || !parsed.every((i) => i && i.id && i.name && i.url)) {
           throw new Error('格式不正确');
         }
-        setSites(hydrateSites(parsed));
-        setHasUnsynced(true);
-        showToast(`成功导入 ${parsed.length} 个站点，请点顶部“同步到 GitHub”发布`);
+        // 智能识别：若导入的 JSON 全部标记为私密站点，自动归入私有扩展库，不污染公开库！
+        const isPrivateBundle =
+          parsed.length > 0 &&
+          parsed.every((i: SiteItem) => i.privateOnly || i.category === 'private_vault');
+        if (isPrivateBundle) {
+          const normalized = parsed.map((i: SiteItem) => ({
+            ...i,
+            nsfw: true,
+            privateOnly: true,
+          }));
+          setPrivateSites(normalized);
+          setHasUnsyncedPrivate(true);
+          showToast(
+            `已导入 ${normalized.length} 个私密库站点，请点顶部“同步到 GitHub”写入私有仓库`,
+          );
+        } else {
+          const safePublic = hydrateSites(parsed).filter(
+            (i) => !i.privateOnly && i.category !== 'private_vault',
+          );
+          setSites(safePublic);
+          setHasUnsynced(true);
+          showToast(`成功导入 ${safePublic.length} 个公开站点，请点顶部“同步到 GitHub”发布`);
+        }
       } catch {
         showToast('导入失败：请确认是有效的 NyaNavi JSON 文件');
       }
@@ -537,12 +626,12 @@ export default function App() {
 
   const handleReset = useCallback(() => {
     if (!canManage) return;
-    if (!window.confirm('确定恢复默认内置站点列表吗？（同步到 GitHub 后才会覆盖远端）')) {
+    if (!window.confirm('确定恢复默认内置公开站点列表吗？（不影响私有库，同步后生效）')) {
       return;
     }
     setSites(DEFAULT_SITES);
     setHasUnsynced(true);
-    showToast('已恢复默认站点列表，请点顶部“同步到 GitHub”发布');
+    showToast('已恢复默认公开站点列表，请点顶部“同步到 GitHub”发布');
   }, [canManage, showToast]);
 
   const handleAdminAuthenticated = useCallback(
@@ -551,11 +640,21 @@ export default function App() {
       setGhConfig(config);
       setAdminVerified(true);
       setAdminUser(username);
-      showToast(`站长模式已解锁${username ? `（@${username}）` : ''}`);
-      const latest = await fetchSitesFromGitHub(config).catch(() => null);
+      const [latest, privList] = await Promise.all([
+        fetchSitesFromGitHub(config).catch(() => null),
+        getPrivateRepoConfig(config)
+          ? fetchPrivateSitesFromGitHub(config).catch(() => [])
+          : Promise.resolve([]),
+      ]);
       if (latest && latest.sites.length > 0) {
         setSites(hydrateSites(latest.sites));
       }
+      setPrivateSites(privList);
+      showToast(
+        `站长模式已解锁${username ? `（@${username}）` : ''}${
+          privList.length > 0 ? ` · 已加载 ${privList.length} 个私密站点` : ''
+        }`,
+      );
     },
     [showToast],
   );
@@ -565,8 +664,10 @@ export default function App() {
     setGhConfig(null);
     setAdminVerified(false);
     setAdminUser(undefined);
+    setPrivateSites([]);
     setHasUnsynced(false);
-    showToast('已退出站长模式，当前为访客只读视图');
+    setHasUnsyncedPrivate(false);
+    showToast('已退出站长模式，私密站点已清空');
   }, [showToast]);
 
   const handleNavigate = useCallback(
@@ -696,11 +797,11 @@ export default function App() {
                     disabled={syncing}
                     onClick={handleSyncToGitHub}
                     className={`relative inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-medium shadow-2xs transition disabled:opacity-60 ${
-                      hasUnsynced
+                      anyUnsynced
                         ? 'bg-[var(--nya-accent)] text-white hover:opacity-90'
                         : 'border border-emerald-200/80 bg-emerald-50/90 text-emerald-700 hover:bg-emerald-100/80 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
                     }`}
-                    title="将当前站点列表提交到 GitHub 仓库 public/sites.json 并自动部署"
+                    title="公开站点同步至公开仓库，私密站点仅同步至独立 Private 私有仓库"
                   >
                     {syncing ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -708,9 +809,9 @@ export default function App() {
                       <CloudUpload className="h-3.5 w-3.5" />
                     )}
                     <span className="hidden sm:inline">
-                      {syncing ? '同步中' : hasUnsynced ? '同步到 GitHub' : '已同步'}
+                      {syncing ? '同步中' : anyUnsynced ? '同步到 GitHub' : '已同步'}
                     </span>
-                    {hasUnsynced && !syncing && (
+                    {anyUnsynced && !syncing && (
                       <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-amber-400 ring-2 ring-white dark:ring-slate-900" />
                     )}
                   </button>
@@ -828,7 +929,11 @@ export default function App() {
               >
                 站长推荐😋 ({pinnedSites.length})
               </button>
-              {CATEGORIES.filter((c) => !(mode === 'work' && c.nsfwOnly)).map((cat) => {
+              {CATEGORIES.filter((c) => {
+                if (mode === 'work' && c.nsfwOnly) return false;
+                if (c.privateOnly && !canManage) return false;
+                return true;
+              }).map((cat) => {
                 const count = categoryCounts[cat.id] ?? 0;
                 if (count === 0) return null;
                 const active = activeSection === cat.id;
