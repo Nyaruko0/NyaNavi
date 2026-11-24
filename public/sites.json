@@ -660,7 +660,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#f472b6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/01/www.pixiv_.net_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/01/www.pixiv_.net_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-2",
@@ -676,7 +677,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#f472b6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/danbooru.donmai.us.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/danbooru.donmai.us.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-3",
@@ -1076,7 +1078,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/share.dmhy.org.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/share.dmhy.org.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-28",
@@ -1092,7 +1095,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/nyaa.si.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/nyaa.si.png",
+    "pinned": true
   },
   {
     "id": "acgbox-29",
@@ -1124,7 +1128,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/mikanani.me_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/mikanani.me_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-31",
@@ -3921,7 +3926,8 @@
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "pinned": true
   },
   {
     "id": "chrome-nax-moe",
@@ -4633,7 +4639,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#38bdf8",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.agefans.tv.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.agefans.tv.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-24",
@@ -5580,22 +5587,6 @@
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/pixiv.cat.png"
   },
   {
-    "id": "acgbox-ext-83",
-    "name": "5年目の放課後",
-    "shortName": "5年",
-    "url": "http://5-y.2-d.jp",
-    "category": "artworks",
-    "description": "5年目の放課後",
-    "tags": [
-      "画师博客"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#a855f7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/5-y.2-d.jp.jpg"
-  },
-  {
     "id": "acgbox-ext-84",
     "name": "DeviantArt",
     "shortName": "De",
@@ -6217,7 +6208,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.steampowered.com.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.steampowered.com.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-123",
@@ -6569,7 +6561,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#fb7185",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.nga.cn.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.nga.cn.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-145",
