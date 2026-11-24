@@ -39,6 +39,11 @@ import {
   encryptVaultSites,
   type EncryptedVaultPayload,
 } from './utils/vaultCrypto';
+import {
+  clearOAuthMemberSession,
+  consumeOAuthHashCallback,
+  loadOAuthMemberSession,
+} from './utils/oauthConfig';
 import { Sidebar } from './components/Sidebar';
 import { SearchBar } from './components/SearchBar';
 import { SiteCard } from './components/SiteCard';
@@ -178,20 +183,78 @@ export default function App() {
     };
   }, []);
 
-  // 2. 启动时自动验证本地保存的 GitHub Token，并按真实权限分流：
-  //    - admin（有仓库写权限）：拉取最新公开库 + 私有库，解锁完整管理权限
-  //    - member（无仓库写权限）：普通只读登录态；若本地记住了密钥，自动核验好友名单并解密只读展示
+  // 2. 启动时自动处理 GitHub 登录态（支持 OAuth 一键登录回调 与 站长 Token 登录）
   useEffect(() => {
-    if (!ghConfig) {
-      setAuthRole('none');
-      setAuthUser(undefined);
+    let cancelled = false;
+
+    const tryAutoUnlockForMember = async (username: string, ownerName: string) => {
+      const savedPass = localStorage.getItem(STORAGE_FRIEND_PASS_KEY);
+      if (!savedPass) return false;
+      try {
+        const vaultRes = await fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' });
+        if (!vaultRes.ok) return false;
+        const payload = (await vaultRes.json()) as EncryptedVaultPayload;
+        const decrypted = await decryptVaultSites(payload, savedPass);
+        const u = username.toLowerCase();
+        const ownerLower = ownerName.toLowerCase();
+        if (
+          u === ownerLower ||
+          (decrypted.allowedUsers.length > 0 && decrypted.allowedUsers.includes(u))
+        ) {
+          if (!cancelled) {
+            setFriendVaultSites(decrypted.sites);
+            setFriendUnlocked(true);
+          }
+          return true;
+        }
+        localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+      } catch {
+        localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+      }
+      return false;
+    };
+
+    // 2a. 若刚从 GitHub OAuth 授权跳回，消费 hash 并自动打开密钥输入框
+    const freshOAuth = consumeOAuthHashCallback();
+    if (freshOAuth) {
+      setAuthRole('member');
+      setAuthUser(freshOAuth.login);
       setPrivateSites([]);
-      setFriendVaultSites([]);
-      setFriendUnlocked(false);
-      return;
+      tryAutoUnlockForMember(freshOAuth.login, DEFAULT_GITHUB_CONFIG.owner).then((ok) => {
+        if (cancelled) return;
+        if (ok) {
+          showToast(`欢迎回来 @${freshOAuth.login}，已自动解锁私密库（只读）`);
+        } else {
+          setAdminModalOpen(true);
+          showToast(`已登录 @${freshOAuth.login}，请输入站长给你的明文密钥`);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
     }
 
-    let cancelled = false;
+    // 2b. 若没有站长 Token，检查已保存的好友 OAuth 会话
+    if (!ghConfig) {
+      const savedMember = loadOAuthMemberSession();
+      if (savedMember) {
+        setAuthRole('member');
+        setAuthUser(savedMember.login);
+        setPrivateSites([]);
+        tryAutoUnlockForMember(savedMember.login, DEFAULT_GITHUB_CONFIG.owner);
+      } else {
+        setAuthRole('none');
+        setAuthUser(undefined);
+        setPrivateSites([]);
+        setFriendVaultSites([]);
+        setFriendUnlocked(false);
+      }
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    // 2c. 校验本地保存的 GitHub Token（站长或 Token 登录用户）
     verifyGitHubToken(ghConfig).then(async (res) => {
       if (cancelled) return;
       if (!res.valid || !res.username) {
@@ -236,39 +299,17 @@ export default function App() {
       } else {
         setAuthRole('member');
         setPrivateSites([]);
-        // 普通用户：若当前浏览器记住了密钥，自动核验好友名单后静默解密
-        const savedPass = localStorage.getItem(STORAGE_FRIEND_PASS_KEY);
-        if (savedPass) {
-          try {
-            const vaultRes = await fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' });
-            if (vaultRes.ok) {
-              const payload = (await vaultRes.json()) as EncryptedVaultPayload;
-              const decrypted = await decryptVaultSites(payload, savedPass);
-              const u = res.username.toLowerCase();
-              const ownerLower = (ghConfig.owner || DEFAULT_GITHUB_CONFIG.owner).toLowerCase();
-              if (
-                u === ownerLower ||
-                (decrypted.allowedUsers.length > 0 && decrypted.allowedUsers.includes(u))
-              ) {
-                if (!cancelled) {
-                  setFriendVaultSites(decrypted.sites);
-                  setFriendUnlocked(true);
-                }
-              } else {
-                localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
-              }
-            }
-          } catch {
-            localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
-          }
-        }
+        await tryAutoUnlockForMember(
+          res.username,
+          ghConfig.owner || DEFAULT_GITHUB_CONFIG.owner,
+        );
       }
     });
 
     return () => {
       cancelled = true;
     };
-  }, [ghConfig]);
+  }, [ghConfig, showToast]);
 
   // 持久化本地个人收藏、模式、主题与外观设置
   useEffect(() => {
@@ -800,6 +841,7 @@ export default function App() {
 
   const handleAdminLogout = useCallback(() => {
     clearGitHubConfig();
+    clearOAuthMemberSession();
     localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
     setGhConfig(null);
     setAuthRole('none');

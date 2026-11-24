@@ -21,6 +21,7 @@ import {
   verifyPrivateRepo,
   type GitHubConfig,
 } from '../utils/githubSync';
+import { getOAuthLoginUrl } from '../utils/oauthConfig';
 import { decryptVaultSites, type EncryptedVaultPayload } from '../utils/vaultCrypto';
 
 interface AdminModalProps {
@@ -62,6 +63,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   );
   const [token, setToken] = useState(currentConfig?.token || '');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAdminTokenForm, setShowAdminTokenForm] = useState(false);
 
   // 普通用户（好友）输入明文密钥的状态
   const [friendKeyInput, setFriendKeyInput] = useState('');
@@ -69,6 +71,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const oauthLoginUrl = getOAuthLoginUrl();
 
   useEffect(() => {
     if (!open) return;
@@ -79,8 +83,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     setVaultPassphrase(currentConfig?.vaultPassphrase || '');
     setVaultAllowedUsers(currentConfig?.vaultAllowedUsers || '');
     setToken(currentConfig?.token || '');
+    setShowAdminTokenForm(authRole === 'admin');
     setError(null);
-  }, [open, currentConfig]);
+  }, [open, currentConfig, authRole]);
 
   if (!open) return null;
 
@@ -342,6 +347,51 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         {/* =============== 视图 B：未登录 或 站长已登录 =============== */}
         {authRole !== 'member' && (
           <>
+            {/* 未登录时：首屏直接展示“一键 GitHub OAuth 登录”（朋友全程免 Token！） */}
+            {authRole === 'none' && (
+              <div className="mb-4 space-y-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (oauthLoginUrl) {
+                      window.location.href = oauthLoginUrl;
+                    } else {
+                      setError(
+                        '站长尚未配置 Cloudflare Worker OAuth 地址（部署好 cloudflare-worker/oauth-worker.js 后填入 oauthConfig.ts 即可启用一键登录）',
+                      );
+                    }
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-[0.99] dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                >
+                  <Github className="h-4.5 w-4.5" />
+                  使用 GitHub 账号一键登录（好友入口）
+                </button>
+                <p className="text-center text-[11px] leading-relaxed text-slate-400">
+                  无需生成 Token，授权后自动识别你的 GitHub 账号，直接输入站长给的明文密钥即可只读访问私密库。
+                </p>
+
+                <div className="relative py-1">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-200/80 dark:border-slate-800" />
+                  </div>
+                  <div className="relative flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminTokenForm((v) => !v)}
+                      className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-0.5 text-[11px] font-medium text-slate-400 transition hover:text-slate-600 dark:bg-[#14192a] dark:hover:text-slate-200"
+                    >
+                      {showAdminTokenForm ? (
+                        <ChevronUp className="h-3.5 w-3.5" />
+                      ) : (
+                        <ChevronDown className="h-3.5 w-3.5" />
+                      )}
+                      站长管理登录（Token 读写通道）
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {authRole === 'admin' && (
               <div className="mb-4 flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-3.5 py-2.5 text-xs text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
                 <span className="inline-flex items-center gap-1.5 font-medium">
@@ -362,6 +412,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               </div>
             )}
 
+            {(authRole === 'admin' || showAdminTokenForm) ? (
             <form onSubmit={handleLoginOrSaveAdmin} className="space-y-3.5 text-sm">
               {/* Token 输入框（所有人都填这里） */}
               <div>
@@ -526,6 +577,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 </button>
               </div>
             </form>
+            ) : (
+              error && (
+                <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+                  {error}
+                </div>
+              )
+            )}
           </>
         )}
       </div>
