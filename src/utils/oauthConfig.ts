@@ -6,7 +6,8 @@
  * 'https://nyanavi-auth.你的子域名.workers.dev'），或通过环境变量 VITE_OAUTH_WORKER_URL 注入。
  */
 export const OAUTH_WORKER_URL: string =
-  (import.meta.env.VITE_OAUTH_WORKER_URL as string | undefined)?.trim() || '';
+  (import.meta.env.VITE_OAUTH_WORKER_URL as string | undefined)?.trim() ||
+  'https://nyanavi-auth.nyaruko0.workers.dev';
 
 export interface OAuthMemberSession {
   login: string;
