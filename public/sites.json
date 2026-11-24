@@ -12322,5 +12322,27 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-viva-la-vita",
+    "name": "生如夏花论坛",
+    "shortName": "夏花",
+    "url": "https://bbs.viva-la-vita.org/",
+    "category": "acg_community",
+    "description": "生如夏花（Viva La Vita）Discourse 社区论坛，性健康、亲密关系与同好深度交流。",
+    "tags": [
+      "社区论坛",
+      "Discourse",
+      "NSFW"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://bbs.viva-la-vita.org/search?q={q}",
+    "clients": [
+      "原生 PWA",
+      "DiscourseHub"
+    ],
+    "nsfw": true,
+    "accent": "#f43f5e"
   }
 ]
