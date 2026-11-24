@@ -3399,13 +3399,15 @@
     "url": "https://www.gamer520.com/",
     "category": "acg_games",
     "description": "Switch 与 PC 单机游戏综合分享站。",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "PC单机",
       "Switch"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
+    "nsfw": false,
+    "pinned": false,
     "accent": "#f97316"
   },
   {
@@ -3415,13 +3417,15 @@
     "url": "https://koyso.com/",
     "category": "acg_games",
     "description": "简洁高速的 PC 单机游戏直链下载站。",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "PC单机",
       "直链"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
+    "nsfw": false,
+    "pinned": false,
     "accent": "#0284c7"
   },
   {
