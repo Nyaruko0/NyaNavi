@@ -1,5 +1,6 @@
 import type { CategoryMeta, SiteItem } from '../types';
 import { ACGBOX_SITES } from './acgboxSites';
+import { CHROME_SITES } from './chromeSites';
 
 export const CATEGORIES: CategoryMeta[] = [
   {
@@ -581,4 +582,4 @@ const CORE_SITES: SiteItem[] = [
   },
 ];
 
-export const DEFAULT_SITES: SiteItem[] = [...CORE_SITES, ...ACGBOX_SITES];
+export const DEFAULT_SITES: SiteItem[] = [...CORE_SITES, ...ACGBOX_SITES, ...CHROME_SITES];

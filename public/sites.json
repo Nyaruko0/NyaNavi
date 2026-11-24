@@ -3170,5 +3170,1111 @@
     "nsfw": true,
     "accent": "#f97316",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.wnacg.org.png"
+  },
+  {
+    "id": "chrome-2dfan",
+    "name": "2DFan",
+    "shortName": "2D",
+    "url": "https://2dfan.com/",
+    "category": "acg_games",
+    "description": "老牌 Galgame 汉化情报、补丁存档与攻略大全。",
+    "tags": [
+      "Galgame",
+      "汉化补丁",
+      "攻略"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://2dfan.com/subjects/search?keyword={q}",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-erogame-space",
+    "name": "花花の旧作館",
+    "shortName": "花花",
+    "url": "https://www.erogame.space/",
+    "category": "acg_games",
+    "description": "经典老 Galgame 与怀旧作品整理收录站点。",
+    "tags": [
+      "Galgame",
+      "经典旧作"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "chrome-qingju",
+    "name": "青桔网",
+    "shortName": "青桔",
+    "url": "https://spare.qingju.org/",
+    "category": "acg_games",
+    "description": "Galgame 免费分享与交流平台。",
+    "tags": [
+      "Galgame",
+      "免费分享"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-tiangal",
+    "name": "天遊二次元",
+    "shortName": "天遊",
+    "url": "https://www.tiangal.com/",
+    "category": "acg_games",
+    "description": "PC 与 Android 汉化文字游戏及 Galgame 情报站（原天使二次元）。",
+    "tags": [
+      "Galgame",
+      "汉化情报",
+      "安卓移植"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-galcg",
+    "name": "Gal領域 (GalCG)",
+    "shortName": "GalCG",
+    "url": "https://www.galcg.org/",
+    "category": "acg_games",
+    "description": "专注 Galgame 与 CG 资源收集分享的站点。",
+    "tags": [
+      "Galgame",
+      "CG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "chrome-uacg",
+    "name": "UACG",
+    "shortName": "UA",
+    "url": "https://uacg.games/",
+    "category": "acg_games",
+    "description": "二次元游戏、同人游戏与 AI ACG 综合资源站。",
+    "tags": [
+      "ACG游戏",
+      "AI ACG"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-nekotaku",
+    "name": "喵源领域",
+    "shortName": "喵源",
+    "url": "https://www.nekotaku.me/",
+    "category": "acg_games",
+    "description": "Galgame 汉化资源与 Windows 游戏分享小站。",
+    "tags": [
+      "Galgame",
+      "汉化资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "chrome-zi6",
+    "name": "梓澪の妙妙屋",
+    "shortName": "梓澪",
+    "url": "https://zi6.cc/",
+    "category": "acg_games",
+    "description": "简洁清爽的 ACG / Galgame 个人分享站。",
+    "tags": [
+      "Galgame",
+      "资源小站"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-searchgal-homes",
+    "name": "SearchGal (备用)",
+    "shortName": "SG",
+    "url": "https://searchgal.homes/",
+    "category": "acg_games",
+    "description": "Galgame 聚合搜索引擎备用域名，主站打不开时应急使用。",
+    "tags": [
+      "Galgame",
+      "聚合搜索",
+      "备用域"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-nekonyan-patches",
+    "name": "NekoNyan Patches",
+    "shortName": "NN",
+    "url": "https://patches.nekonyansoft.com/",
+    "category": "acg_games",
+    "description": "NekoNyan 官方 Steam 正版 Galgame 补丁下载站。",
+    "tags": [
+      "官方补丁",
+      "正版"
+    ],
+    "costTier": "free",
+    "costLabel": "官方免费",
+    "nsfw": true,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "chrome-hikarifield",
+    "name": "HIKARI FIELD STORE",
+    "shortName": "HF",
+    "url": "https://store.hikarifield.co.jp/shops",
+    "category": "acg_games",
+    "description": "官方中文正版 Galgame 发行商商城与补丁中心。",
+    "tags": [
+      "正版商城",
+      "官中"
+    ],
+    "costTier": "paid",
+    "costLabel": "正版商城",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-doujin-savedata",
+    "name": "同人游戏存档站",
+    "shortName": "存档",
+    "url": "https://doujin-savedata.blog.jp/",
+    "category": "acg_games",
+    "description": "日站同人游戏全 CG 通关存档汇总博客。",
+    "tags": [
+      "全CG存档",
+      "同人游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "chrome-07th-mod",
+    "name": "07th-Mod Wiki",
+    "shortName": "07th",
+    "url": "https://wiki.07th-mod.com/",
+    "category": "acg_games",
+    "description": "《寒蝉鸣泣之时》《海猫鸣泣之时》主机版语音与立绘增强补丁维基。",
+    "tags": [
+      "寒蝉",
+      "海猫",
+      "主机版补丁"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": true,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "chrome-gamer520",
+    "name": "Gamer520 (Switch520)",
+    "shortName": "520",
+    "url": "https://www.gamer520.com/",
+    "category": "acg_games",
+    "description": "Switch 与 PC 单机游戏综合分享站。",
+    "tags": [
+      "PC单机",
+      "Switch"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "chrome-koyso",
+    "name": "Koyso",
+    "shortName": "KS",
+    "url": "https://koyso.com/",
+    "category": "acg_games",
+    "description": "简洁高速的 PC 单机游戏直链下载站。",
+    "tags": [
+      "PC单机",
+      "直链"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "chrome-kemono",
+    "name": "Kemono",
+    "shortName": "KM",
+    "url": "https://kemono.su/",
+    "category": "acg_resources",
+    "description": "Patreon / Pixiv Fanbox / Gumroad 等画师与同人赞助内容归档站。",
+    "tags": [
+      "Fanbox",
+      "Patreon",
+      "画师归档"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://kemono.su/posts?q={q}",
+    "nsfw": true,
+    "pinned": false,
+    "accent": "#f97316"
+  },
+  {
+    "id": "chrome-white-plus",
+    "name": "北+ (North Plus)",
+    "shortName": "北+",
+    "url": "https://www.white-plus.net/",
+    "category": "acg_community",
+    "description": "南+ (South Plus) 官方备用镜像域名，防主站失联必备。",
+    "tags": [
+      "南+备用",
+      "自购首发",
+      "社区"
+    ],
+    "costTier": "checkin",
+    "costLabel": "签到免费",
+    "searchRisk": "cooldown",
+    "searchNote": "与南+ 同体系，注意 10 秒搜索冷却",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-e-hentai",
+    "name": "E-Hentai",
+    "shortName": "EH",
+    "url": "https://e-hentai.org/",
+    "category": "comics",
+    "description": "全球最大的同人志、漫画与图库表站，免里站门槛即可浏览海量资源。",
+    "tags": [
+      "本子",
+      "同人志",
+      "表站"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://e-hentai.org/?f_search={q}",
+    "clients": [
+      "Mihon",
+      "Venera",
+      "EhViewer"
+    ],
+    "nsfw": true,
+    "accent": "#d97706"
+  },
+  {
+    "id": "chrome-anime-sharing",
+    "name": "Anime-Sharing",
+    "shortName": "AS",
+    "url": "https://www.anime-sharing.com/",
+    "category": "acg_community",
+    "description": "海外大型 ACG / Galgame / 乙女游戏与同人分享论坛。",
+    "tags": [
+      "海外论坛",
+      "Galgame",
+      "同人"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-hentaiclub",
+    "name": "绅士会所",
+    "shortName": "会所",
+    "url": "https://www.hentaiclub.net/",
+    "category": "acg_community",
+    "description": "二次元同人作品与综合资源交流站。",
+    "tags": [
+      "同人资源",
+      "社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "chrome-bepisdb",
+    "name": "BepisDB (恋活人物卡)",
+    "shortName": "KK",
+    "url": "https://db.bepis.moe/",
+    "category": "acg_resources",
+    "description": "恋活 (Koikatsu) 与 Illusion 系列高清人物卡、场景卡数据库。",
+    "tags": [
+      "恋活",
+      "人物卡",
+      "3D"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-doujinstyle",
+    "name": "DoujinStyle",
+    "shortName": "DS",
+    "url": "https://doujinstyle.com/",
+    "category": "acg_resources",
+    "description": "海外同人音乐（M3/Comiket）与同人游戏高质量归档下载站。",
+    "tags": [
+      "同人音乐",
+      "Comiket",
+      "游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-asmrmoon",
+    "name": "ASMR Moon",
+    "shortName": "AM",
+    "url": "https://asmrmoon.com/",
+    "category": "asmr",
+    "description": "同人音声与在线 ASMR 作品收听站。",
+    "tags": [
+      "ASMR",
+      "同人音声"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "chrome-alicesw",
+    "name": "爱丽丝书屋",
+    "shortName": "爱丽丝",
+    "url": "https://www.alicesw.com/",
+    "category": "novels",
+    "description": "全属性免费原创与同人小说创作阅读站。",
+    "tags": [
+      "原创小说",
+      "免费阅读"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-kiteyuan",
+    "name": "纸鸢磁力",
+    "shortName": "纸鸢",
+    "url": "https://magnet.kiteyuan.info/",
+    "category": "acg_resources",
+    "description": "支持规则导入与 AI 检索的聚合磁力搜索引擎。",
+    "tags": [
+      "磁力搜索",
+      "聚合引擎"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-lemonto",
+    "name": "磁力柠檬",
+    "shortName": "柠檬",
+    "url": "https://lemonto.top/",
+    "category": "acg_resources",
+    "description": "简洁高速的 BT / 磁力链接搜索引擎。",
+    "tags": [
+      "磁力搜索",
+      "BT"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#eab308"
+  },
+  {
+    "id": "chrome-cangshui-pan",
+    "name": "沧水的网盘",
+    "shortName": "沧水",
+    "url": "https://pan.cangshui.net/",
+    "category": "acg_resources",
+    "description": "公开分享的精选资源网盘目录。",
+    "tags": [
+      "共享网盘",
+      "直链"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-laos-menu",
+    "name": "老婶的菜单",
+    "shortName": "菜单",
+    "url": "https://laos.ktlsj.link/",
+    "category": "acg_resources",
+    "description": "仅收录精品小站的轻量资源索引页。",
+    "tags": [
+      "精品收录",
+      "资源索引"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "chrome-eyny",
+    "name": "伊莉討論區",
+    "shortName": "伊莉",
+    "url": "https://www21.eyny.com/",
+    "category": "acg_community",
+    "description": "港台老牌综合讨论区，含丰富动漫、游戏与影音分区。",
+    "tags": [
+      "老牌论坛",
+      "综合社区"
+    ],
+    "costTier": "checkin",
+    "costLabel": "需登录",
+    "nsfw": true,
+    "accent": "#3b82f6"
+  },
+  {
+    "id": "chrome-yuc-wiki",
+    "name": "長門番堂 (Yuc’s)",
+    "shortName": "番堂",
+    "url": "https://yuc.wiki/",
+    "category": "anime_community",
+    "description": "口碑极佳的季度新番时间表、制作阵容与扫雷指南。",
+    "tags": [
+      "新番表",
+      "追番必备"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-vcb-s",
+    "name": "VCB-Studio",
+    "shortName": "VCB",
+    "url": "https://vcb-s.com/",
+    "category": "anime_download",
+    "description": "顶级动画 BDRip 压制组官网，收藏高清无损蓝光番剧首选。",
+    "tags": [
+      "BDRip",
+      "压制组",
+      "高清收藏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-acg-rip",
+    "name": "ACG.RIP",
+    "shortName": "RIP",
+    "url": "https://acg.rip/",
+    "category": "anime_download",
+    "description": "更新及时的动漫 BT 种子追番发布站。",
+    "tags": [
+      "BT种子",
+      "字幕组"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://acg.rip/?term={q}",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "chrome-autobangumi",
+    "name": "AutoBangumi",
+    "shortName": "AB",
+    "url": "https://www.autobangumi.org/",
+    "category": "tools",
+    "description": "基于 RSS 的开源全自动追番、下载与媒体库刮削整理工具。",
+    "tags": [
+      "自动追番",
+      "RSS",
+      "开源"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-bilinovel",
+    "name": "哔哩轻小说",
+    "shortName": "轻小",
+    "url": "https://www.bilinovel.com/",
+    "category": "light_novels",
+    "description": "热门日本动漫轻小说免费在线阅读站。",
+    "tags": [
+      "轻小说",
+      "在线阅读"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "chrome-moegirl",
+    "name": "萌娘百科",
+    "shortName": "萌百",
+    "url": "https://zh.moegirl.org.cn/",
+    "category": "anime_community",
+    "description": "万物皆可萌的中文 ACG 角色、作品、声优与二次元梗百科全书。",
+    "tags": [
+      "ACG百科",
+      "查梗必备"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://zh.moegirl.org.cn/index.php?search={q}",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-animetrace",
+    "name": "AnimeTrace",
+    "shortName": "识图",
+    "url": "https://www.animetrace.com/",
+    "category": "tools",
+    "description": "AI 动漫与 Galgame 截图精准识图找番名/游戏角色神器。",
+    "tags": [
+      "AI识图",
+      "找番",
+      "Gal识图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-arona-icu",
+    "name": "什亭之匣 (蔚蓝档案)",
+    "shortName": "什亭",
+    "url": "https://arona.icu/",
+    "category": "anime_community",
+    "description": "《蔚蓝档案》学生图鉴、总力战攻略与日常工具站。",
+    "tags": [
+      "蔚蓝档案",
+      "攻略工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-gamekee",
+    "name": "GameKee 二游 Wiki",
+    "shortName": "GK",
+    "url": "https://www.gamekee.com/",
+    "category": "anime_community",
+    "description": "热门二次元手游图鉴与攻略 Wiki 聚合（妮姬、交错战线等）。",
+    "tags": [
+      "手游Wiki",
+      "攻略图鉴"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-summerpockets",
+    "name": "鸟白岛演绎厅",
+    "shortName": "鸟白",
+    "url": "https://www.summerpockets.com/",
+    "category": "anime_community",
+    "description": "ACG 与 Key 社音乐爱好者的同好交流社区。",
+    "tags": [
+      "ACG音乐",
+      "同好社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-miaoaaa",
+    "name": "ACG 喵导航",
+    "shortName": "喵导",
+    "url": "https://www.miaoaaa.com/",
+    "category": "anime_community",
+    "description": "专注二次元番剧、漫画与周边的参考网址导航。",
+    "tags": [
+      "参考导航",
+      "ACG"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb7185"
+  },
+  {
+    "id": "chrome-moechick",
+    "name": "萌姬导航",
+    "shortName": "萌姬",
+    "url": "https://moechick.com/",
+    "category": "anime_community",
+    "description": "清爽好用的二次元综合网址导航参考站。",
+    "tags": [
+      "参考导航",
+      "二次元"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "chrome-v2acg",
+    "name": "v2acg 网址导航",
+    "shortName": "v2",
+    "url": "https://www.v2acg.com/",
+    "category": "anime_community",
+    "description": "ACG 资源网站分类导航目录。",
+    "tags": [
+      "参考导航",
+      "资源目录"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "chrome-acgyyg",
+    "name": "ACG 嘤嘤怪",
+    "shortName": "嘤怪",
+    "url": "https://acgyyg.github.io/",
+    "category": "anime_community",
+    "description": "托管于 GitHub Pages 的开源二次元导航站。",
+    "tags": [
+      "开源导航",
+      "参考"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-civitai",
+    "name": "Civitai",
+    "shortName": "CV",
+    "url": "https://civitai.com/",
+    "category": "artworks",
+    "description": "全球最大的开源 AI 绘画模型、LoRA 与作品分享社区。",
+    "tags": [
+      "AI绘画",
+      "LoRA",
+      "模型库"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://civitai.com/search/models?query={q}",
+    "nsfw": true,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "chrome-nai-artists",
+    "name": "NovelAI 画师军火库",
+    "shortName": "画师",
+    "url": "https://nai-artists.vercel.app/",
+    "category": "artworks",
+    "description": "NovelAI 画师风格串检索与画风预览图鉴。",
+    "tags": [
+      "NovelAI",
+      "画师串",
+      "AI绘画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "chrome-naitag",
+    "name": "法典图鉴 (NAI Tag)",
+    "shortName": "法典",
+    "url": "https://naitag.com/",
+    "category": "artworks",
+    "description": "NovelAI 常用提示词与效果对照法典图鉴。",
+    "tags": [
+      "NovelAI",
+      "提示词"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-nax-moe",
+    "name": "NovelAI Tag Experiments",
+    "shortName": "NAX",
+    "url": "https://nax.moe/",
+    "category": "artworks",
+    "description": "NovelAI 提示词与画风参数对比实验库。",
+    "tags": [
+      "NovelAI",
+      "Tag实验"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-aitag-win",
+    "name": "AI TAG Prompt 图库",
+    "shortName": "TAG",
+    "url": "https://aitag.win/",
+    "category": "artworks",
+    "description": "AI 绘画咒语标签与出图示例画廊。",
+    "tags": [
+      "AI咒语",
+      "Prompt图库"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-animastyles",
+    "name": "Anima Style Explorer",
+    "shortName": "ASE",
+    "url": "https://animastyles.thetacursed.com/",
+    "category": "artworks",
+    "description": "收录 42,500+ 画师风格的可视化检索浏览器。",
+    "tags": [
+      "画师风格",
+      "AI绘画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-misaka-tagselect",
+    "name": "misaka-TagSelect",
+    "shortName": "御坂",
+    "url": "https://tag-select.nai4.top/",
+    "category": "artworks",
+    "description": "轻量化 NovelAI 标签组合点选工具。",
+    "tags": [
+      "NovelAI",
+      "标签工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-bgsub",
+    "name": "BgSub 智能抠图",
+    "shortName": "抠图",
+    "url": "https://zh.bgsub.com/webapp/",
+    "category": "tools",
+    "description": "纯浏览器本地运行的免费图片去背景/换背景工具，无需上传原图。",
+    "tags": [
+      "本地抠图",
+      "图片工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-linux-do",
+    "name": "LINUX DO",
+    "shortName": "LD",
+    "url": "https://linux.do/",
+    "category": "dev_work",
+    "description": "高活跃度的新一代开发者、AI 与极客交流社区。",
+    "tags": [
+      "技术社区",
+      "AI",
+      "极客"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://linux.do/search?q={q}",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "chrome-nodeseek",
+    "name": "NodeSeek",
+    "shortName": "NS",
+    "url": "https://www.nodeseek.com/",
+    "category": "dev_work",
+    "description": "VPS、云服务器与主机折腾爱好者社区。",
+    "tags": [
+      "VPS",
+      "服务器",
+      "运维"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-52pojie",
+    "name": "吾爱破解",
+    "shortName": "吾爱",
+    "url": "https://www.52pojie.cn/",
+    "category": "dev_work",
+    "description": "国内知名软件逆向工程、安全研究与实用工具技术论坛。",
+    "tags": [
+      "逆向安全",
+      "实用软件"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "chrome-hello-algo",
+    "name": "Hello 算法",
+    "shortName": "算法",
+    "url": "https://www.hello-algo.com/",
+    "category": "dev_work",
+    "description": "动画图解、一键运行的数据结构与算法开源入门教程。",
+    "tags": [
+      "算法",
+      "开源教程"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": false,
+    "accent": "#3b82f6"
+  },
+  {
+    "id": "chrome-programmercarl",
+    "name": "代码随想录",
+    "shortName": "随想",
+    "url": "https://programmercarl.com/",
+    "category": "dev_work",
+    "description": "系统化的算法数据结构刷题路线与详解知识库。",
+    "tags": [
+      "算法刷题",
+      "面试"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-xiaolincoding",
+    "name": "小林 coding",
+    "shortName": "小林",
+    "url": "https://www.xiaolincoding.com/",
+    "category": "dev_work",
+    "description": "图解计算机网络、操作系统、MySQL 与后端面试核心知识。",
+    "tags": [
+      "计网",
+      "操作系统",
+      "图解"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#06b6d4"
+  },
+  {
+    "id": "chrome-leetcode",
+    "name": "力扣 (LeetCode)",
+    "shortName": "LC",
+    "url": "https://leetcode.cn/",
+    "category": "dev_work",
+    "description": "全球极客挚爱的算法编程练习与技术成长平台。",
+    "tags": [
+      "算法题库",
+      "编程"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f97316"
+  },
+  {
+    "id": "chrome-commonmark",
+    "name": "CommonMark 参考",
+    "shortName": "MD",
+    "url": "https://commonmark.org/help/",
+    "category": "dev_work",
+    "description": "简洁权威的 Markdown 标准语法速查手册。",
+    "tags": [
+      "Markdown",
+      "速查"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "chrome-axutongxue",
+    "name": "阿虚同学的储物间",
+    "shortName": "阿虚",
+    "url": "https://axutongxue.com/",
+    "category": "tools",
+    "description": "口碑极佳的实用软件、学习资料与效率网站合集导航。",
+    "tags": [
+      "软件合集",
+      "效率导航"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "chrome-ghxi",
+    "name": "果核剥壳",
+    "shortName": "果核",
+    "url": "https://www.ghxi.com/",
+    "category": "tools",
+    "description": "专注电脑端绿色纯净软件与装机工具分享。",
+    "tags": [
+      "电脑软件",
+      "装机工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "chrome-toolhelper",
+    "name": "锤子在线工具",
+    "shortName": "锤子",
+    "url": "https://www.toolhelper.cn/",
+    "category": "tools",
+    "description": "涵盖编码解码、加解密、格式化等百余种开发者在线小工具。",
+    "tags": [
+      "编解码",
+      "在线工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-tunemymusic",
+    "name": "Tune My Music",
+    "shortName": "TM",
+    "url": "https://www.tunemymusic.com/zh-CN",
+    "category": "tools",
+    "description": "跨音乐平台（Spotify / Apple Music / 网易云等）一键迁移歌单工具。",
+    "tags": [
+      "歌单迁移",
+      "音乐工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-zhelper",
+    "name": "zhelper V4 电子书搜索",
+    "shortName": "ZH",
+    "url": "https://v4.zhelper.net/",
+    "category": "tools",
+    "description": "跨源电子书聚合搜索引擎，支持检索海量中文与外文书籍。",
+    "tags": [
+      "电子书",
+      "书籍搜索"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://v4.zhelper.net/search/{q}",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "chrome-openlibrary",
+    "name": "Open Library",
+    "shortName": "OL",
+    "url": "https://openlibrary.org/",
+    "category": "tools",
+    "description": "Internet Archive 旗下的公益开放电子图书馆。",
+    "tags": [
+      "开放图书馆",
+      "电子书"
+    ],
+    "costTier": "free",
+    "costLabel": "公益免费",
+    "nsfw": false,
+    "accent": "#059669"
+  },
+  {
+    "id": "chrome-ipinfo",
+    "name": "IPinfo.io",
+    "shortName": "IP",
+    "url": "https://ipinfo.io/",
+    "category": "dev_work",
+    "description": "快速查询当前 IP 地址、ASN 归属地与网络路由信息。",
+    "tags": [
+      "IP查询",
+      "网络工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0f766e"
+  },
+  {
+    "id": "chrome-meow-tg",
+    "name": "TG 喵搜索",
+    "shortName": "TG喵",
+    "url": "https://meow.tg/",
+    "category": "tools",
+    "description": "Telegram 公开频道与群组中文搜索引擎。",
+    "tags": [
+      "Telegram",
+      "频道搜索"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
   }
 ]
