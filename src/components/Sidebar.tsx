@@ -93,7 +93,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const visibleCategories = categories.filter((c) => {
-    if (mode === 'work' && c.nsfwOnly) return false;
+    if (mode === 'work' && !c.workAllowed) return false;
+    if (mode === 'moyu' && c.nsfwOnly) return false;
     if (c.privateOnly && !canViewPrivate) return false;
     return true;
   });
@@ -132,14 +133,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
                     mode === 'work'
                       ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                      : 'bg-pink-100 text-pink-600 dark:bg-pink-500/20 dark:text-pink-300'
+                      : mode === 'moyu'
+                        ? 'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-300'
+                        : 'bg-pink-100 text-pink-600 dark:bg-pink-500/20 dark:text-pink-300'
                   }`}
                 >
-                  {mode === 'work' ? 'WORK' : 'ACG'}
+                  {mode === 'work' ? 'WORK' : mode === 'moyu' ? '摸鱼' : 'ACG'}
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 dark:text-slate-500">
-                {mode === 'work' ? '效率与文档工作台' : '二次元精选资源导航'}
+                {mode === 'work'
+                  ? '效率与文档工作台'
+                  : mode === 'moyu'
+                    ? '全年龄表站摸鱼导航'
+                    : '二次元精选资源导航'}
               </p>
             </div>
           </div>

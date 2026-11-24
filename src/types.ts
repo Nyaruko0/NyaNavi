@@ -81,6 +81,8 @@ export interface CategoryMeta {
   icon: string;
   nsfwOnly?: boolean;
   privateOnly?: boolean;
+  /** 是否在纯“工作模式”下展示（否则仅在摸鱼/NSFW模式下展示） */
+  workAllowed?: boolean;
 }
 
 export type HealthState = 'idle' | 'checking' | 'online' | 'warn' | 'offline';
@@ -94,5 +96,5 @@ export interface HealthResult {
   checkedAt?: number;
 }
 
-export type AppMode = 'nsfw' | 'work';
+export type AppMode = 'work' | 'moyu' | 'nsfw';
 export type SearchMode = 'filter' | 'direct';

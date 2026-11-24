@@ -4,6 +4,7 @@ import {
   ArrowUp,
   Briefcase,
   CloudUpload,
+  Fish,
   Flame,
   Github,
   Loader2,
@@ -68,6 +69,10 @@ const STORAGE_THEME_KEY = 'nyanavi_theme_v1';
 const STORAGE_APPEARANCE_KEY = 'nyanavi_appearance_v1';
 const STORAGE_FRIEND_PASS_KEY = 'nyanavi_friend_pass_v1';
 
+const WORK_CATEGORY_IDS = new Set(
+  CATEGORIES.filter((c) => c.workAllowed).map((c) => c.id),
+);
+
 const DEFAULT_FALLBACK_ICON_MAP = new Map(
   DEFAULT_SITES.filter((s) => s.fallbackIcon).map((s) => [s.id, s.fallbackIcon!]),
 );
@@ -129,8 +134,10 @@ export default function App() {
 
   const [mode, setMode] = useState<AppMode>(() => {
     const saved = localStorage.getItem(STORAGE_MODE_KEY);
-    return saved === 'work' ? 'work' : 'nsfw';
+    if (saved === 'work' || saved === 'moyu' || saved === 'nsfw') return saved;
+    return 'nsfw';
   });
+  const [lastNonWorkMode, setLastNonWorkMode] = useState<'moyu' | 'nsfw'>('nsfw');
   const [dark, setDark] = useState<boolean>(() => {
     const saved = localStorage.getItem(STORAGE_THEME_KEY);
     if (saved) return saved === 'dark';
@@ -345,8 +352,15 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_MODE_KEY, mode);
+    if (mode !== 'work') {
+      setLastNonWorkMode(mode);
+    }
     document.title =
-      mode === 'work' ? 'NyaDesk · 开发与效率工作台' : 'NyaNavi · 二次元与 ACG 精选导航';
+      mode === 'work'
+        ? 'NyaDesk · 开发与效率工作台'
+        : mode === 'moyu'
+          ? 'NyaNavi · 全年龄二次元摸鱼导航'
+          : 'NyaNavi · 二次元与 ACG 精选导航';
   }, [mode]);
 
   useEffect(() => {
@@ -360,11 +374,14 @@ export default function App() {
       if (e.altKey && e.key.toLowerCase() === 'w') {
         e.preventDefault();
         setMode((prev) => {
-          const next = prev === 'work' ? 'nsfw' : 'work';
+          if (prev !== 'work') {
+            showToast('已秒切工作模式（仅保留开发与效率工具）');
+            return 'work';
+          }
           showToast(
-            next === 'work' ? '已切换至工作模式（隐藏 NSFW 站点）' : '已切换至 NSFW 完整模式',
+            lastNonWorkMode === 'moyu' ? '已恢复至摸鱼模式' : '已恢复至 NSFW 完整模式',
           );
-          return next;
+          return lastNonWorkMode;
         });
         return;
       }
@@ -382,12 +399,16 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [showToast]);
+  }, [lastNonWorkMode, showToast]);
 
-  // 退出站长模式/锁定暗号或切到工作模式时，若当前停留在私密分类，自动切回全部
+  // 退出站长模式/锁定暗号或切换模式时，若当前停留在不可见分类，自动切回全部
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.id === activeSection);
-    if ((mode === 'work' && cat?.nsfwOnly) || (cat?.privateOnly && !canViewPrivate)) {
+    if (
+      (mode === 'work' && cat && !cat.workAllowed) ||
+      (mode === 'moyu' && cat?.nsfwOnly) ||
+      (cat?.privateOnly && !canViewPrivate)
+    ) {
       setActiveSection('all');
     }
   }, [mode, canViewPrivate, activeSection]);
@@ -400,7 +421,13 @@ export default function App() {
   }, [sites, privateSites, friendVaultSites, friendUnlocked, localPins, canManage]);
 
   const modeSites = useMemo(() => {
-    return mode === 'work' ? displaySites.filter((s) => !s.nsfw) : displaySites;
+    if (mode === 'work') {
+      return displaySites.filter((s) => !s.nsfw && WORK_CATEGORY_IDS.has(s.category));
+    }
+    if (mode === 'moyu') {
+      return displaySites.filter((s) => !s.nsfw);
+    }
+    return displaySites;
   }, [displaySites, mode]);
 
   const categoryCounts = useMemo(() => {
@@ -495,7 +522,8 @@ export default function App() {
     }
 
     for (const cat of CATEGORIES) {
-      if (mode === 'work' && cat.nsfwOnly) continue;
+      if (mode === 'work' && !cat.workAllowed) continue;
+      if (mode === 'moyu' && cat.nsfwOnly) continue;
       if (cat.privateOnly && !canViewPrivate) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
@@ -985,6 +1013,11 @@ export default function App() {
                       <ShieldCheck className="h-3.5 w-3.5" />
                       工作模式 · {modeSites.length} 站
                     </span>
+                  ) : mode === 'moyu' ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-700 dark:text-teal-300">
+                      <Fish className="h-3.5 w-3.5" />
+                      摸鱼模式 · {modeSites.length} 表站
+                    </span>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--nya-accent-soft)] px-3 py-1 text-xs font-medium text-[var(--nya-accent)]">
                       <Flame className="h-3.5 w-3.5" />
@@ -1049,16 +1082,16 @@ export default function App() {
                   <span className="hidden sm:inline">{batchChecking ? '检测中' : '测速'}</span>
                 </button>
 
-                {/* NSFW / 工作模式 切换分段开关 */}
+                {/* 工作 / 摸鱼 / NSFW 三段切换开关 */}
                 <div
                   className="inline-flex items-center rounded-xl border border-slate-200/80 bg-slate-100/80 p-0.5 dark:border-slate-700/80 dark:bg-slate-800/80"
-                  title="快捷键 Alt+W 秒切模式"
+                  title="快捷键 Alt+W 一键秒切工作模式"
                 >
                   <button
                     type="button"
                     onClick={() => {
                       setMode('work');
-                      showToast('已切换至工作模式');
+                      showToast('已切换至工作模式（仅保留工具与文档）');
                     }}
                     className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium transition-all ${
                       mode === 'work'
@@ -1068,6 +1101,21 @@ export default function App() {
                   >
                     <Briefcase className="hidden h-3.5 w-3.5 sm:inline" />
                     工作
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('moyu');
+                      showToast('已切换至摸鱼模式（全年龄表站，安全摸鱼）');
+                    }}
+                    className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium transition-all ${
+                      mode === 'moyu'
+                        ? 'bg-teal-500 text-white shadow-2xs'
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                    }`}
+                  >
+                    <Fish className="hidden h-3.5 w-3.5 sm:inline" />
+                    摸鱼
                   </button>
                   <button
                     type="button"
@@ -1146,7 +1194,8 @@ export default function App() {
                 站长推荐😋 ({pinnedSites.length})
               </button>
               {CATEGORIES.filter((c) => {
-                if (mode === 'work' && c.nsfwOnly) return false;
+                if (mode === 'work' && !c.workAllowed) return false;
+                if (mode === 'moyu' && c.nsfwOnly) return false;
                 if (c.privateOnly && !canViewPrivate) return false;
                 return true;
               }).map((cat) => {
@@ -1252,7 +1301,9 @@ export default function App() {
               <p>
                 {mode === 'work'
                   ? 'NyaDesk · 简洁高效的本地与云端导航工作台'
-                  : 'NyaNavi · 清爽极简的二次元 ACG 导航（支持自定义外观与 GitHub 云同步）'}
+                  : mode === 'moyu'
+                    ? 'NyaNavi · 全年龄表站摸鱼模式（已隐藏全部 NSFW 里站，Alt+W 一键切工作台）'
+                    : 'NyaNavi · 清爽极简的二次元 ACG 导航（支持自定义外观与 GitHub 云同步）'}
               </p>
               <a
                 href="https://github.com/Nyaruko0/NyaNavi"

@@ -101,6 +101,7 @@ export const CATEGORIES: CategoryMeta[] = [
     workName: '开源效率与阅读工具',
     description: '跨平台漫画/小说阅读器、解压工具与实用助手',
     icon: 'Wrench',
+    workAllowed: true,
   },
   {
     id: 'dev_work',
@@ -108,6 +109,7 @@ export const CATEGORIES: CategoryMeta[] = [
     workName: '工作台与开发文档',
     description: '工作模式下的主力参考、代码托管与日常检索入口',
     icon: 'Briefcase',
+    workAllowed: true,
   },
 ];
 

@@ -51,8 +51,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onChange={(e) => onChange(e.target.value)}
             placeholder={
               mode === 'work'
-                ? '搜索站点、文档或直搜 GitHub / MDN...'
-                : '筛选站点，或粘贴标题 / RJ号 一键直搜...'
+                ? '搜索开发文档、工具或直搜 GitHub / MDN...'
+                : mode === 'moyu'
+                  ? '摸鱼时间到～筛选表站，或直搜番剧 / 漫画 / 轻小说...'
+                  : '筛选站点，或粘贴标题 / RJ号 一键直搜...'
             }
             className="w-full bg-transparent text-base text-slate-800 placeholder-slate-400 outline-none dark:text-slate-100 dark:placeholder-slate-500"
           />
