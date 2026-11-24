@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity,
+  ArrowDown,
   ArrowUp,
   Briefcase,
   CloudUpload,
@@ -167,7 +168,10 @@ export default function App() {
   const [query, setQuery] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-  const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
+  const [scrollPos, setScrollPos] = useState<{ atTop: boolean; atBottom: boolean }>({
+    atTop: true,
+    atBottom: false,
+  });
 
   const [healthMap, setHealthMap] = useState<Record<string, HealthResult>>({});
   const [batchChecking, setBatchChecking] = useState<boolean>(false);
@@ -375,13 +379,23 @@ export default function App() {
     );
   }, [appearance, mode]);
 
-  // 监听滚动显示返回顶部按钮
+  // 监听滚动位置以高亮/控制回顶与直达底部按键
   useEffect(() => {
     const onScroll = () => {
-      setShowBackToTop(window.scrollY > 420);
+      const y = window.scrollY;
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      setScrollPos({
+        atTop: y < 120,
+        atBottom: maxScroll - y < 120,
+      });
     };
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -763,6 +777,16 @@ export default function App() {
       );
     },
     [canManage, showToast],
+  );
+
+  // 站长专属：调整分类目录排列顺序
+  const handleReorderCategories = useCallback(
+    (nextCategories: CategoryMeta[]) => {
+      if (!canManage) return;
+      setCategories(nextCategories);
+      setHasUnsyncedCategories(true);
+    },
+    [canManage],
   );
 
   // 站长专属：删除分类目录（若目录下有站点则安全迁移到同模式其他目录）
@@ -1306,17 +1330,21 @@ export default function App() {
                 </button>
               </div>
             </div>
+
+            {/* 全局吸顶搜索框（始终固定在屏幕正上方中央） */}
+            <div className="mx-auto max-w-[1440px] px-3 pb-2.5 sm:px-6">
+              <SearchBar
+                query={query}
+                onChange={setQuery}
+                searchableSites={modeSites}
+                mode={mode}
+                onNavigate={handleNavigate}
+              />
+            </div>
           </header>
 
           {/* 主体内容 */}
-          <main className="mx-auto max-w-[1440px] px-3.5 pt-5 pb-20 sm:px-6 sm:pt-6">
-            <SearchBar
-              query={query}
-              onChange={setQuery}
-              searchableSites={modeSites}
-              mode={mode}
-              onNavigate={handleNavigate}
-            />
+          <main className="mx-auto max-w-[1440px] px-3.5 pt-4 pb-20 sm:px-6 sm:pt-5">
 
             {/* Android / 移动端专属横向滑动分类胶囊条 */}
             <div className="no-scrollbar -mx-3.5 mb-5 flex items-center gap-2 overflow-x-auto px-3.5 pb-1 lg:hidden">
@@ -1488,6 +1516,7 @@ export default function App() {
         onClose={() => setCategoryModalOpen(false)}
         onSaveCategory={handleSaveCategory}
         onDeleteCategory={handleDeleteCategory}
+        onReorderCategories={handleReorderCategories}
       />
 
       {/* 统一 GitHub 登录 / 站长管理 / 好友密钥解锁弹窗 */}
@@ -1527,17 +1556,34 @@ export default function App() {
         onClose={() => setPortalTarget(null)}
       />
 
-      {/* 返回顶部悬浮按钮 */}
-      {showBackToTop && (
+      {/* 快捷回到顶部 / 直达底部悬浮按钮组 */}
+      <div className="fixed right-3.5 bottom-6 z-30 flex flex-col gap-2 sm:right-6">
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="返回顶部"
-          className="fixed right-4 bottom-6 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 sm:right-6 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
+          disabled={scrollPos.atTop}
+          aria-label="回到顶部"
+          title="回到顶部"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 disabled:pointer-events-none disabled:opacity-35 sm:h-11 sm:w-11 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
         >
-          <ArrowUp className="h-5 w-5" />
+          <ArrowUp className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
         </button>
-      )}
+        <button
+          type="button"
+          onClick={() =>
+            window.scrollTo({
+              top: document.documentElement.scrollHeight,
+              behavior: 'smooth',
+            })
+          }
+          disabled={scrollPos.atBottom}
+          aria-label="直达底部"
+          title="直达底部"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 disabled:pointer-events-none disabled:opacity-35 sm:h-11 sm:w-11 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
+        >
+          <ArrowDown className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+        </button>
+      </div>
 
       {/* 轻量 Toast 提示 */}
       {toast && (

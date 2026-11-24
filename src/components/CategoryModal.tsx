@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   AppWindow,
+  ArrowDown,
+  ArrowUp,
   BookMarked,
   BookOpen,
   Bot,
@@ -15,6 +17,7 @@ import {
   FolderArchive,
   Gamepad2,
   Globe,
+  GripVertical,
   Headphones,
   Image,
   ImageUp,
@@ -45,6 +48,7 @@ interface CategoryModalProps {
   onClose: () => void;
   onSaveCategory: (cat: CategoryMeta, isEdit: boolean) => void;
   onDeleteCategory: (catId: CategoryId) => void;
+  onReorderCategories: (nextCategories: CategoryMeta[]) => void;
 }
 
 const ICON_OPTIONS: Array<{ name: string; label: string; Icon: React.ComponentType<{ className?: string }> }> = [
@@ -91,6 +95,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
   onClose,
   onSaveCategory,
   onDeleteCategory,
+  onReorderCategories,
 }) => {
   const [editingId, setEditingId] = useState<CategoryId | null>(null);
   const [name, setName] = useState('');
@@ -98,6 +103,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
   const [targetMode, setTargetMode] = useState<AppMode>(defaultMode);
   const [icon, setIcon] = useState('Folder');
   const [listFilter, setListFilter] = useState<AppMode | 'all'>(defaultMode);
+  const [draggingId, setDraggingId] = useState<CategoryId | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -156,6 +162,37 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
     if (listFilter === 'all') return true;
     return inferCategoryMode(c) === listFilter;
   });
+
+  // 在当前筛选视图内精确移动相邻两项（交换它们在主 categories 数组中的位置）
+  const moveInFiltered = (catId: CategoryId, direction: -1 | 1) => {
+    const pos = filteredList.findIndex((c) => c.id === catId);
+    const swapPos = pos + direction;
+    if (pos < 0 || swapPos < 0 || swapPos >= filteredList.length) return;
+    const otherId = filteredList[swapPos].id;
+    const next = [...categories];
+    const idxA = next.findIndex((c) => c.id === catId);
+    const idxB = next.findIndex((c) => c.id === otherId);
+    if (idxA < 0 || idxB < 0) return;
+    [next[idxA], next[idxB]] = [next[idxB], next[idxA]];
+    onReorderCategories(next);
+  };
+
+  // 拖拽重排：把 draggingId 放到 targetId 的位置
+  const handleDropOn = (targetId: CategoryId) => {
+    if (!draggingId || draggingId === targetId) {
+      setDraggingId(null);
+      return;
+    }
+    const next = [...categories];
+    const fromIdx = next.findIndex((c) => c.id === draggingId);
+    const toIdx = next.findIndex((c) => c.id === targetId);
+    if (fromIdx >= 0 && toIdx >= 0) {
+      const [moved] = next.splice(fromIdx, 1);
+      next.splice(toIdx, 0, moved);
+      onReorderCategories(next);
+    }
+    setDraggingId(null);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 p-3 backdrop-blur-xs sm:items-center sm:p-4">
@@ -344,38 +381,75 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              {filteredList.map((cat) => {
+              {filteredList.map((cat, idx) => {
                 const catMode = inferCategoryMode(cat);
                 const count = siteCounts[cat.id] ?? 0;
+                const isFirst = idx === 0;
+                const isLast = idx === filteredList.length - 1;
                 return (
                   <div
                     key={cat.id}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-slate-200/75 bg-white px-3.5 py-2.5 dark:border-slate-800 dark:bg-slate-900/60"
+                    draggable
+                    onDragStart={() => setDraggingId(cat.id)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDropOn(cat.id)}
+                    onDragEnd={() => setDraggingId(null)}
+                    className={`flex items-center justify-between gap-2 rounded-xl border bg-white px-3 py-2.5 transition dark:bg-slate-900/60 ${
+                      draggingId === cat.id
+                        ? 'border-[var(--nya-accent)] opacity-60'
+                        : 'border-slate-200/75 dark:border-slate-800'
+                    }`}
                   >
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
-                          {cat.name}
-                        </span>
-                        <span
-                          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
-                            catMode === 'work'
-                              ? 'bg-sky-500/10 text-sky-600 dark:text-sky-300'
-                              : catMode === 'moyu'
-                                ? 'bg-teal-500/10 text-teal-600 dark:text-teal-300'
-                                : 'bg-pink-500/10 text-pink-600 dark:text-pink-300'
-                          }`}
-                        >
-                          {catMode === 'work' ? '工作' : catMode === 'moyu' ? '摸鱼' : 'NSFW'}
-                        </span>
-                        <span className="text-xs text-slate-400">{count} 站</span>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span
+                        title="按住拖拽排序"
+                        className="hidden cursor-grab text-slate-300 active:cursor-grabbing sm:inline-flex dark:text-slate-600"
+                      >
+                        <GripVertical className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
+                            {cat.name}
+                          </span>
+                          <span
+                            className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold ${
+                              catMode === 'work'
+                                ? 'bg-sky-500/10 text-sky-600 dark:text-sky-300'
+                                : catMode === 'moyu'
+                                  ? 'bg-teal-500/10 text-teal-600 dark:text-teal-300'
+                                  : 'bg-pink-500/10 text-pink-600 dark:text-pink-300'
+                            }`}
+                          >
+                            {catMode === 'work' ? '工作' : catMode === 'moyu' ? '摸鱼' : 'NSFW'}
+                          </span>
+                          <span className="shrink-0 text-xs text-slate-400">{count} 站</span>
+                        </div>
+                        {cat.description && (
+                          <p className="mt-0.5 truncate text-xs text-slate-400">{cat.description}</p>
+                        )}
                       </div>
-                      {cat.description && (
-                        <p className="mt-0.5 truncate text-xs text-slate-400">{cat.description}</p>
-                      )}
                     </div>
 
-                    <div className="flex shrink-0 items-center gap-1">
+                    <div className="flex shrink-0 items-center gap-0.5">
+                      <button
+                        type="button"
+                        disabled={isFirst}
+                        onClick={() => moveInFiltered(cat.id, -1)}
+                        title="上移一位"
+                        className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                      >
+                        <ArrowUp className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        disabled={isLast}
+                        onClick={() => moveInFiltered(cat.id, 1)}
+                        title="下移一位"
+                        className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                      >
+                        <ArrowDown className="h-3.5 w-3.5" />
+                      </button>
                       <button
                         type="button"
                         onClick={() => startEdit(cat)}
