@@ -32,6 +32,8 @@ export interface SiteItem {
   pinned?: boolean;
   /** 卡片左上角图标色系或自定义字母 */
   accent?: string;
+  /** 可选自定义图标 URL（留空则自动拉取网站原生 favicon） */
+  icon?: string;
 }
 
 export interface CategoryMeta {

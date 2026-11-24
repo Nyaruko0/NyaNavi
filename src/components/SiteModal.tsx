@@ -43,6 +43,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
   const [tagsText, setTagsText] = useState('');
   const [nsfw, setNsfw] = useState(defaultNsfw);
   const [accent, setAccent] = useState(ACCENT_PRESETS[0]);
+  const [icon, setIcon] = useState('');
 
   useEffect(() => {
     if (!open) return;
@@ -60,6 +61,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setTagsText((editingSite.tags || []).join(', '));
       setNsfw(editingSite.nsfw);
       setAccent(editingSite.accent || ACCENT_PRESETS[0]);
+      setIcon(editingSite.icon || '');
     } else {
       setName('');
       setShortName('');
@@ -74,6 +76,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setTagsText('');
       setNsfw(defaultNsfw);
       setAccent(ACCENT_PRESETS[Math.floor(Math.random() * ACCENT_PRESETS.length)]);
+      setIcon('');
     }
   }, [open, editingSite, defaultNsfw]);
 
@@ -110,6 +113,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       nsfw,
       pinned: editingSite?.pinned ?? false,
       accent,
+      icon: icon.trim() || undefined,
     };
 
     onSave(site);
@@ -238,6 +242,19 @@ export const SiteModal: React.FC<SiteModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="特色内容、资源类型、网盘说明等..."
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
+              自定义图标 URL（可选，留空自动抓取网站原生 Icon）
+            </label>
+            <input
+              type="url"
+              value={icon}
+              onChange={(e) => setIcon(e.target.value)}
+              placeholder="https://example.com/favicon.png"
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
             />
           </div>

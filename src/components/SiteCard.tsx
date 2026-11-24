@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import type { CostTier, HealthResult, SiteItem } from '../types';
 import { buildSearchUrl } from '../utils/cleanQuery';
+import { SiteIcon } from './SiteIcon';
 
 interface SiteCardProps {
   site: SiteItem;
@@ -49,8 +50,6 @@ export const SiteCard: React.FC<SiteCardProps> = ({
   onCheckHealth,
 }) => {
   const host = getHostname(site.url);
-  const badgeText = (site.shortName || site.name).slice(0, 2);
-  const accent = site.accent || '#ec4899';
 
   const statusDot = (() => {
     if (!health || health.state === 'idle') {
@@ -85,14 +84,13 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             rel="noopener noreferrer"
             className="flex min-w-0 flex-1 items-center gap-3"
           >
-            <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-xs transition-transform group-hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
-              }}
-            >
-              {badgeText}
-            </div>
+            <SiteIcon
+              url={site.url}
+              name={site.name}
+              shortName={site.shortName}
+              accent={site.accent}
+              customIcon={site.icon}
+            />
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
                 <h3 className="truncate text-[15px] font-bold text-slate-800 transition-colors group-hover:text-pink-600 dark:text-slate-100 dark:group-hover:text-pink-400">
