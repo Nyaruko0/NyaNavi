@@ -5207,7 +5207,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegram",
     "shortName": "Te",
     "url": "https://telegram.org",
-    "category": "web_tools",
+    "category": "tools",
     "description": "Telegram官网",
     "tags": [
       "Telegram"
@@ -5223,7 +5223,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegram Web",
     "shortName": "Te",
     "url": "https://web.telegram.org",
-    "category": "web_tools",
+    "category": "tools",
     "description": "Telegram 网页版",
     "tags": [
       "Telegram"
@@ -5239,7 +5239,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegraph",
     "shortName": "Te",
     "url": "https://telegra.ph",
-    "category": "web_tools",
+    "category": "tools",
     "description": "Telegraph 写文章",
     "tags": [
       "Telegram"
@@ -6727,7 +6727,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Grok",
     "shortName": "Gr",
     "url": "https://grok.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "Grok",
     "tags": [
       "AI网站"
@@ -6743,7 +6743,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "DeepSeek",
     "shortName": "De",
     "url": "https://chat.deepseek.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "DeepSeek",
     "tags": [
       "AI网站"
@@ -6759,7 +6759,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Copilot",
     "shortName": "Co",
     "url": "https://copilot.microsoft.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "Microsoft Copilot",
     "tags": [
       "AI网站"
@@ -6775,7 +6775,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "文心一言",
     "shortName": "文心",
     "url": "https://yiyan.baidu.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "百度推出的基于文心大模型的AI对话互动工具",
     "tags": [
       "AI网站"
@@ -6791,7 +6791,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Gemini",
     "shortName": "Ge",
     "url": "https://gemini.google.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "Google推出的AI聊天对话机器人Gemini",
     "tags": [
       "AI网站"
@@ -6807,7 +6807,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ChatGPT",
     "shortName": "Ch",
     "url": "https://chatgpt.com",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "ChatGPT",
     "tags": [
       "AI网站"
@@ -6823,7 +6823,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "豆包",
     "shortName": "豆包",
     "url": "https://www.doubao.com/chat",
-    "category": "ai_image_search",
+    "category": "work_ai",
     "description": "AI 聊天智能对话问答助手",
     "tags": [
       "AI网站"
@@ -6839,7 +6839,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "二次元画像詳細検索",
     "shortName": "二次",
     "url": "https://ascii2d.net",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "二次元画像詳細検索",
     "tags": [
       "以图搜图"
@@ -6855,7 +6855,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "SauceNAO",
     "shortName": "Sa",
     "url": "https://saucenao.com",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "SauceNAO",
     "tags": [
       "以图搜图"
@@ -6871,7 +6871,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "trace",
     "shortName": "tr",
     "url": "https://trace.moe",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "trace 动漫截图搜索",
     "tags": [
       "以图搜图"
@@ -6887,7 +6887,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "yandex搜图",
     "shortName": "ya",
     "url": "https://yandex.com/images",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "Yandex.Images",
     "tags": [
       "以图搜图"
@@ -6903,7 +6903,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "搜图Bot酱",
     "shortName": "搜图",
     "url": "https://soutubot.moe",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "搜图bot酱网页版",
     "tags": [
       "以图搜图"
@@ -6919,7 +6919,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "AnimeTrace",
     "shortName": "An",
     "url": "https://ai.animedb.cn",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "AnimeTrace动漫游戏人物基因库",
     "tags": [
       "以图搜图"
@@ -6935,7 +6935,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "必应可视化搜索",
     "shortName": "必应",
     "url": "https://cn.bing.com/visualsearch",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "必应可视化搜索",
     "tags": [
       "以图搜图"
@@ -6951,7 +6951,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "360识图",
     "shortName": "36",
     "url": "http://st.so.com",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "360识图",
     "tags": [
       "以图搜图"
@@ -6967,7 +6967,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "搜狗图片",
     "shortName": "搜狗",
     "url": "https://pic.sogou.com",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "搜狗图片",
     "tags": [
       "以图搜图"
@@ -6983,7 +6983,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "iqdb",
     "shortName": "iq",
     "url": "https://iqdb.org",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "iqdb",
     "tags": [
       "以图搜图"
@@ -6999,7 +6999,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "TinEye",
     "shortName": "Ti",
     "url": "https://tineye.com",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "TinEye",
     "tags": [
       "以图搜图"
@@ -7015,7 +7015,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "百度图片",
     "shortName": "百度",
     "url": "https://image.baidu.com",
-    "category": "ai_image_search",
+    "category": "work_img_search",
     "description": "百度图片",
     "tags": [
       "以图搜图"
@@ -7031,7 +7031,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ClipConverter",
     "shortName": "Cl",
     "url": "https://www.clipconverter.cc",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "YouTube视频下载",
     "tags": [
       "工具大全"
@@ -7047,7 +7047,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "MyDownDown",
     "shortName": "My",
     "url": "https://mydowndown.com/y2",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "工具大全 · 收录自 ACG 盒子",
     "tags": [
       "工具大全"
@@ -7063,7 +7063,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ITDOG",
     "shortName": "IT",
     "url": "https://www.itdog.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "IT运维实用工具",
     "tags": [
       "工具箱"
@@ -7079,7 +7079,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "蛙蛙工具",
     "shortName": "蛙蛙",
     "url": "https://www.iamwawa.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "便捷的在线工具网站",
     "tags": [
       "工具箱"
@@ -7095,7 +7095,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "MikuTools",
     "shortName": "Mi",
     "url": "https://tools.miku.ac",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "一个轻量的工具集合",
     "tags": [
       "工具箱"
@@ -7111,7 +7111,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "一个木函工具箱",
     "shortName": "一个",
     "url": "https://ol.woobx.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "一个木函工具箱",
     "tags": [
       "工具箱"
@@ -7127,7 +7127,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "山炮工具箱",
     "shortName": "山炮",
     "url": "https://mtool.wpjam.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "山炮工具箱",
     "tags": [
       "工具箱"
@@ -7143,7 +7143,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "刘明野的工具箱",
     "shortName": "刘明",
     "url": "http://tool.liumingye.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "刘明野的工具箱",
     "tags": [
       "工具箱"
@@ -7159,7 +7159,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "便民查询网",
     "shortName": "便民",
     "url": "https://www.bmcx.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "便民查询网",
     "tags": [
       "工具箱"
@@ -7175,7 +7175,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "菜鸟工具",
     "shortName": "菜鸟",
     "url": "https://c.runoob.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "为开发设计人员提供在线工具",
     "tags": [
       "工具箱"
@@ -7191,7 +7191,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "在线工具",
     "shortName": "在线",
     "url": "https://tool.lu",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "在线工具",
     "tags": [
       "工具箱"
@@ -7207,7 +7207,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "爱站网",
     "shortName": "爱站",
     "url": "https://www.aizhan.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "爱站网",
     "tags": [
       "工具箱"
@@ -7223,7 +7223,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "站长工具",
     "shortName": "站长",
     "url": "https://tool.chinaz.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "站长工具",
     "tags": [
       "工具箱"
@@ -7239,7 +7239,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "GitHub 文件加速",
     "shortName": "Gi",
     "url": "https://github.akams.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "GitHub文件代理加速下载",
     "tags": [
       "网页工具"
@@ -7255,7 +7255,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Archive.today",
     "shortName": "Ar",
     "url": "https://archive.ph",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "网页存档",
     "tags": [
       "网页工具"
@@ -7271,7 +7271,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "哪煮米",
     "shortName": "哪煮",
     "url": "https://www.nazhumi.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "域名比价网站",
     "tags": [
       "网页工具"
@@ -7287,7 +7287,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "PageSpeed Insights",
     "shortName": "Pa",
     "url": "https://pagespeed.web.dev",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "PageSpeed Insights",
     "tags": [
       "网页工具"
@@ -7303,7 +7303,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "GTmetrix",
     "shortName": "GT",
     "url": "https://gtmetrix.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "GTmetrix",
     "tags": [
       "网页工具"
@@ -7319,7 +7319,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "VTBs in bilibili!",
     "shortName": "VT",
     "url": "https://vtbs.moe/live",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "VTBs in bilibili!",
     "tags": [
       "网页工具"
@@ -7335,7 +7335,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Similarsites",
     "shortName": "Si",
     "url": "https://www.similarsites.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "Similarsites [搜索相似的网站]",
     "tags": [
       "网页工具"
@@ -7351,7 +7351,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "随机密码生成器",
     "shortName": "随机",
     "url": "https://suijimima.github.io",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "随机密码生成器",
     "tags": [
       "网页工具"
@@ -7367,7 +7367,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "能不能好好说话？",
     "shortName": "能不",
     "url": "https://lab.magiconch.com/nbnhhsh",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "能不能好好说话？",
     "tags": [
       "网页工具"
@@ -7383,7 +7383,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "网页时光机",
     "shortName": "网页",
     "url": "https://web.archive.org/web",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "网页时光机",
     "tags": [
       "网页工具"
@@ -7399,7 +7399,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "草料二维码",
     "shortName": "草料",
     "url": "https://cli.im",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "草料二维码生成器",
     "tags": [
       "网页工具"
@@ -7415,7 +7415,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Base64",
     "shortName": "Ba",
     "url": "https://base64.us",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "在线编码解码|Base64加密解密",
     "tags": [
       "网页工具"
@@ -7431,7 +7431,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Chrome 应用商店",
     "shortName": "Ch",
     "url": "https://chrome.google.com/webstore",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Chrome 应用商店 扩展程序",
     "tags": [
       "浏览器扩展"
@@ -7447,7 +7447,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Edge 外接程序",
     "shortName": "Ed",
     "url": "https://microsoftedge.microsoft.com",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Edge 外接程序",
     "tags": [
       "浏览器扩展"
@@ -7463,7 +7463,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Firefox 附加组件",
     "shortName": "Fi",
     "url": "https://addons.mozilla.org/zh-CN/firefox",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Firefox 附加组件",
     "tags": [
       "浏览器扩展"
@@ -7479,7 +7479,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Tampermonkey",
     "shortName": "Ta",
     "url": "https://www.tampermonkey.net",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Tampermonkey",
     "tags": [
       "浏览器扩展"
@@ -7495,7 +7495,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Greasy Fork",
     "shortName": "Gr",
     "url": "https://greasyfork.org/zh-CN",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Greasy Fork",
     "tags": [
       "浏览器扩展"
@@ -7511,7 +7511,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Sleazy Fork",
     "shortName": "Sl",
     "url": "https://sleazyfork.org/zh-CN",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Sleazy Fork",
     "tags": [
       "浏览器扩展"
@@ -7527,7 +7527,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "拷贝漫画增强",
     "shortName": "拷贝",
     "url": "https://greasyfork.org/zh-CN/scripts/421371-%E6%8B%B7%E8%B4%9D%E6%BC%AB%E7%94%BB%E5%A2%9E%E5%BC%BA",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "拷贝漫画增强",
     "tags": [
       "浏览器扩展"
@@ -7543,7 +7543,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Bilibili Evolved",
     "shortName": "Bi",
     "url": "https://github.com/the1812/Bilibili-Evolved",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Bilibili Evolved",
     "tags": [
       "浏览器扩展"
@@ -7559,7 +7559,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "E站注射器",
     "shortName": "E站",
     "url": "https://github.com/EhTagTranslation/EhSyringe",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "E站注射器，将中文翻译注入到 E 站体内",
     "tags": [
       "浏览器扩展"
@@ -7575,7 +7575,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "解除B站区域限制",
     "shortName": "解除",
     "url": "https://greasyfork.org/zh-CN/scripts/25718-%E8%A7%A3%E9%99%A4b%E7%AB%99%E5%8C%BA%E5%9F%9F%E9%99%90%E5%88%B6",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "解除B站区域限制",
     "tags": [
       "浏览器扩展"
@@ -7591,7 +7591,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "eHunter",
     "shortName": "eH",
     "url": "https://openuserjs.org/scripts/alexchen/eHunter",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "eHunter：提供卷轴式/书本式阅",
     "tags": [
       "浏览器扩展"
@@ -7607,7 +7607,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "二维码小助手",
     "shortName": "二维",
     "url": "https://chrome.google.com/webstore/detail/%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%B0%8F%E5%8A%A9%E6%89%8B/acdfkjjfbghehjbojgnmjijpbgahmhee",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "生成/识别页面二维码",
     "tags": [
       "浏览器扩展"
@@ -7623,7 +7623,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "微博图片反查",
     "shortName": "微博",
     "url": "https://chrome.google.com/webstore/detail/%E5%BE%AE%E5%8D%9A%E5%9B%BE%E7%89%87%E5%8F%8D%E6%9F%A5/egbnikffkpbahjabjhgblnfgbcnckjop",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "图片查看博主",
     "tags": [
       "浏览器扩展"
@@ -7639,7 +7639,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Pixiv 批量下载器",
     "shortName": "Pi",
     "url": "https://pixiv.download",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "Pixiv 批量下载器",
     "tags": [
       "浏览器扩展"
@@ -7655,7 +7655,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "AdGuard 广告拦截器",
     "shortName": "Ad",
     "url": "https://chrome.google.com/webstore/detail/adguard-adblocker/bgnkhhnnamicmpeenaelnjfhikgbkllg",
-    "category": "tools",
+    "category": "work_extensions",
     "description": "AdGuard 广告拦截器",
     "tags": [
       "浏览器扩展"
@@ -8231,7 +8231,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Google翻译",
     "shortName": "Go",
     "url": "https://translate.google.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "Google 翻译",
     "tags": [
       "在线翻译"
@@ -8247,7 +8247,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "腾讯交互翻译",
     "shortName": "腾讯",
     "url": "https://yi.qq.com/zh-CN/index",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "腾讯交互翻译",
     "tags": [
       "在线翻译"
@@ -8263,7 +8263,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "DeepL翻译器",
     "shortName": "De",
     "url": "https://www.deepl.com/translator",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "DeepL翻译器",
     "tags": [
       "在线翻译"
@@ -8279,7 +8279,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "腾讯翻译君",
     "shortName": "腾讯",
     "url": "https://fanyi.qq.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "腾讯翻译君",
     "tags": [
       "在线翻译"
@@ -8295,7 +8295,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "搜狗翻译",
     "shortName": "搜狗",
     "url": "https://fanyi.sogou.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "搜狗翻译",
     "tags": [
       "在线翻译"
@@ -8311,7 +8311,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "彩云小译",
     "shortName": "彩云",
     "url": "https://fanyi.caiyunapp.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "彩云小译",
     "tags": [
       "在线翻译"
@@ -8327,7 +8327,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "有道翻译",
     "shortName": "有道",
     "url": "http://fanyi.youdao.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "有道翻译",
     "tags": [
       "在线翻译"
@@ -8343,7 +8343,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "百度翻译",
     "shortName": "百度",
     "url": "https://fanyi.baidu.com",
-    "category": "web_tools",
+    "category": "work_translate",
     "description": "百度翻译",
     "tags": [
       "在线翻译"
@@ -8359,7 +8359,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "WwoPic图床",
     "shortName": "Ww",
     "url": "https://img.wwoyun.cn",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "WwoPic图床",
     "tags": [
       "图床"
@@ -8375,7 +8375,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IMG图床",
     "shortName": "IM",
     "url": "https://imgimg.cc",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "IMG图床",
     "tags": [
       "图床"
@@ -8391,7 +8391,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "云图床",
     "shortName": "云图",
     "url": "https://yunimg.cc",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "云图床",
     "tags": [
       "图床"
@@ -8407,7 +8407,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "流浪图床",
     "shortName": "流浪",
     "url": "https://p.sda1.dev",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "流浪图床",
     "tags": [
       "图床"
@@ -8423,7 +8423,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "PIXXXELS",
     "shortName": "PI",
     "url": "https://pixxxels.cc",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "PIXXXELS",
     "tags": [
       "图床"
@@ -8439,7 +8439,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "简约图床",
     "shortName": "简约",
     "url": "https://pic.sl.al",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "简约图床",
     "tags": [
       "图床"
@@ -8455,7 +8455,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "小太阳图床",
     "shortName": "小太",
     "url": "https://img.cncncloud.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "小太阳图床",
     "tags": [
       "图床"
@@ -8471,7 +8471,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IMG.WANG",
     "shortName": "IM",
     "url": "https://img.wang",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "IMG.WANG",
     "tags": [
       "图床"
@@ -8487,7 +8487,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "小波图床",
     "shortName": "小波",
     "url": "https://www.tuchuangs.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "小波图床",
     "tags": [
       "图床"
@@ -8503,7 +8503,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "跬步图床",
     "shortName": "跬步",
     "url": "https://img.kuibu.net",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "跬步图床",
     "tags": [
       "图床"
@@ -8519,7 +8519,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "图片存储",
     "shortName": "图片",
     "url": "https://pic.xywm.ltd",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "图片存储",
     "tags": [
       "图床"
@@ -8535,7 +8535,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ImageOss",
     "shortName": "Im",
     "url": "https://www.imageoss.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "ImageOss [需登录]",
     "tags": [
       "图床"
@@ -8551,7 +8551,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "图林",
     "shortName": "图林",
     "url": "https://imglink.org",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "图林 [需登录]",
     "tags": [
       "图床"
@@ -8567,7 +8567,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IMG.TG",
     "shortName": "IM",
     "url": "https://img.tg",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "IMG.TG",
     "tags": [
       "图床"
@@ -8583,7 +8583,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Z4A图床",
     "shortName": "Z4",
     "url": "https://www.z4a.net",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "Z4A图床 [需登录]",
     "tags": [
       "图床"
@@ -8599,7 +8599,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "SM.MS",
     "shortName": "SM",
     "url": "https://sm.ms",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "SM.MS [需登录]",
     "tags": [
       "图床"
@@ -8615,7 +8615,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "笑果图床",
     "shortName": "笑果",
     "url": "https://imagelol.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "笑果图床[需登录]",
     "tags": [
       "图床"
@@ -8631,7 +8631,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "imgbox",
     "shortName": "im",
     "url": "https://imgbox.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "imgbox",
     "tags": [
       "图床"
@@ -8647,7 +8647,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Postimages",
     "shortName": "Po",
     "url": "https://postimages.org",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "Postimages",
     "tags": [
       "图床"
@@ -8663,7 +8663,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "牛图网",
     "shortName": "牛图",
     "url": "https://niupic.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "牛图网",
     "tags": [
       "图床"
@@ -8679,7 +8679,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "品尚图床",
     "shortName": "品尚",
     "url": "https://imgurl.cc",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "品尚图床",
     "tags": [
       "图床"
@@ -8695,7 +8695,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "个人相册馆",
     "shortName": "个人",
     "url": "https://www.268608.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "个人相册馆",
     "tags": [
       "图床"
@@ -8711,7 +8711,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "imgpp",
     "shortName": "im",
     "url": "https://imgpp.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "imgpp",
     "tags": [
       "图床"
@@ -8727,7 +8727,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ImgBB",
     "shortName": "Im",
     "url": "https://zh-cn.imgbb.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "ImgBB",
     "tags": [
       "图床"
@@ -8743,7 +8743,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "找图么",
     "shortName": "找图",
     "url": "https://zhaotu.me",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "找图么[需登录]",
     "tags": [
       "图床"
@@ -8759,7 +8759,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "大厂图床",
     "shortName": "大厂",
     "url": "https://img.ooee.top",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "大厂图床",
     "tags": [
       "图床"
@@ -8775,7 +8775,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "爱上传",
     "shortName": "爱上",
     "url": "https://img.chkaja.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "爱上传",
     "tags": [
       "图床"
@@ -8791,7 +8791,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "畅游图床",
     "shortName": "畅游",
     "url": "https://cyoou.cyou",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "畅游图床",
     "tags": [
       "图床"
@@ -8807,7 +8807,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "图链图床",
     "shortName": "图链",
     "url": "https://www.imglink.cc",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "图链图床",
     "tags": [
       "图床"
@@ -8823,7 +8823,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "品云图床",
     "shortName": "品云",
     "url": "https://3o.hk",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "品云图床 [需登录]",
     "tags": [
       "图床"
@@ -8839,7 +8839,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "MJJ.TODAY",
     "shortName": "MJ",
     "url": "https://mjj.today",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "MJJ.TODAY",
     "tags": [
       "图床"
@@ -8855,7 +8855,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "晒图",
     "shortName": "晒图",
     "url": "https://img.st",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "晒图",
     "tags": [
       "图床"
@@ -8871,7 +8871,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "秒拍图床",
     "shortName": "秒拍",
     "url": "https://www.mpimg.cn",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "秒拍图床",
     "tags": [
       "图床"
@@ -8887,7 +8887,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "25img",
     "shortName": "25",
     "url": "https://25img.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "25img",
     "tags": [
       "图床"
@@ -8903,7 +8903,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "七喜图床",
     "shortName": "七喜",
     "url": "https://7up.pics",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "七喜图床",
     "tags": [
       "图床"
@@ -8919,7 +8919,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "loc图床",
     "shortName": "lo",
     "url": "https://imgloc.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "loc图床",
     "tags": [
       "图床"
@@ -8935,7 +8935,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "菠萝图床",
     "shortName": "菠萝",
     "url": "https://www.boluo.link",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "菠萝图床",
     "tags": [
       "图床"
@@ -8951,7 +8951,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Hello图床",
     "shortName": "He",
     "url": "https://www.helloimg.com",
-    "category": "web_tools",
+    "category": "work_img_host",
     "description": "Hello图床 [需登录]",
     "tags": [
       "图床"
@@ -8967,7 +8967,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "临时Gmail邮箱地址",
     "shortName": "临时",
     "url": "https://www.emailtick.com/zh",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "临时Gmail邮箱地址",
     "tags": [
       "临时邮箱"
@@ -8983,7 +8983,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Mail.tm",
     "shortName": "Ma",
     "url": "https://mail.tm/zh",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "一次性临时电子邮件服务",
     "tags": [
       "临时邮箱"
@@ -8999,7 +8999,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "临时邮箱",
     "shortName": "临时",
     "url": "https://tempmail.cn",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "临时邮箱 tempmail.cn",
     "tags": [
       "临时邮箱"
@@ -9015,7 +9015,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Temp Mail",
     "shortName": "Te",
     "url": "https://temp-mail.org/zh",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "Temp Mail 匿名邮件",
     "tags": [
       "临时邮箱"
@@ -9031,7 +9031,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "临时邮箱",
     "shortName": "临时",
     "url": "http://24mail.chacuo.net/zhtw",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "临时邮箱",
     "tags": [
       "临时邮箱"
@@ -9047,7 +9047,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "临时邮箱",
     "shortName": "临时",
     "url": "https://www.linshiyouxiang.net",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "临时邮箱",
     "tags": [
       "临时邮箱"
@@ -9063,7 +9063,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "SMS-Activate",
     "shortName": "SM",
     "url": "https://sms-activate.io",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "SMS-Activate [付费]",
     "tags": [
       "临时短信"
@@ -9079,7 +9079,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "接码号",
     "shortName": "接码",
     "url": "https://jiemahao.com",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "接码号",
     "tags": [
       "临时短信"
@@ -9095,7 +9095,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "SMSReceiveFree",
     "shortName": "SM",
     "url": "https://smsreceivefree.com",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "SMSReceiveFree",
     "tags": [
       "临时短信"
@@ -9111,7 +9111,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Receive SMS",
     "shortName": "Re",
     "url": "https://receive-smss.com",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "Receive SMS",
     "tags": [
       "临时短信"
@@ -9127,7 +9127,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "云短信",
     "shortName": "云短",
     "url": "https://www.materialtools.com",
-    "category": "web_tools",
+    "category": "work_mail",
     "description": "云短信",
     "tags": [
       "临时短信"
@@ -9143,7 +9143,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "云鸽",
     "shortName": "云鸽",
     "url": "https://yunge.in",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "文件传输助手",
     "tags": [
       "文件互传"
@@ -9159,7 +9159,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "即时传",
     "shortName": "即时",
     "url": "https://upfile.live/zh-cn",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "即时传",
     "tags": [
       "文件互传"
@@ -9175,7 +9175,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Gofile",
     "shortName": "Go",
     "url": "https://gofile.io",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "Gofile",
     "tags": [
       "文件互传"
@@ -9191,7 +9191,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Snapdrop",
     "shortName": "Sn",
     "url": "https://pairdrop.net",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "P2P文件传输工具",
     "tags": [
       "文件互传"
@@ -9207,7 +9207,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ToffeeShare",
     "shortName": "To",
     "url": "https://toffeeshare.com",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "P2P文件传输",
     "tags": [
       "文件互传"
@@ -9223,7 +9223,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ShareDrop",
     "shortName": "Sh",
     "url": "https://www.sharedrop.io",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "P2P文件传输",
     "tags": [
       "文件互传"
@@ -9239,7 +9239,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "PP直连",
     "shortName": "PP",
     "url": "https://www.ppzhilian.com",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "所有设备直连互通",
     "tags": [
       "文件互传"
@@ -9255,7 +9255,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ACdata",
     "shortName": "AC",
     "url": "https://ac-data.info",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "ACdata",
     "tags": [
       "文件互传"
@@ -9271,7 +9271,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "钛盘",
     "shortName": "钛盘",
     "url": "https://ttttt.link",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "钛盘 [登录/1-7天]",
     "tags": [
       "文件互传"
@@ -9287,7 +9287,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "轻松传",
     "shortName": "轻松",
     "url": "https://easychuan.cn",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "随收随发，局域网互传首选",
     "tags": [
       "文件互传"
@@ -9303,7 +9303,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "快牙传文件",
     "shortName": "快牙",
     "url": "https://yun.kuaiya.cn",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "快牙传文件 [1GB/7天]",
     "tags": [
       "文件互传"
@@ -9319,7 +9319,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Airportal 空投快传",
     "shortName": "Ai",
     "url": "https://airportal.cn",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "Airportal 空投快传",
     "tags": [
       "文件互传"
@@ -9335,7 +9335,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Uguu~",
     "shortName": "Ug",
     "url": "https://uguu.se",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "Uguu~[128MB/48H]",
     "tags": [
       "文件互传"
@@ -9351,7 +9351,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "文叔叔",
     "shortName": "文叔",
     "url": "https://www.wenshushu.cn",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "文叔叔",
     "tags": [
       "文件互传"
@@ -9367,7 +9367,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Wormhole",
     "shortName": "Wo",
     "url": "https://wormhole.app",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "Wormhole 临时文件，最高10GB",
     "tags": [
       "文件互传"
@@ -9383,7 +9383,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Uguu/Pomf",
     "shortName": "Ug",
     "url": "https://status.uguu.se/clones.html",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "聚合了很多临时文件网站",
     "tags": [
       "文件互传"
@@ -9399,7 +9399,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Catbox",
     "shortName": "Ca",
     "url": "https://catbox.moe",
-    "category": "web_tools",
+    "category": "work_p2p",
     "description": "Catbox [200MB/永久]",
     "tags": [
       "文件互传"
@@ -9415,7 +9415,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Ezgif",
     "shortName": "Ez",
     "url": "https://ezgif.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "GIF图片在线制作和编辑",
     "tags": [
       "图片编辑"
@@ -9431,7 +9431,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Squoosh",
     "shortName": "Sq",
     "url": "https://squoosh.app",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "在线图像压缩工具",
     "tags": [
       "图片编辑"
@@ -9447,7 +9447,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "TinyPNG",
     "shortName": "Ti",
     "url": "https://tinypng.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "TinyPNG",
     "tags": [
       "图片编辑"
@@ -9463,7 +9463,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "CloudConvert",
     "shortName": "Cl",
     "url": "https://cloudconvert.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "CloudConvert 云转换",
     "tags": [
       "图片编辑"
@@ -9479,7 +9479,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "在线处理图片工具",
     "shortName": "在线",
     "url": "https://imagestool.com/zh_CN/index.html",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "无需上传文件也可在线处理图片",
     "tags": [
       "图片编辑"
@@ -9495,7 +9495,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "在线转换",
     "shortName": "在线",
     "url": "https://www.aconvert.com/cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "在线转换文档，图像，视频，音频文件",
     "tags": [
       "图片编辑"
@@ -9511,7 +9511,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Photopea",
     "shortName": "Ph",
     "url": "https://www.photopea.com",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "Photopea 在线ps",
     "tags": [
       "图片编辑"
@@ -9527,7 +9527,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "阿里巴巴矢量图标库",
     "shortName": "阿里",
     "url": "https://www.iconfont.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "iconfont-阿里巴巴矢量图标库",
     "tags": [
       "字体下载"
@@ -9543,7 +9543,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "站酷 (ZCOOL)",
     "shortName": "站酷",
     "url": "https://www.zcool.com.cn",
-    "category": "web_tools",
+    "category": "work_toolbox",
     "description": "设计师互动平台 - 打开站酷，发现更好的设计！",
     "tags": [
       "字体下载"
@@ -9559,7 +9559,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "FOFA",
     "shortName": "FO",
     "url": "https://fofa.info",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "网络空间搜索引擎",
     "tags": [
       "IP查询"
@@ -9575,7 +9575,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Censys Search",
     "shortName": "Ce",
     "url": "https://search.censys.io",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Censys Search",
     "tags": [
       "IP查询"
@@ -9591,7 +9591,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "查看我的 IP 地址",
     "shortName": "查看",
     "url": "https://ip.skk.moe",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "ip.skk.moe",
     "tags": [
       "IP查询"
@@ -9607,7 +9607,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "PING0",
     "shortName": "PI",
     "url": "https://ping0.cc",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "ping0.cc",
     "tags": [
       "IP查询"
@@ -9623,7 +9623,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Check-Host",
     "shortName": "Ch",
     "url": "https://check-host.net",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Check-Host",
     "tags": [
       "IP查询"
@@ -9639,7 +9639,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IP查询(ipw.cn)",
     "shortName": "IP",
     "url": "https://ipw.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "IP查询工具箱",
     "tags": [
       "IP查询"
@@ -9655,7 +9655,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IPv6 测试",
     "shortName": "IP",
     "url": "https://www.test-ipv6.com",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "IPv6 连接测试",
     "tags": [
       "IP查询"
@@ -9671,7 +9671,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ip111.cn",
     "shortName": "ip",
     "url": "http://www.ip111.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "全方位查询您的IP地址",
     "tags": [
       "IP查询"
@@ -9687,7 +9687,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IP.SB",
     "shortName": "IP",
     "url": "https://ip.sb",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "IP.SB",
     "tags": [
       "IP查询"
@@ -9703,7 +9703,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "IPIP.NET",
     "shortName": "IP",
     "url": "https://www.ipip.net",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "IPIP.NET",
     "tags": [
       "IP查询"
@@ -9719,7 +9719,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ping.pe",
     "shortName": "pi",
     "url": "http://ping.pe",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "ping.pe",
     "tags": [
       "IP查询"
@@ -9735,7 +9735,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "网络面板",
     "shortName": "网络",
     "url": "https://net.ljxnet.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "网络面板",
     "tags": [
       "宽带测速"
@@ -9751,7 +9751,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "WiFiman",
     "shortName": "Wi",
     "url": "https://wifiman.com",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "WiFiman",
     "tags": [
       "宽带测速"
@@ -9767,7 +9767,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "中国科学技术大学测速网站",
     "shortName": "中国",
     "url": "https://test.ustc.edu.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "中国科学技术大学测速网站",
     "tags": [
       "宽带测速"
@@ -9783,7 +9783,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Speedtest Custom",
     "shortName": "Sp",
     "url": "http://ovo.speedtestcustom.com",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Speedtest Custom",
     "tags": [
       "宽带测速"
@@ -9799,7 +9799,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "广东电信宽带测速平台",
     "shortName": "广东",
     "url": "https://10000.gd.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "广东电信宽带测速平台",
     "tags": [
       "宽带测速"
@@ -9815,7 +9815,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Internet Speed Test",
     "shortName": "In",
     "url": "https://speed.cloudflare.com",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Internet Speed Test",
     "tags": [
       "宽带测速"
@@ -9831,7 +9831,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Fast",
     "shortName": "Fa",
     "url": "https://fast.com/zh/cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Fast",
     "tags": [
       "宽带测速"
@@ -9847,7 +9847,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Speedtest",
     "shortName": "Sp",
     "url": "https://www.speedtest.net",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "Speedtest",
     "tags": [
       "宽带测速"
@@ -9863,7 +9863,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "测速网",
     "shortName": "测速",
     "url": "https://www.speedtest.cn",
-    "category": "web_tools",
+    "category": "work_ip",
     "description": "测速网",
     "tags": [
       "宽带测速"
@@ -9879,7 +9879,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Themesinfo",
     "shortName": "Th",
     "url": "https://themesinfo.com",
-    "category": "web_tools",
+    "category": "dev_work",
     "description": "Themesinfo",
     "tags": [
       "站长工具"
@@ -9895,7 +9895,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "PuTTY",
     "shortName": "Pu",
     "url": "https://www.putty.org",
-    "category": "web_tools",
+    "category": "dev_work",
     "description": "PuTTY",
     "tags": [
       "站长工具"
@@ -9911,7 +9911,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "17CE",
     "shortName": "17",
     "url": "https://www.17ce.com",
-    "category": "web_tools",
+    "category": "dev_work",
     "description": "站长工具 · 收录自 ACG 盒子",
     "tags": [
       "站长工具"
@@ -9927,7 +9927,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "ping.fit",
     "shortName": "pi",
     "url": "http://ping.fit",
-    "category": "web_tools",
+    "category": "dev_work",
     "description": "站长工具 · 收录自 ACG 盒子",
     "tags": [
       "站长工具"

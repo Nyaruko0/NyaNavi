@@ -86,9 +86,12 @@ const DEFAULT_CATEGORY_MAP = new Map(DEFAULT_SITES.map((s) => [s.id, s.category]
 function hydrateSites(list: SiteItem[]): SiteItem[] {
   return list.map((item) => {
     let next = item;
-    // 兼容旧版 posts 分类，自动迁移到对应合并分类
-    if ((next.category as string) === 'posts') {
-      const mapped = DEFAULT_CATEGORY_MAP.get(next.id) || 'acg_resources';
+    // 兼容旧版 posts / ai_image_search / web_tools 分类，自动迁移到细分子分类
+    const rawCat = next.category as string;
+    if (rawCat === 'posts' || rawCat === 'ai_image_search' || rawCat === 'web_tools') {
+      const mapped =
+        DEFAULT_CATEGORY_MAP.get(next.id) ||
+        (rawCat === 'posts' ? 'acg_resources' : 'work_toolbox');
       next = { ...next, category: mapped };
     }
     if (!next.fallbackIcon) {

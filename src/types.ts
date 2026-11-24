@@ -15,10 +15,17 @@ export type CategoryId =
   | 'artworks'
   | 'media_ent'
   | 'anime_community'
-  | 'ai_image_search'
-  | 'web_tools'
-  | 'tools'
-  | 'dev_work';
+  | 'dev_work'
+  | 'work_ai'
+  | 'work_img_search'
+  | 'work_toolbox'
+  | 'work_translate'
+  | 'work_img_host'
+  | 'work_mail'
+  | 'work_p2p'
+  | 'work_ip'
+  | 'work_extensions'
+  | 'tools';
 
 export type CostTier = 'free' | 'checkin' | 'points' | 'paid';
 
