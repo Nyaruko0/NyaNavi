@@ -23,7 +23,6 @@ import {
   clearGitHubConfig,
   DEFAULT_GITHUB_CONFIG,
   fetchEncryptedVaultFromGitHub,
-  fetchGitHubUsername,
   fetchPrivateSitesFromGitHub,
   fetchSitesFromGitHub,
   getPrivateRepoConfig,
@@ -45,7 +44,6 @@ import { SearchBar } from './components/SearchBar';
 import { SiteCard } from './components/SiteCard';
 import { SiteModal } from './components/SiteModal';
 import { AdminModal } from './components/AdminModal';
-import { VaultUnlockModal } from './components/VaultUnlockModal';
 import {
   ACCENT_THEMES,
   DEFAULT_APPEARANCE,
@@ -113,14 +111,12 @@ export default function App() {
   const [privateSites, setPrivateSites] = useState<SiteItem[]>([]);
   const [friendVaultSites, setFriendVaultSites] = useState<SiteItem[]>([]);
   const [friendUnlocked, setFriendUnlocked] = useState<boolean>(false);
-  const [friendUser, setFriendUser] = useState<string | undefined>(undefined);
-  const [vaultModalOpen, setVaultModalOpen] = useState<boolean>(false);
   const [localPins, setLocalPins] = useState<Record<string, boolean>>(loadLocalPins);
   const [appearance, setAppearance] = useState<AppearanceSettings>(loadInitialAppearance);
 
   const [ghConfig, setGhConfig] = useState<GitHubConfig | null>(loadGitHubConfig);
-  const [adminVerified, setAdminVerified] = useState<boolean>(false);
-  const [adminUser, setAdminUser] = useState<string | undefined>(undefined);
+  const [authRole, setAuthRole] = useState<'none' | 'member' | 'admin'>('none');
+  const [authUser, setAuthUser] = useState<string | undefined>(undefined);
   const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
   const [hasUnsynced, setHasUnsynced] = useState<boolean>(false);
   const [hasUnsyncedPrivate, setHasUnsyncedPrivate] = useState<boolean>(false);
@@ -151,8 +147,8 @@ export default function App() {
   const [portalMessage, setPortalMessage] = useState<PortalMessage | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
-  const canManage = adminVerified && Boolean(ghConfig);
-  const canViewPrivate = canManage || friendUnlocked;
+  const canManage = authRole === 'admin' && Boolean(ghConfig);
+  const canViewPrivate = canManage || (authRole === 'member' && friendUnlocked);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -182,70 +178,37 @@ export default function App() {
     };
   }, []);
 
-  // 1b. 若好友在浏览器里记住了凭证，启动时自动校验 GitHub 身份（如需要）并拉取 ./vault.enc 本地解密
-  useEffect(() => {
-    const savedRaw = localStorage.getItem(STORAGE_FRIEND_PASS_KEY);
-    if (!savedRaw) return;
-    let savedPass = savedRaw;
-    let savedToken = '';
-    try {
-      const parsed = JSON.parse(savedRaw);
-      if (parsed && typeof parsed === 'object' && parsed.passphrase) {
-        savedPass = String(parsed.passphrase);
-        savedToken = typeof parsed.ghToken === 'string' ? parsed.ghToken : '';
-      }
-    } catch {
-      // 兼容旧版纯字符串暗号
-    }
-
-    let cancelled = false;
-    fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' })
-      .then((res) => (res.ok ? res.json() : null))
-      .then(async (payload: EncryptedVaultPayload | null) => {
-        if (cancelled || !payload) return;
-        let verifiedUser: string | undefined;
-        if (payload.requireGitHubAuth || savedToken) {
-          if (!savedToken) throw new Error('need github token');
-          verifiedUser = await fetchGitHubUsername(savedToken);
-        }
-        const decrypted = await decryptVaultSites(payload, savedPass);
-        if (decrypted.allowedUsers.length > 0) {
-          const u = verifiedUser?.toLowerCase() || '';
-          const ownerLower = DEFAULT_GITHUB_CONFIG.owner.toLowerCase();
-          if (!u || (u !== ownerLower && !decrypted.allowedUsers.includes(u))) {
-            throw new Error('not allowed');
-          }
-        }
-        if (!cancelled) {
-          setFriendVaultSites(decrypted.sites);
-          setFriendUnlocked(true);
-          setFriendUser(verifiedUser);
-        }
-      })
-      .catch(() => {
-        // 暗号/白名单变更或 Token 失效时静默清除
-        localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取公开库 + 私有库（或密文库）
+  // 2. 启动时自动验证本地保存的 GitHub Token，并按真实权限分流：
+  //    - admin（有仓库写权限）：拉取最新公开库 + 私有库，解锁完整管理权限
+  //    - member（无仓库写权限）：普通只读登录态；若本地记住了密钥，自动核验好友名单并解密只读展示
   useEffect(() => {
     if (!ghConfig) {
-      setAdminVerified(false);
-      setAdminUser(undefined);
+      setAuthRole('none');
+      setAuthUser(undefined);
       setPrivateSites([]);
+      setFriendVaultSites([]);
+      setFriendUnlocked(false);
       return;
     }
 
     let cancelled = false;
     verifyGitHubToken(ghConfig).then(async (res) => {
       if (cancelled) return;
-      if (res.valid && res.canPush) {
-        setAdminVerified(true);
-        setAdminUser(res.username);
+      if (!res.valid || !res.username) {
+        setAuthRole('none');
+        setAuthUser(undefined);
+        setPrivateSites([]);
+        setFriendVaultSites([]);
+        setFriendUnlocked(false);
+        clearGitHubConfig();
+        setGhConfig(null);
+        return;
+      }
+
+      setAuthUser(res.username);
+
+      if (res.canPush) {
+        setAuthRole('admin');
         const [latest, privList] = await Promise.all([
           fetchSitesFromGitHub(ghConfig).catch(() => null),
           (async () => {
@@ -271,10 +234,34 @@ export default function App() {
           setPrivateSites(privList);
         }
       } else {
-        setAdminVerified(false);
+        setAuthRole('member');
         setPrivateSites([]);
-        clearGitHubConfig();
-        setGhConfig(null);
+        // 普通用户：若当前浏览器记住了密钥，自动核验好友名单后静默解密
+        const savedPass = localStorage.getItem(STORAGE_FRIEND_PASS_KEY);
+        if (savedPass) {
+          try {
+            const vaultRes = await fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' });
+            if (vaultRes.ok) {
+              const payload = (await vaultRes.json()) as EncryptedVaultPayload;
+              const decrypted = await decryptVaultSites(payload, savedPass);
+              const u = res.username.toLowerCase();
+              const ownerLower = (ghConfig.owner || DEFAULT_GITHUB_CONFIG.owner).toLowerCase();
+              if (
+                u === ownerLower ||
+                (decrypted.allowedUsers.length > 0 && decrypted.allowedUsers.includes(u))
+              ) {
+                if (!cancelled) {
+                  setFriendVaultSites(decrypted.sites);
+                  setFriendUnlocked(true);
+                }
+              } else {
+                localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+              }
+            }
+          } catch {
+            localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+          }
+        }
       }
     });
 
@@ -735,8 +722,8 @@ export default function App() {
       const nextUsers = config.vaultAllowedUsers?.trim() || '';
       saveGitHubConfig(config);
       setGhConfig(config);
-      setAdminVerified(true);
-      setAdminUser(username);
+      setAuthRole('admin');
+      setAuthUser(username);
       const [latest, privList] = await Promise.all([
         fetchSitesFromGitHub(config).catch(() => null),
         (async () => {
@@ -778,28 +765,28 @@ export default function App() {
     [ghConfig?.vaultPassphrase, ghConfig?.vaultAllowedUsers, privateSites.length, showToast],
   );
 
+  const handleMemberAuthenticated = useCallback(
+    (config: GitHubConfig, username: string) => {
+      saveGitHubConfig(config);
+      setGhConfig(config);
+      setAuthRole('member');
+      setAuthUser(username);
+      setPrivateSites([]);
+      showToast(`已登录 @${username}（只读），请输入站长给你的密钥获取私密内容`);
+    },
+    [showToast],
+  );
+
   const handleFriendUnlocked = useCallback(
-    (
-      decryptedSites: SiteItem[],
-      passphrase: string,
-      remember: boolean,
-      ghToken?: string,
-      ghUser?: string,
-    ) => {
+    (decryptedSites: SiteItem[], passphrase: string, remember: boolean) => {
       setFriendVaultSites(decryptedSites);
       setFriendUnlocked(true);
-      setFriendUser(ghUser);
       if (remember) {
-        localStorage.setItem(
-          STORAGE_FRIEND_PASS_KEY,
-          JSON.stringify({ passphrase, ghToken: ghToken || '' }),
-        );
+        localStorage.setItem(STORAGE_FRIEND_PASS_KEY, passphrase);
       } else {
         localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
       }
-      showToast(
-        `验证通过${ghUser ? `（@${ghUser}）` : ''}！已解锁 ${decryptedSites.length} 个私密站点`,
-      );
+      showToast(`好友身份与密钥验证通过！已解锁 ${decryptedSites.length} 个私密站点（只读）`);
     },
     [showToast],
   );
@@ -808,19 +795,21 @@ export default function App() {
     localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
     setFriendVaultSites([]);
     setFriendUnlocked(false);
-    setFriendUser(undefined);
-    showToast('已锁定私密库并清除本地凭证');
+    showToast('已锁定私密内容并清除本地密钥');
   }, [showToast]);
 
   const handleAdminLogout = useCallback(() => {
     clearGitHubConfig();
+    localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
     setGhConfig(null);
-    setAdminVerified(false);
-    setAdminUser(undefined);
+    setAuthRole('none');
+    setAuthUser(undefined);
     setPrivateSites([]);
+    setFriendVaultSites([]);
+    setFriendUnlocked(false);
     setHasUnsynced(false);
     setHasUnsyncedPrivate(false);
-    showToast('已退出站长模式，私密站点已清空');
+    showToast('已退出登录，私密内容已清空');
   }, [showToast]);
 
   const handleNavigate = useCallback(
@@ -882,14 +871,14 @@ export default function App() {
           pinnedCount={pinnedSites.length}
           totalCount={modeSites.length}
           mode={mode}
+          authRole={authRole}
           canManage={canManage}
           canViewPrivate={canViewPrivate}
           friendUnlocked={friendUnlocked}
-          adminUser={adminUser}
+          authUser={authUser}
           mobileOpen={mobileMenuOpen}
           onCloseMobile={() => setMobileMenuOpen(false)}
           onOpenAdmin={() => setAdminModalOpen(true)}
-          onOpenVaultUnlock={() => setVaultModalOpen(true)}
           onAddSite={() => {
             setEditingSite(null);
             setModalOpen(true);
@@ -1218,26 +1207,20 @@ export default function App() {
         onSave={handleSaveSite}
       />
 
-      {/* 站长 GitHub Token 登录弹窗 */}
+      {/* 统一 GitHub 登录 / 站长管理 / 好友密钥解锁弹窗 */}
       <AdminModal
         open={adminModalOpen}
         currentConfig={ghConfig}
-        adminUser={adminUser}
+        authRole={authRole}
+        authUser={authUser}
+        friendUnlocked={friendUnlocked}
+        friendVaultCount={friendVaultSites.length}
         onClose={() => setAdminModalOpen(false)}
-        onAuthenticated={handleAdminAuthenticated}
+        onAdminAuthenticated={handleAdminAuthenticated}
+        onMemberAuthenticated={handleMemberAuthenticated}
+        onFriendUnlocked={handleFriendUnlocked}
+        onFriendLock={handleFriendLock}
         onLogout={handleAdminLogout}
-      />
-
-      {/* 好友暗号解锁弹窗 */}
-      <VaultUnlockModal
-        open={vaultModalOpen}
-        isUnlocked={friendUnlocked}
-        unlockedCount={friendVaultSites.length}
-        friendUsername={friendUser}
-        ownerUsername={ghConfig?.owner || DEFAULT_GITHUB_CONFIG.owner}
-        onClose={() => setVaultModalOpen(false)}
-        onUnlocked={handleFriendUnlocked}
-        onLock={handleFriendLock}
       />
 
       {/* 外观与版面美化抽屉 */}

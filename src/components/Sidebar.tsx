@@ -36,14 +36,14 @@ interface SidebarProps {
   pinnedCount: number;
   totalCount: number;
   mode: AppMode;
+  authRole: 'none' | 'member' | 'admin';
   canManage: boolean;
   canViewPrivate: boolean;
   friendUnlocked: boolean;
-  adminUser?: string;
+  authUser?: string;
   mobileOpen: boolean;
   onCloseMobile: () => void;
   onOpenAdmin: () => void;
-  onOpenVaultUnlock: () => void;
   onAddSite: () => void;
   onExport: () => void;
   onImport: (file: File) => void;
@@ -77,14 +77,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   pinnedCount,
   totalCount,
   mode,
+  authRole,
   canManage,
   canViewPrivate,
   friendUnlocked,
-  adminUser,
+  authUser,
   mobileOpen,
   onCloseMobile,
   onOpenAdmin,
-  onOpenVaultUnlock,
   onAddSite,
   onExport,
   onImport,
@@ -294,7 +294,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-3 py-1.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100/70 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300"
             >
               <ShieldCheck className="h-3.5 w-3.5" />
-              站长已登录{adminUser ? ` (@${adminUser})` : ''}
+              站长已登录{authUser ? ` (@${authUser})` : ''}
             </button>
           </>
         ) : (
@@ -305,29 +305,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onOpenAdmin();
                 onCloseMobile();
               }}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200/90 bg-white/90 px-2.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40"
-            >
-              <KeyRound className="h-3.5 w-3.5" />
-              站长登录
-            </button>
-            {mode !== 'work' && (
-              <button
-                type="button"
-                onClick={() => {
-                  onOpenVaultUnlock();
-                  onCloseMobile();
-                }}
-                title={friendUnlocked ? '好友暗号已解锁（点击可锁定）' : '输入好友暗号解锁私密库'}
-                className={`flex items-center justify-center gap-1 rounded-xl border px-2.5 py-2 text-xs font-semibold transition ${
-                  friendUnlocked
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                authRole === 'member'
+                  ? friendUnlocked
                     ? 'border-violet-300/80 bg-violet-50 text-violet-700 hover:bg-violet-100/70 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300'
-                    : 'border-slate-200/90 bg-white/90 text-slate-600 hover:border-violet-300 hover:text-violet-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
-                }`}
-              >
-                <Lock className="h-3.5 w-3.5" />
-                {friendUnlocked ? '已解锁' : '暗号'}
-              </button>
-            )}
+                    : 'border-sky-300/80 bg-sky-50 text-sky-700 hover:bg-sky-100/70 dark:border-sky-500/40 dark:bg-sky-500/15 dark:text-sky-300'
+                  : 'border-slate-200/90 bg-white/90 text-slate-700 hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40'
+              }`}
+            >
+              {authRole === 'member' ? (
+                <>
+                  <Lock className="h-3.5 w-3.5" />
+                  <span className="truncate">
+                    @{authUser} · {friendUnlocked ? '已解锁' : '输密钥'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <KeyRound className="h-3.5 w-3.5" />
+                  GitHub 登录
+                </>
+              )}
+            </button>
             <button
               type="button"
               onClick={onExport}

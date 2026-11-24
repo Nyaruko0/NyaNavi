@@ -20,6 +20,7 @@ export interface GitHubConfig {
 export interface GitHubVerifyResult {
   valid: boolean;
   canPush: boolean;
+  role: 'admin' | 'member' | 'none';
   username?: string;
   avatarUrl?: string;
   error?: string;
@@ -128,57 +129,74 @@ export async function fetchGitHubUsername(token: string): Promise<string> {
 }
 
 /**
- * 验证 Token 是否对目标仓库拥有真实写权限（push）
+ * 统一 GitHub 身份认证：
+ * 1. 先校验 Token 本身是否有效并获取真实 @username（普通零权限 Token 也能通过）；
+ * 2. 再检查该 Token 对目标主仓库是否拥有写权限（push/admin）：
+ *    - 有写权限 -> role: 'admin'（站长模式，可增删改与同步）
+ *    - 无写权限 -> role: 'member'（普通用户/好友只读模式，仅可输入密钥校验解锁私密内容）
  */
 export async function verifyGitHubToken(config: GitHubConfig): Promise<GitHubVerifyResult> {
   try {
-    const [repoRes, userRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${config.owner}/${config.repo}`, {
-        headers: ghHeaders(config.token),
-        cache: 'no-store',
-      }),
-      fetch('https://api.github.com/user', {
-        headers: ghHeaders(config.token),
-        cache: 'no-store',
-      }),
-    ]);
+    const userRes = await fetch('https://api.github.com/user', {
+      headers: ghHeaders(config.token),
+      cache: 'no-store',
+    });
 
-    if (repoRes.status === 401) {
-      return { valid: false, canPush: false, error: 'Token 无效或已过期' };
+    if (userRes.status === 401) {
+      return { valid: false, canPush: false, role: 'none', error: 'GitHub Token 无效或已过期' };
     }
-    if (repoRes.status === 404) {
-      return { valid: false, canPush: false, error: '找不到目标仓库或 Token 无权访问' };
-    }
-    if (!repoRes.ok) {
-      return { valid: false, canPush: false, error: `GitHub 验证失败 (HTTP ${repoRes.status})` };
-    }
-
-    const repoData = await repoRes.json();
-    const canPush = Boolean(repoData?.permissions?.push || repoData?.permissions?.admin);
-    let username: string | undefined;
-    let avatarUrl: string | undefined;
-
-    if (userRes.ok) {
-      const userData = await userRes.json();
-      username = userData?.login;
-      avatarUrl = userData?.avatar_url;
-    }
-
-    if (!canPush) {
+    if (!userRes.ok) {
       return {
-        valid: true,
+        valid: false,
         canPush: false,
-        username,
-        avatarUrl,
-        error: '该 Token 只有只读权限，请在 GitHub 开启仓库 Contents: Read and write 权限',
+        role: 'none',
+        error: `GitHub 登录失败 (HTTP ${userRes.status})`,
       };
     }
 
-    return { valid: true, canPush: true, username, avatarUrl };
+    const userData = await userRes.json();
+    const username: string | undefined = userData?.login;
+    const avatarUrl: string | undefined = userData?.avatar_url;
+
+    if (!username) {
+      return {
+        valid: false,
+        canPush: false,
+        role: 'none',
+        error: '无法读取 GitHub 用户名',
+      };
+    }
+
+    // 检查是否对主仓库拥有写权限（普通好友的零权限 Token 访问这里会返回无 push 或 404，不影响登录）
+    let canPush = false;
+    try {
+      const repoRes = await fetch(
+        `https://api.github.com/repos/${config.owner}/${config.repo}`,
+        {
+          headers: ghHeaders(config.token),
+          cache: 'no-store',
+        },
+      );
+      if (repoRes.ok) {
+        const repoData = await repoRes.json();
+        canPush = Boolean(repoData?.permissions?.push || repoData?.permissions?.admin);
+      }
+    } catch {
+      canPush = false;
+    }
+
+    return {
+      valid: true,
+      canPush,
+      role: canPush ? 'admin' : 'member',
+      username,
+      avatarUrl,
+    };
   } catch (err) {
     return {
       valid: false,
       canPush: false,
+      role: 'none',
       error: err instanceof Error ? err.message : '网络请求失败，请检查网络/代理',
     };
   }
