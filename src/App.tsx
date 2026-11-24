@@ -2,8 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   Briefcase,
+  CloudUpload,
   Flame,
   Github,
+  Loader2,
   Menu,
   Moon,
   Plus,
@@ -15,34 +17,47 @@ import { CATEGORIES, DEFAULT_SITES } from './data/defaultSites';
 import type { AppMode, HealthResult, SiteItem } from './types';
 import { cleanSearchQuery } from './utils/cleanQuery';
 import { checkSiteHealth } from './utils/healthCheck';
+import {
+  clearGitHubConfig,
+  fetchSitesFromGitHub,
+  loadGitHubConfig,
+  saveGitHubConfig,
+  saveSitesToGitHub,
+  verifyGitHubToken,
+  type GitHubConfig,
+} from './utils/githubSync';
 import { Sidebar } from './components/Sidebar';
 import { SearchBar } from './components/SearchBar';
 import { SiteCard } from './components/SiteCard';
 import { SiteModal } from './components/SiteModal';
+import { AdminModal } from './components/AdminModal';
 
-const STORAGE_SITES_KEY = 'nyanavi_sites_v1';
+const STORAGE_PINS_KEY = 'nyanavi_pins_v1';
 const STORAGE_MODE_KEY = 'nyanavi_mode_v1';
 const STORAGE_THEME_KEY = 'nyanavi_theme_v1';
 
-function loadInitialSites(): SiteItem[] {
+function loadLocalPins(): Record<string, boolean> {
   try {
-    const raw = localStorage.getItem(STORAGE_SITES_KEY);
-    if (!raw) return DEFAULT_SITES;
+    const raw = localStorage.getItem(STORAGE_PINS_KEY);
+    if (!raw) return {};
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      // 增量合并：保留用户已有配置/收藏/自定义站点，同时自动补入新版本新增的内置站点
-      const existingIds = new Set(parsed.map((item: SiteItem) => item.id));
-      const additions = DEFAULT_SITES.filter((item) => !existingIds.has(item.id));
-      return additions.length > 0 ? [...parsed, ...additions] : parsed;
-    }
+    return parsed && typeof parsed === 'object' ? parsed : {};
   } catch {
-    // ignore corrupted local storage
+    return {};
   }
-  return DEFAULT_SITES;
 }
 
 export default function App() {
-  const [sites, setSites] = useState<SiteItem[]>(loadInitialSites);
+  const [sites, setSites] = useState<SiteItem[]>(DEFAULT_SITES);
+  const [localPins, setLocalPins] = useState<Record<string, boolean>>(loadLocalPins);
+
+  const [ghConfig, setGhConfig] = useState<GitHubConfig | null>(loadGitHubConfig);
+  const [adminVerified, setAdminVerified] = useState<boolean>(false);
+  const [adminUser, setAdminUser] = useState<string | undefined>(undefined);
+  const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
+  const [hasUnsynced, setHasUnsynced] = useState<boolean>(false);
+  const [syncing, setSyncing] = useState<boolean>(false);
+
   const [mode, setMode] = useState<AppMode>(() => {
     const saved = localStorage.getItem(STORAGE_MODE_KEY);
     return saved === 'work' ? 'work' : 'nsfw';
@@ -64,20 +79,70 @@ export default function App() {
   const [editingSite, setEditingSite] = useState<SiteItem | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  const canManage = adminVerified && Boolean(ghConfig);
+
   const showToast = useCallback((msg: string) => {
     setToast(msg);
   }, []);
 
   useEffect(() => {
     if (!toast) return;
-    const t = window.setTimeout(() => setToast(null), 2600);
+    const t = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(t);
   }, [toast]);
 
-  // 持久化站点、模式与主题
+  // 1. 启动时从静态 ./sites.json 拉取最新发布数据
   useEffect(() => {
-    localStorage.setItem(STORAGE_SITES_KEY, JSON.stringify(sites));
-  }, [sites]);
+    let cancelled = false;
+    fetch(`./sites.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && Array.isArray(data) && data.length > 0) {
+          setSites(data as SiteItem[]);
+        }
+      })
+      .catch(() => {
+        // 离线或本地兜底使用 DEFAULT_SITES
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取仓库最新 sites.json
+  useEffect(() => {
+    if (!ghConfig) {
+      setAdminVerified(false);
+      setAdminUser(undefined);
+      return;
+    }
+
+    let cancelled = false;
+    verifyGitHubToken(ghConfig).then(async (res) => {
+      if (cancelled) return;
+      if (res.valid && res.canPush) {
+        setAdminVerified(true);
+        setAdminUser(res.username);
+        const latest = await fetchSitesFromGitHub(ghConfig).catch(() => null);
+        if (!cancelled && latest && latest.sites.length > 0) {
+          setSites(latest.sites);
+        }
+      } else {
+        setAdminVerified(false);
+        clearGitHubConfig();
+        setGhConfig(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ghConfig]);
+
+  // 持久化本地个人收藏、模式与主题
+  useEffect(() => {
+    localStorage.setItem(STORAGE_PINS_KEY, JSON.stringify(localPins));
+  }, [localPins]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_MODE_KEY, mode);
@@ -106,7 +171,6 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [showToast]);
 
-  // 切换工作模式时，若当前选中了 NSFW 专属分类，自动切回全部
   useEffect(() => {
     if (mode === 'work') {
       const cat = CATEGORIES.find((c) => c.id === activeSection);
@@ -116,12 +180,18 @@ export default function App() {
     }
   }, [mode, activeSection]);
 
-  // 当前模式下可见的全部站点
-  const modeSites = useMemo(() => {
-    return mode === 'work' ? sites.filter((s) => !s.nsfw) : sites;
-  }, [sites, mode]);
+  // 将访客本地收藏叠加到展示状态（站长模式下以 sites.pinned 为准）
+  const displaySites = useMemo(() => {
+    if (canManage) return sites;
+    return sites.map((s) =>
+      s.id in localPins ? { ...s, pinned: localPins[s.id] } : s,
+    );
+  }, [sites, localPins, canManage]);
 
-  // 分类计数
+  const modeSites = useMemo(() => {
+    return mode === 'work' ? displaySites.filter((s) => !s.nsfw) : displaySites;
+  }, [displaySites, mode]);
+
   const categoryCounts = useMemo(() => {
     const map: Record<string, number> = {};
     for (const s of modeSites) {
@@ -134,7 +204,6 @@ export default function App() {
 
   const cleanedQuery = useMemo(() => cleanSearchQuery(query).cleaned, [query]);
 
-  // 根据搜索词与侧边栏选中项过滤
   const filteredSites = useMemo(() => {
     let list = modeSites;
     if (activeSection === 'pinned') {
@@ -162,7 +231,6 @@ export default function App() {
     });
   }, [modeSites, activeSection, query]);
 
-  // 按分类分组展示（当选中 "all" 且无搜索词时，呈现类似 acgbox 的清晰分区）
   const groupedSections = useMemo(() => {
     if (activeSection !== 'all') {
       const meta =
@@ -170,7 +238,9 @@ export default function App() {
           ? {
               id: 'pinned',
               name: '我的收藏 / 置顶',
-              description: '你标记星标的常用入口',
+              description: canManage
+                ? '站长设置的默认置顶入口（可同步到 GitHub）'
+                : '你当前浏览器本地标记星标的常用入口',
             }
           : CATEGORIES.find((c) => c.id === activeSection);
 
@@ -227,7 +297,7 @@ export default function App() {
     }
 
     return sections;
-  }, [activeSection, filteredSites, mode, modeSites, pinnedSites, query]);
+  }, [activeSection, canManage, filteredSites, mode, modeSites, pinnedSites, query]);
 
   // 单站连通性检测
   const handleCheckSingle = useCallback(async (site: SiteItem) => {
@@ -242,7 +312,7 @@ export default function App() {
     }));
   }, []);
 
-  // 批量连通性检测（限流并发 5，自动覆盖当前可见站点）
+  // 批量连通性检测
   const handleBatchCheck = useCallback(async () => {
     if (batchChecking) return;
     const targets = activeSection === 'all' && !query.trim() ? modeSites : filteredSites;
@@ -267,7 +337,6 @@ export default function App() {
     showToast(`已完成 ${targets.length} 个站点的连通性检测`);
   }, [activeSection, batchChecking, filteredSites, handleCheckSingle, modeSites, query, showToast]);
 
-  // 统计当前已测站点结果
   const healthSummary = useMemo(() => {
     let online = 0;
     let warn = 0;
@@ -281,15 +350,44 @@ export default function App() {
     return { online, warn, offline, total: online + warn + offline };
   }, [healthMap, modeSites]);
 
-  // CRUD 操作
-  const handleTogglePin = useCallback((id: string) => {
-    setSites((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)),
-    );
-  }, []);
+  // 收藏置顶：站长改全局数据，访客仅改本地收藏
+  const handleTogglePin = useCallback(
+    (id: string) => {
+      if (canManage) {
+        setSites((prev) =>
+          prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)),
+        );
+        setHasUnsynced(true);
+      } else {
+        setLocalPins((prev) => {
+          const current =
+            id in prev ? prev[id] : Boolean(sites.find((s) => s.id === id)?.pinned);
+          return { ...prev, [id]: !current };
+        });
+      }
+    },
+    [canManage, sites],
+  );
 
+  // 站长专属：同步改动至 GitHub 仓库 public/sites.json
+  const handleSyncToGitHub = useCallback(async () => {
+    if (!ghConfig || !canManage || syncing) return;
+    setSyncing(true);
+    try {
+      const res = await saveSitesToGitHub(ghConfig, sites);
+      setHasUnsynced(false);
+      showToast(`已同步到 GitHub (${res.commitSha})，约 1 分钟后全网生效`);
+    } catch (err) {
+      showToast(err instanceof Error ? `同步失败：${err.message}` : '同步到 GitHub 失败');
+    } finally {
+      setSyncing(false);
+    }
+  }, [ghConfig, canManage, syncing, sites, showToast]);
+
+  // 站长 CRUD
   const handleSaveSite = useCallback(
     (site: SiteItem) => {
+      if (!canManage) return;
       setSites((prev) => {
         const exists = prev.some((s) => s.id === site.id);
         if (exists) {
@@ -297,20 +395,27 @@ export default function App() {
         }
         return [site, ...prev];
       });
-      showToast(editingSite ? `已更新「${site.name}」` : `已添加「${site.name}」`);
+      setHasUnsynced(true);
+      showToast(
+        editingSite
+          ? `已更新「${site.name}」，请点顶部“同步到 GitHub”发布`
+          : `已添加「${site.name}」，请点顶部“同步到 GitHub”发布`,
+      );
     },
-    [editingSite, showToast],
+    [canManage, editingSite, showToast],
   );
 
   const handleDeleteSite = useCallback(
     (id: string) => {
+      if (!canManage) return;
       const target = sites.find((s) => s.id === id);
       if (!target) return;
       if (!window.confirm(`确定删除站点「${target.name}」吗？`)) return;
       setSites((prev) => prev.filter((s) => s.id !== id));
-      showToast(`已删除「${target.name}」`);
+      setHasUnsynced(true);
+      showToast(`已删除「${target.name}」，点击顶部“同步到 GitHub”即可生效`);
     },
-    [sites, showToast],
+    [canManage, sites, showToast],
   );
 
   const handleExport = useCallback(() => {
@@ -328,6 +433,7 @@ export default function App() {
 
   const handleImport = useCallback(
     async (file: File) => {
+      if (!canManage) return;
       try {
         const text = await file.text();
         const parsed = JSON.parse(text);
@@ -335,20 +441,47 @@ export default function App() {
           throw new Error('格式不正确');
         }
         setSites(parsed);
-        showToast(`成功导入 ${parsed.length} 个站点`);
+        setHasUnsynced(true);
+        showToast(`成功导入 ${parsed.length} 个站点，请点顶部“同步到 GitHub”发布`);
       } catch {
         showToast('导入失败：请确认是有效的 NyaNavi JSON 文件');
+      }
+    },
+    [canManage, showToast],
+  );
+
+  const handleReset = useCallback(() => {
+    if (!canManage) return;
+    if (!window.confirm('确定恢复默认内置站点列表吗？（同步到 GitHub 后才会覆盖远端）')) {
+      return;
+    }
+    setSites(DEFAULT_SITES);
+    setHasUnsynced(true);
+    showToast('已恢复默认站点列表，请点顶部“同步到 GitHub”发布');
+  }, [canManage, showToast]);
+
+  const handleAdminAuthenticated = useCallback(
+    async (config: GitHubConfig, username?: string) => {
+      saveGitHubConfig(config);
+      setGhConfig(config);
+      setAdminVerified(true);
+      setAdminUser(username);
+      showToast(`站长模式已解锁${username ? `（@${username}）` : ''}`);
+      const latest = await fetchSitesFromGitHub(config).catch(() => null);
+      if (latest && latest.sites.length > 0) {
+        setSites(latest.sites);
       }
     },
     [showToast],
   );
 
-  const handleReset = useCallback(() => {
-    if (!window.confirm('确定恢复默认内置站点列表吗？自定义站点将被覆盖（建议先导出备份）。')) {
-      return;
-    }
-    setSites(DEFAULT_SITES);
-    showToast('已恢复默认站点列表');
+  const handleAdminLogout = useCallback(() => {
+    clearGitHubConfig();
+    setGhConfig(null);
+    setAdminVerified(false);
+    setAdminUser(undefined);
+    setHasUnsynced(false);
+    showToast('已退出站长模式，当前为访客只读视图');
   }, [showToast]);
 
   return (
@@ -365,8 +498,11 @@ export default function App() {
         pinnedCount={pinnedSites.length}
         totalCount={modeSites.length}
         mode={mode}
+        canManage={canManage}
+        adminUser={adminUser}
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
+        onOpenAdmin={() => setAdminModalOpen(true)}
         onAddSite={() => {
           setEditingSite(null);
           setModalOpen(true);
@@ -418,6 +554,33 @@ export default function App() {
 
             {/* 右侧功能切换区 */}
             <div className="flex items-center gap-2">
+              {/* 站长专属：同步到 GitHub 按钮 */}
+              {canManage && (
+                <button
+                  type="button"
+                  disabled={syncing}
+                  onClick={handleSyncToGitHub}
+                  className={`relative inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold shadow-2xs transition disabled:opacity-60 ${
+                    hasUnsynced
+                      ? 'bg-gradient-to-r from-pink-500 to-sky-500 text-white hover:opacity-95'
+                      : 'border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
+                  }`}
+                  title="将当前站点列表提交到 GitHub 仓库 public/sites.json 并自动部署"
+                >
+                  {syncing ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <CloudUpload className="h-3.5 w-3.5" />
+                  )}
+                  <span className="hidden sm:inline">
+                    {syncing ? '同步中...' : hasUnsynced ? '同步到 GitHub' : '已同步'}
+                  </span>
+                  {hasUnsynced && !syncing && (
+                    <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-amber-400 ring-2 ring-white dark:ring-slate-900" />
+                  )}
+                </button>
+              )}
+
               {/* 批量存活检测 */}
               <button
                 type="button"
@@ -502,19 +665,21 @@ export default function App() {
                 当前筛选下没有匹配的站点
               </p>
               <p className="mt-1 text-xs text-slate-400">
-                你可以直接点击上方搜索框内的站点胶囊进行站外直搜，或添加一个自定义站点
+                你可以直接点击上方搜索框内的站点胶囊进行站外直搜
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setEditingSite(null);
-                  setModalOpen(true);
-                }}
-                className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-pink-500 px-4 py-2 text-xs font-semibold text-white hover:bg-pink-600"
-              >
-                <Plus className="h-4 w-4" />
-                添加站点
-              </button>
+              {canManage && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingSite(null);
+                    setModalOpen(true);
+                  }}
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-pink-500 px-4 py-2 text-xs font-semibold text-white hover:bg-pink-600"
+                >
+                  <Plus className="h-4 w-4" />
+                  添加站点
+                </button>
+              )}
             </div>
           ) : (
             <div className="space-y-8">
@@ -550,6 +715,7 @@ export default function App() {
                         site={site}
                         health={healthMap[site.id]}
                         cleanedQuery={cleanedQuery}
+                        canManage={canManage}
                         onTogglePin={handleTogglePin}
                         onEdit={(s) => {
                           setEditingSite(s);
@@ -570,24 +736,34 @@ export default function App() {
             <p>
               {mode === 'work'
                 ? 'NyaDesk · 简洁高效的本地与云端导航工作台'
-                : 'NyaNavi · 清爽明亮的二次元 ACG 精选导航（数据本地持久化，支持一键部署 GitHub Pages）'}
+                : 'NyaNavi · 清爽明亮的二次元 ACG 精选导航（GitHub API 驱动 · 访客只读）'}
             </p>
             <span className="inline-flex items-center gap-1.5">
               <Github className="h-3.5 w-3.5" />
-              开源双模架构 · Alt+W 秒切模式
+              Alt+W 秒切模式
             </span>
           </footer>
         </main>
       </div>
 
-      {/* 新增/编辑站点弹窗 */}
+      {/* 新增/编辑站点弹窗（站长专属） */}
       <SiteModal
-        open={modalOpen}
+        open={modalOpen && canManage}
         editingSite={editingSite}
         categories={CATEGORIES}
         defaultNsfw={mode === 'nsfw'}
         onClose={() => setModalOpen(false)}
         onSave={handleSaveSite}
+      />
+
+      {/* 站长 GitHub API 登录弹窗 */}
+      <AdminModal
+        open={adminModalOpen}
+        currentConfig={ghConfig}
+        adminUser={adminUser}
+        onClose={() => setAdminModalOpen(false)}
+        onAuthenticated={handleAdminAuthenticated}
+        onLogout={handleAdminLogout}
       />
 
       {/* 轻量 Toast 提示 */}

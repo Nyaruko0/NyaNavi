@@ -17,6 +17,7 @@ interface SiteCardProps {
   site: SiteItem;
   health?: HealthResult;
   cleanedQuery?: string;
+  canManage: boolean;
   onTogglePin: (id: string) => void;
   onEdit: (site: SiteItem) => void;
   onDelete: (id: string) => void;
@@ -44,6 +45,7 @@ export const SiteCard: React.FC<SiteCardProps> = ({
   site,
   health,
   cleanedQuery,
+  canManage,
   onTogglePin,
   onEdit,
   onDelete,
@@ -115,22 +117,26 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             >
               <Star className={`h-4 w-4 ${site.pinned ? 'fill-amber-400' : ''}`} />
             </button>
-            <button
-              type="button"
-              onClick={() => onEdit(site)}
-              title="编辑站点"
-              className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-            >
-              <Pencil className="h-3.5 w-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onDelete(site.id)}
-              title="删除站点"
-              className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/15 dark:hover:text-rose-400"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-            </button>
+            {canManage && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => onEdit(site)}
+                  title="编辑站点"
+                  className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onDelete(site.id)}
+                  title="删除站点"
+                  className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/15 dark:hover:text-rose-400"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </>
+            )}
           </div>
         </div>
 

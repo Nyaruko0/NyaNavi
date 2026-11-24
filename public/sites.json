@@ -1,0 +1,3016 @@
+[
+  {
+    "id": "south-plus",
+    "name": "南+ (South Plus)",
+    "shortName": "南+",
+    "url": "https://www.south-plus.net/",
+    "category": "posts",
+    "description": "最上游 [自购] 与新汉化总源头，社区氛围活跃，SP 币可日常签到获取。",
+    "tags": [
+      "自购首发",
+      "汉化总源头",
+      "论坛"
+    ],
+    "costTier": "checkin",
+    "costLabel": "签到免费",
+    "searchUrl": "https://www.south-plus.net/search.php",
+    "searchNote": "10 秒搜索冷却，严禁自动预检；需登录使用 PHPWind 站内搜",
+    "searchRisk": "cooldown",
+    "clients": [
+      "第三方 south-plus-pro"
+    ],
+    "nsfw": true,
+    "pinned": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "vikacg",
+    "name": "维咔 VikACG (V站)",
+    "shortName": "V站",
+    "url": "https://www.vikacg.com/",
+    "category": "posts",
+    "description": "免登录直接可见链接，涵盖 anime / 3D 二创，常用 TeraBox + 夸克 + 迅雷三盘（常见密码 sp@game）。",
+    "tags": [
+      "免登录",
+      "3D二创",
+      "三盘分流"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.vikacg.com/search?s={q}",
+    "searchNote": "前端 SPA 渲染，直接跳转即可搜索",
+    "searchRisk": "spa",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "pinned": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "galgame-dev",
+    "name": "真紅論壇",
+    "shortName": "真紅",
+    "url": "https://galgame.dev/",
+    "category": "posts",
+    "description": "RPG / SLG / 3D 游戏更新快，帖子公开可读，界面现代并原生支持 PWA。",
+    "tags": [
+      "RPG/SLG",
+      "更新快",
+      "PWA"
+    ],
+    "costTier": "free",
+    "costLabel": "免费/赞助",
+    "searchUrl": "https://galgame.dev/search?in=titlesposts&term={q}",
+    "searchNote": "帖子公开，站内搜索页可能要求登录",
+    "searchRisk": "login",
+    "clients": [
+      "原生 PWA"
+    ],
+    "nsfw": true,
+    "pinned": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "neohent",
+    "name": "芯幻 (neohent)",
+    "shortName": "芯幻",
+    "url": "https://neohent.ai/",
+    "category": "posts",
+    "description": "综合命中率最高（热门前 100 实测命中 83 条），涵盖 AI 动画、MMD、游戏与度盘二维码。",
+    "tags": [
+      "高命中率",
+      "AI动画",
+      "MMD"
+    ],
+    "costTier": "points",
+    "costLabel": "积分/VIP",
+    "searchUrl": "https://neohent.ai/search?q={q}",
+    "searchNote": "公开可搜，下载需登录",
+    "clients": [
+      "官方 NeoSekai APP"
+    ],
+    "nsfw": true,
+    "pinned": true,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "mhh1",
+    "name": "萌幻之乡 (MHH1)",
+    "shortName": "萌幻",
+    "url": "https://so.mhh1.com/",
+    "category": "posts",
+    "description": "和谐物、AI 分区与（R18）系列资源丰富，so.mhh1 支持免登录检索。",
+    "tags": [
+      "AI分区",
+      "和谐物",
+      "R18系列"
+    ],
+    "costTier": "points",
+    "costLabel": "积分/VIP",
+    "searchUrl": "https://so.mhh1.com/?q={q}",
+    "searchNote": "偶发 Cloudflare 盾，部分情况需填框触发提交",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "moezone",
+    "name": "萌の领域 (moezone)",
+    "shortName": "萌域",
+    "url": "https://www.moezone.app/",
+    "category": "posts",
+    "description": "和谐物、AI 短剧与单机游戏合集，WordPress 架构。",
+    "tags": [
+      "AI短剧",
+      "单机游戏",
+      "扣币注意"
+    ],
+    "costTier": "paid",
+    "costLabel": "萌币/付费",
+    "searchUrl": "https://www.moezone.app/?s={q}",
+    "searchNote": "⚠️ 每次搜索扣 3 萌币！严禁盲搜或自动预检",
+    "searchRisk": "cost",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "justnainai",
+    "name": "宅宅的妙妙屋",
+    "shortName": "妙妙屋",
+    "url": "https://www.justnainai.com/",
+    "category": "posts",
+    "description": "Discourse 社区，主打 AI 短剧与“度雷夸u”四盘分流（UP 主栗苦林務等）。",
+    "tags": [
+      "AI短剧",
+      "Discourse",
+      "四盘分流"
+    ],
+    "costTier": "paid",
+    "costLabel": "VIP/积分",
+    "searchUrl": "https://www.justnainai.com/search?q={q}",
+    "searchNote": "Discourse 架构，支持 JSON 检索",
+    "clients": [
+      "原生 PWA",
+      "DiscourseHub"
+    ],
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "girigirilove",
+    "name": "girigiri 爱联萌",
+    "shortName": "爱联萌",
+    "url": "https://bbs.girigirilove.com/",
+    "category": "posts",
+    "description": "同人 RPG / SLG 汉化资源集中地，WordPress 站点。",
+    "tags": [
+      "同人RPG",
+      "SLG汉化"
+    ],
+    "costTier": "paid",
+    "costLabel": "VIP/积分",
+    "searchUrl": "https://bbs.girigirilove.com/?s={q}",
+    "searchNote": "公开 GET 搜索，偶尔响应较慢",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "abti",
+    "name": "蛛阁 (abti)",
+    "shortName": "蛛阁",
+    "url": "https://bbs.abti.top/",
+    "category": "posts",
+    "description": "个人 AI / 内嵌汉化首发站（如叶酱汉化），看帖免费、下链扣币。",
+    "tags": [
+      "AI汉化",
+      "内嵌首发",
+      "看帖免费"
+    ],
+    "costTier": "points",
+    "costLabel": "积分/VIP",
+    "searchUrl": "https://bbs.abti.top/?s={q}",
+    "searchNote": "注意首页 .apk 为广告非官方包",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "mhsacg",
+    "name": "米哈社 (mhsacg)",
+    "shortName": "米哈社",
+    "url": "https://mhsacg.com/",
+    "category": "posts",
+    "description": "专注安卓移植游戏与 AI 短剧资源。",
+    "tags": [
+      "安卓移植",
+      "AI短剧"
+    ],
+    "costTier": "paid",
+    "costLabel": "VIP 付费",
+    "searchNote": "SPA 站内搜索，建议手动进入后检索",
+    "searchRisk": "spa",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "51acg",
+    "name": "次元小屋 (51acg)",
+    "shortName": "次元小屋",
+    "url": "https://51acg.buzz/",
+    "category": "posts",
+    "description": "3D / AI 合集整理，传统 Discuz 论坛结构。",
+    "tags": [
+      "3D合集",
+      "AI合集",
+      "Discuz"
+    ],
+    "costTier": "paid",
+    "costLabel": "VIP/金币",
+    "searchNote": "Discuz 搜索需动态 formhash，建议进站检索",
+    "searchRisk": "login",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "h-mirror",
+    "name": "H-Mirror",
+    "shortName": "HM",
+    "url": "https://h-mirror.com/",
+    "category": "posts",
+    "description": "Iwara / Patreon 3D 与 2.5D 视频免费镜像，支持在线播放与直链下载。",
+    "tags": [
+      "3D视频",
+      "Iwara镜像",
+      "免费直链"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://h-mirror.com/search?q={q}",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#06b6d4"
+  },
+  {
+    "id": "18comic",
+    "name": "禁漫天堂 (18comic)",
+    "shortName": "JM",
+    "url": "https://18comic.vip/",
+    "category": "comics",
+    "description": "老牌海量中文漫画与本子站，资源齐全，支持官方 APP 及主流第三方阅读器。",
+    "tags": [
+      "漫画",
+      "本子",
+      "车牌号"
+    ],
+    "costTier": "free",
+    "costLabel": "免费(含广告)",
+    "searchUrl": "https://18comic.vip/search/photos?main_tag=0&search_query={q}",
+    "clients": [
+      "官方 Android APK",
+      "Venera",
+      "Mihon"
+    ],
+    "nsfw": true,
+    "pinned": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "wnacg",
+    "name": "绅士漫画 (wnacg)",
+    "shortName": "绅士",
+    "url": "https://www.wnacg.com/",
+    "category": "comics",
+    "description": "清爽稳定的同人志/单行本图库，提供打包下载，适配 Mihon / Venera 插件。",
+    "tags": [
+      "单行本",
+      "同人志",
+      "打包下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.wnacg.com/search/?q={q}&f=_all&s=create_time_DESC",
+    "clients": [
+      "Mihon",
+      "Venera"
+    ],
+    "nsfw": true,
+    "accent": "#3b82f6"
+  },
+  {
+    "id": "hmw8",
+    "name": "韩漫网 (hmw8)",
+    "shortName": "韩漫",
+    "url": "https://www.hmw8.com/",
+    "category": "comics",
+    "description": "专注全彩条漫与热门韩漫免费在线阅读。",
+    "tags": [
+      "全彩韩漫",
+      "条漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.hmw8.com/e/search/index.php?keyboard={q}&show=title,writer,byr&searchget=1",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": true,
+    "accent": "#e11d48"
+  },
+  {
+    "id": "8csk",
+    "name": "八叉书库 (8csk)",
+    "shortName": "八叉",
+    "url": "https://8csk.org/",
+    "category": "novels",
+    "description": "免登录直读在线书库，支持导入 Legado 阅读书源追更。",
+    "tags": [
+      "免登录",
+      "在线小说",
+      "Legado"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://8csk.org/e/search/index.php?keyboard={q}&show=title&searchget=1",
+    "clients": [
+      "Legado 阅读书源"
+    ],
+    "nsfw": true,
+    "accent": "#10b981"
+  },
+  {
+    "id": "ccnncc",
+    "name": "瞅瞅小说 (ccnncc)",
+    "shortName": "瞅瞅",
+    "url": "https://ccnncc.com/",
+    "category": "novels",
+    "description": "免登录书库，拥有 40+ 细分题材标签，方便按 XP 与题材精确筛选。",
+    "tags": [
+      "40+标签",
+      "免登录",
+      "细分检索"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://ccnncc.com/search/?q={q}",
+    "clients": [
+      "Legado 阅读书源"
+    ],
+    "nsfw": true,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "9ksw",
+    "name": "九库书屋 (9ksw)",
+    "shortName": "九库",
+    "url": "https://9ksw.com/",
+    "category": "novels",
+    "description": "轻量免登录小说站点，加载速度快，兼容 Legado 书源。",
+    "tags": [
+      "免登录",
+      "极速加载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://9ksw.com/e/search/index.php?keyboard={q}&show=title&searchget=1",
+    "clients": [
+      "Legado 阅读书源"
+    ],
+    "nsfw": true,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "kungal",
+    "name": "鲲 Galgame",
+    "shortName": "鲲Gal",
+    "url": "https://www.kungal.com/",
+    "category": "anime_community",
+    "description": "公益向 Galgame 社区、评测讨论与作品索引。",
+    "tags": [
+      "Galgame",
+      "公益社区",
+      "索引"
+    ],
+    "costTier": "free",
+    "costLabel": "公益免费",
+    "searchUrl": "https://www.kungal.com/galgame",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox",
+    "name": "ACG 盒子 (acgbox)",
+    "shortName": "盒子",
+    "url": "https://www.acgbox.link/",
+    "category": "anime_community",
+    "description": "知名二次元综合导航参考站，12 分类 180+ 站点，无恶意弹窗。",
+    "tags": [
+      "参考导航",
+      "二次元目录"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "accent": "#fb7185"
+  },
+  {
+    "id": "bangumi",
+    "name": "Bangumi 番组计划",
+    "shortName": "BGM",
+    "url": "https://bgm.tv/",
+    "category": "anime_community",
+    "description": "中文 ACG 评分、条目百科、追番进度与制作人员数据库。",
+    "tags": [
+      "番剧评分",
+      "条目百科",
+      "追番"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://bgm.tv/subject_search/{q}?cat=all",
+    "clients": [
+      "网页端",
+      "多款第三方APP"
+    ],
+    "nsfw": false,
+    "pinned": true,
+    "accent": "#f09199"
+  },
+  {
+    "id": "vndb",
+    "name": "VNDB 视觉小说库",
+    "shortName": "VNDB",
+    "url": "https://vndb.org/",
+    "category": "anime_community",
+    "description": "全球最全视觉小说/Galgame 数据库，查日文原名、社团与发售日必备。",
+    "tags": [
+      "原名反查",
+      "数据库",
+      "视觉小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://vndb.org/v?sq={q}",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "venera",
+    "name": "Venera 漫画阅读器",
+    "shortName": "VN",
+    "url": "https://github.com/venera-app/venera",
+    "category": "tools",
+    "description": "高颜值跨平台开源漫画阅读器（Windows/macOS/Android/iOS），支持多源插件。",
+    "tags": [
+      "跨平台",
+      "开源漫画",
+      "多图源"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "clients": [
+      "Win/Mac/Android/iOS"
+    ],
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "mihon",
+    "name": "Mihon (原 Tachiyomi)",
+    "shortName": "MH",
+    "url": "https://mihon.app/",
+    "category": "tools",
+    "description": "Android 端最强开源漫画阅读器继任者，插件生态极其丰富。",
+    "tags": [
+      "Android",
+      "开源漫画",
+      "插件生态"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "clients": [
+      "Android APK"
+    ],
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "legado",
+    "name": "Legado 阅读",
+    "shortName": "阅读",
+    "url": "https://github.com/gedoor/legado",
+    "category": "tools",
+    "description": "Android 端自定义书源阅读神器，支持导入八叉/瞅瞅/九库等书源无广告看书。",
+    "tags": [
+      "Android",
+      "自定义书源",
+      "小说"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "clients": [
+      "Android APK"
+    ],
+    "nsfw": false,
+    "accent": "#059669"
+  },
+  {
+    "id": "7zip",
+    "name": "7-Zip 解压工具",
+    "shortName": "7z",
+    "url": "https://www.7-zip.org/",
+    "category": "tools",
+    "description": "处理改后缀压缩包（.jpg/.mp4 → .7z）与分卷加密压缩包的首选开源工具。",
+    "tags": [
+      "分卷解压",
+      "开源免费",
+      "装机必备"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "clients": [
+      "Windows/CLI"
+    ],
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "shortName": "GH",
+    "url": "https://github.com/",
+    "category": "dev_work",
+    "description": "全球最大的开源代码托管与协作平台。",
+    "tags": [
+      "代码托管",
+      "开源",
+      "工作"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://github.com/search?q={q}",
+    "clients": [
+      "网页端",
+      "Mobile"
+    ],
+    "nsfw": false,
+    "accent": "#1e293b"
+  },
+  {
+    "id": "mdn",
+    "name": "MDN Web Docs",
+    "shortName": "MDN",
+    "url": "https://developer.mozilla.org/zh-CN/",
+    "category": "dev_work",
+    "description": "权威的前端 HTML / CSS / JavaScript 技术参考文档。",
+    "tags": [
+      "前端文档",
+      "Web标准"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://developer.mozilla.org/zh-CN/search?q={q}",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "devdocs",
+    "name": "DevDocs API 文档",
+    "shortName": "Doc",
+    "url": "https://devdocs.io/",
+    "category": "dev_work",
+    "description": "聚合上百种编程语言与框架的极速离线 API 查询文档。",
+    "tags": [
+      "API查询",
+      "离线支持",
+      "PWA"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [
+      "原生 PWA"
+    ],
+    "nsfw": false,
+    "accent": "#0f766e"
+  },
+  {
+    "id": "can-i-use",
+    "name": "Can I Use",
+    "shortName": "CIU",
+    "url": "https://caniuse.com/",
+    "category": "dev_work",
+    "description": "快速查询现代浏览器对 CSS / JS 新特性的兼容性支持表。",
+    "tags": [
+      "兼容性",
+      "前端效率"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://caniuse.com/?search={q}",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "accent": "#d97706"
+  },
+  {
+    "id": "acgbox-1",
+    "name": "pixiv",
+    "shortName": "pi",
+    "url": "https://www.pixiv.net",
+    "category": "artworks",
+    "description": "pixiv",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-2",
+    "name": "Danbooru",
+    "shortName": "Da",
+    "url": "https://danbooru.donmai.us",
+    "category": "artworks",
+    "description": "Danbooru",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-3",
+    "name": "Cosine Gallery",
+    "shortName": "Co",
+    "url": "https://pic.cosine.ren",
+    "category": "artworks",
+    "description": "精选 ACG 好图壁纸集",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-4",
+    "name": "ManyACG",
+    "shortName": "Ma",
+    "url": "https://manyacg.top",
+    "category": "artworks",
+    "description": "二次元美图精选收集",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-5",
+    "name": "萌哩",
+    "shortName": "萌哩",
+    "url": "https://www.moely.link",
+    "category": "artworks",
+    "description": "萌萌的二次元美图",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-6",
+    "name": "随机LOLI",
+    "shortName": "随机",
+    "url": "https://1st.moe/sion-bot/random-lolis",
+    "category": "artworks",
+    "description": "LOLI美图欣赏",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-7",
+    "name": "SomeACG",
+    "shortName": "So",
+    "url": "https://www.someacg.top",
+    "category": "artworks",
+    "description": "SomeACG",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-8",
+    "name": "动漫图片和壁纸",
+    "shortName": "动漫",
+    "url": "https://anime-pictures.net",
+    "category": "artworks",
+    "description": "全年龄的动漫图片和壁纸",
+    "tags": [
+      "次元美图"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "acgbox-9",
+    "name": "次元城动画",
+    "shortName": "次元",
+    "url": "https://www.cycani.org",
+    "category": "anime_stream",
+    "description": "次元城动画",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-10",
+    "name": "橘子动漫",
+    "shortName": "橘子",
+    "url": "https://www.mgnacg.com",
+    "category": "anime_stream",
+    "description": "橘子动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-11",
+    "name": "girigiri爱动漫",
+    "shortName": "gi",
+    "url": "https://bgm.girigirilove.com",
+    "category": "anime_stream",
+    "description": "girigiri爱动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-12",
+    "name": "月之祠",
+    "shortName": "月之",
+    "url": "https://www.moonci.com",
+    "category": "anime_stream",
+    "description": "月之祠动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-13",
+    "name": "TvTFun",
+    "shortName": "Tv",
+    "url": "https://www.tvtfun.net",
+    "category": "anime_stream",
+    "description": "番剧自由 从这里开始",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-14",
+    "name": "柒番",
+    "shortName": "柒番",
+    "url": "https://www.qifun.cc",
+    "category": "anime_stream",
+    "description": "柒番",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-15",
+    "name": "二矿动漫",
+    "shortName": "二矿",
+    "url": "https://www.2rk.cc",
+    "category": "anime_stream",
+    "description": "二矿动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-16",
+    "name": "番薯动漫",
+    "shortName": "番薯",
+    "url": "https://www.fsdm02.com",
+    "category": "anime_stream",
+    "description": "番薯动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-17",
+    "name": "佩可爱动漫",
+    "shortName": "佩可",
+    "url": "https://acg.pekolove.net",
+    "category": "anime_stream",
+    "description": "佩可爱动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-18",
+    "name": "喵物次元",
+    "shortName": "喵物",
+    "url": "https://www.mwcy.net",
+    "category": "anime_stream",
+    "description": "喵物次元",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-19",
+    "name": "MuteFun动漫网站",
+    "shortName": "Mu",
+    "url": "https://www.mutedm.com",
+    "category": "anime_stream",
+    "description": "MuteFun动漫网站",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-20",
+    "name": "Animoe动漫",
+    "shortName": "An",
+    "url": "https://animoe.org",
+    "category": "anime_stream",
+    "description": "Animoe动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-21",
+    "name": "嗷呜动漫",
+    "shortName": "嗷呜",
+    "url": "https://www.aowu.tv",
+    "category": "anime_stream",
+    "description": "嗷呜动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-22",
+    "name": "稀饭动漫",
+    "shortName": "稀饭",
+    "url": "https://next.xifanacg.com",
+    "category": "anime_stream",
+    "description": "稀饭动漫",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-23",
+    "name": "アニメ新番組",
+    "shortName": "アニ",
+    "url": "https://bangumi.online",
+    "category": "anime_stream",
+    "description": "アニメ新番組 [关闭注册]",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-24",
+    "name": "动画疯",
+    "shortName": "动画",
+    "url": "https://ani.gamer.com.tw",
+    "category": "anime_stream",
+    "description": "动画疯 [地区限制]",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-25",
+    "name": "AcFun番剧",
+    "shortName": "Ac",
+    "url": "https://www.acfun.cn/bangumilist",
+    "category": "anime_stream",
+    "description": "AcFun番剧 [付费]",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "points",
+    "costLabel": "积分/赞助",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-26",
+    "name": "哔哩哔哩动画",
+    "shortName": "哔哩",
+    "url": "https://www.bilibili.com/anime",
+    "category": "anime_stream",
+    "description": "哔哩哔哩动画 [会员]",
+    "tags": [
+      "在线动漫"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "acgbox-27",
+    "name": "动漫花园资源网",
+    "shortName": "动漫",
+    "url": "https://share.dmhy.org",
+    "category": "anime_download",
+    "description": "动漫花园资源网",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-28",
+    "name": "Nyaa",
+    "shortName": "Ny",
+    "url": "https://nyaa.si",
+    "category": "anime_download",
+    "description": "Nyaa.si",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-29",
+    "name": "萌番组",
+    "shortName": "萌番",
+    "url": "https://bangumi.moe",
+    "category": "anime_download",
+    "description": "萌番组",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-30",
+    "name": "蜜柑计划",
+    "shortName": "蜜柑",
+    "url": "https://mikanime.tv",
+    "category": "anime_download",
+    "description": "蜜柑计划",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-31",
+    "name": "末日动漫资源库",
+    "shortName": "末日",
+    "url": "https://share.acgnx.se",
+    "category": "anime_download",
+    "description": "末日动漫资源库",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-32",
+    "name": "ANi Open",
+    "shortName": "AN",
+    "url": "https://openani.an-i.workers.dev",
+    "category": "anime_download",
+    "description": "ANi Open",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-33",
+    "name": "Anime字幕论坛",
+    "shortName": "An",
+    "url": "https://bbs.acgrip.com",
+    "category": "anime_download",
+    "description": "Anime字幕论坛",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-34",
+    "name": "射手网(伪)",
+    "shortName": "射手",
+    "url": "https://assrt.net",
+    "category": "anime_download",
+    "description": "射手网(伪) [字幕]",
+    "tags": [
+      "动漫下载"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "acgbox-35",
+    "name": "再漫画",
+    "shortName": "再漫",
+    "url": "https://manhua.zaimanhua.com",
+    "category": "comics_sfw",
+    "description": "再漫画",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-36",
+    "name": "vomic漫画",
+    "shortName": "vo",
+    "url": "https://vomicmh.com",
+    "category": "comics_sfw",
+    "description": "vomic漫画 [需登录]",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "checkin",
+    "costLabel": "需登录/签到",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-37",
+    "name": "MYCOMIC",
+    "shortName": "MY",
+    "url": "https://mycomic.com",
+    "category": "comics_sfw",
+    "description": "MYCOMIC",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-38",
+    "name": "Komiic漫画",
+    "shortName": "Ko",
+    "url": "https://komiic.com",
+    "category": "comics_sfw",
+    "description": "Komiic漫画",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-39",
+    "name": "拷贝漫画",
+    "shortName": "拷贝",
+    "url": "https://www.copy3000.com",
+    "category": "comics_sfw",
+    "description": "拷贝漫画",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-40",
+    "name": "搜漫",
+    "shortName": "搜漫",
+    "url": "https://www.hisoman.com",
+    "category": "comics_sfw",
+    "description": "搜漫",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-41",
+    "name": "漫画柜",
+    "shortName": "漫画",
+    "url": "https://www.manhuagui.com",
+    "category": "comics_sfw",
+    "description": "漫画柜",
+    "tags": [
+      "在线漫画"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb923c"
+  },
+  {
+    "id": "acgbox-42",
+    "name": "真白萌",
+    "shortName": "真白",
+    "url": "https://masiro.me",
+    "category": "light_novels",
+    "description": "真白萌",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-43",
+    "name": "轻小说文库 EPUB 下载+",
+    "shortName": "轻小",
+    "url": "https://mojimoon.github.io/wenku8/index.html",
+    "category": "light_novels",
+    "description": "轻小说文库 EPUB 下载+",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-44",
+    "name": "L5仓鼠症候群",
+    "shortName": "L5",
+    "url": "https://hamster-epub.netlify.app",
+    "category": "light_novels",
+    "description": "epub 轻小说下载",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-45",
+    "name": "轻小说机翻机器人",
+    "shortName": "轻小",
+    "url": "https://n.novelia.cc",
+    "category": "light_novels",
+    "description": "轻小说机翻机器人",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-46",
+    "name": "轻书架",
+    "shortName": "轻书",
+    "url": "https://www.lightnovel.love",
+    "category": "light_novels",
+    "description": "轻书架",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-47",
+    "name": "ESJ Zone",
+    "shortName": "ES",
+    "url": "https://www.esjzone.one",
+    "category": "light_novels",
+    "description": "ESJ Zone",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-48",
+    "name": "轻之国度",
+    "shortName": "轻之",
+    "url": "https://www.lightnovel.fun",
+    "category": "light_novels",
+    "description": "轻之国度",
+    "tags": [
+      "日轻小说"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#34d399"
+  },
+  {
+    "id": "acgbox-49",
+    "name": "EoHut 电光小屋",
+    "shortName": "Eo",
+    "url": "https://www.eohut.com",
+    "category": "acg_resources",
+    "description": "EoHut 电光小屋",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-50",
+    "name": "ARIA-COMPANY",
+    "shortName": "AR",
+    "url": "https://aqua-aria.company",
+    "category": "acg_resources",
+    "description": "ARIA-COMPANY，ACGN资源分享",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-51",
+    "name": "Nico动漫",
+    "shortName": "Ni",
+    "url": "https://nekoyo.co",
+    "category": "acg_resources",
+    "description": "在线动漫、漫画、轻小说",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-52",
+    "name": "次元狗",
+    "shortName": "次元",
+    "url": "https://www.acgndog.com",
+    "category": "acg_resources",
+    "description": "动漫，漫画，游戏，轻小说下载",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-53",
+    "name": "Panda Backup",
+    "shortName": "Pa",
+    "url": "https://panda.chaika.moe",
+    "category": "acg_resources",
+    "description": "Panda Backup",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-54",
+    "name": "琉璃神社",
+    "shortName": "琉璃",
+    "url": "https://hacg.diy/wp",
+    "category": "acg_resources",
+    "description": "琉璃神社 [假]",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-55",
+    "name": "次元W",
+    "shortName": "次元",
+    "url": "https://jigenw.com",
+    "category": "acg_resources",
+    "description": "次元w",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-56",
+    "name": "IACG.RIP",
+    "shortName": "IA",
+    "url": "https://b.iacg.site",
+    "category": "acg_resources",
+    "description": "IACG.RIP",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-57",
+    "name": "萌次元",
+    "shortName": "萌次",
+    "url": "https://www.mcy010.blog",
+    "category": "acg_resources",
+    "description": "萌次元",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-58",
+    "name": "芯幻",
+    "shortName": "芯幻",
+    "url": "https://xhcyx.com",
+    "category": "acg_resources",
+    "description": "芯幻",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-59",
+    "name": "终音社",
+    "shortName": "终音",
+    "url": "https://www.mikuclub.click",
+    "category": "acg_resources",
+    "description": "终音社",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-60",
+    "name": "琉璃神社",
+    "shortName": "琉璃",
+    "url": "https://www.hacg.icu/wp",
+    "category": "acg_resources",
+    "description": "琉璃神社",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-61",
+    "name": "灵梦御所",
+    "shortName": "灵梦",
+    "url": "https://blog.reimu.net",
+    "category": "acg_resources",
+    "description": "灵梦御所",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-62",
+    "name": "绅士仓库",
+    "shortName": "绅士",
+    "url": "https://cangku.moe",
+    "category": "acg_resources",
+    "description": "绅士仓库 [登录]",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "checkin",
+    "costLabel": "需登录/签到",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-63",
+    "name": "幻想次元",
+    "shortName": "幻想",
+    "url": "https://hxcy.top",
+    "category": "acg_resources",
+    "description": "幻想次元 [邀请注册]",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-64",
+    "name": "绅士之庭",
+    "shortName": "绅士",
+    "url": "https://gmgard.com",
+    "category": "acg_resources",
+    "description": "绅士之庭 [邀请注册]",
+    "tags": [
+      "ACG资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "acgbox-65",
+    "name": "次元图书馆",
+    "shortName": "次元",
+    "url": "https://pan.cycg.xyz",
+    "category": "acg_resources",
+    "description": "次元图书馆",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-66",
+    "name": "SunshineBoy的杂乱仓库",
+    "shortName": "Su",
+    "url": "https://openlist.sunshineboy.top",
+    "category": "acg_resources",
+    "description": "SunshineBoy的杂乱仓库",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-67",
+    "name": "ACGDB",
+    "shortName": "AC",
+    "url": "https://acgdb.de",
+    "category": "acg_resources",
+    "description": "ACG Database",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-68",
+    "name": "七米蓝的仓库",
+    "shortName": "七米",
+    "url": "https://al.chirmyram.com",
+    "category": "acg_resources",
+    "description": "七米蓝的仓库",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-69",
+    "name": "洛琪希图书馆",
+    "shortName": "洛琪",
+    "url": "https://pan.roxylib.com",
+    "category": "acg_resources",
+    "description": "洛琪希图书馆",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-70",
+    "name": "萌芽の资料库",
+    "shortName": "萌芽",
+    "url": "https://openlist.amemoes.com.cn",
+    "category": "acg_resources",
+    "description": "萌芽の资料库 - by AMEMOES",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-71",
+    "name": "05的资源小站",
+    "shortName": "05",
+    "url": "https://05fx.022016.xyz",
+    "category": "acg_resources",
+    "description": "05的资源小站",
+    "tags": [
+      "ACG网盘"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "acgbox-72",
+    "name": "Nyaa [里]",
+    "shortName": "Ny",
+    "url": "https://sukebei.nyaa.si/?f=0&c=1_0&q=",
+    "category": "acg_resources",
+    "description": "Nyaa里站 [网页有xx广告]",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-73",
+    "name": "AniRena",
+    "shortName": "An",
+    "url": "https://www.anirena.com",
+    "category": "acg_resources",
+    "description": "AniRena",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-74",
+    "name": "AniX.Moe",
+    "shortName": "An",
+    "url": "https://www.anix.moe/sort-1-1.html",
+    "category": "acg_resources",
+    "description": "AniX.Moe",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-75",
+    "name": "GGBases",
+    "shortName": "GG",
+    "url": "https://ggb.dlgal.com",
+    "category": "acg_resources",
+    "description": "GGBases",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-76",
+    "name": "东京图书馆",
+    "shortName": "东京",
+    "url": "https://www.tokyotosho.info",
+    "category": "acg_resources",
+    "description": "东京图书馆",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-77",
+    "name": "WhatsLink",
+    "shortName": "Wh",
+    "url": "https://whatslink.info",
+    "category": "acg_resources",
+    "description": "预览下载链接内容",
+    "tags": [
+      "磁力资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "acgbox-78",
+    "name": "GalError",
+    "shortName": "Ga",
+    "url": "https://www.galerror.top",
+    "category": "acg_games",
+    "description": "Galgame报错解决百科",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-79",
+    "name": "ACGMOMO",
+    "shortName": "AC",
+    "url": "https://acgmomo.com",
+    "category": "acg_games",
+    "description": "自建网盘黄油站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-80",
+    "name": "ACG聚合搜索",
+    "shortName": "AC",
+    "url": "https://searchbox.club",
+    "category": "acg_games",
+    "description": "ACG聚合搜索",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-81",
+    "name": "Gal领域",
+    "shortName": "Ga",
+    "url": "https://galgame.zone",
+    "category": "acg_games",
+    "description": "Gal领域",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-82",
+    "name": "OCEBOX",
+    "shortName": "OC",
+    "url": "https://ocebox.fun",
+    "category": "acg_games",
+    "description": "免费ACG游戏社区",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-83",
+    "name": "Sharotto",
+    "shortName": "Sh",
+    "url": "https://www.sharotto.com",
+    "category": "acg_games",
+    "description": "Galgame 信息数据库",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-84",
+    "name": "玖黎ACG",
+    "shortName": "玖黎",
+    "url": "https://jiuliacg.com",
+    "category": "acg_games",
+    "description": "玖黎ACG",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-85",
+    "name": "Galgame 聚合搜索",
+    "shortName": "Ga",
+    "url": "https://www.searchgal.top",
+    "category": "acg_games",
+    "description": "Galgame 聚合搜索",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-86",
+    "name": "0721Galgame",
+    "shortName": "07",
+    "url": "https://nn0721.com",
+    "category": "acg_games",
+    "description": "一个简洁美丽的Galgame资源站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-87",
+    "name": "KisuGal",
+    "shortName": "Ki",
+    "url": "https://kisuacg.moe",
+    "category": "acg_games",
+    "description": "一站式Galgame资源下载平台",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-88",
+    "name": "团子ACG",
+    "shortName": "团子",
+    "url": "https://tuanziacg.xyz",
+    "category": "acg_games",
+    "description": "galgame免费下载",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-89",
+    "name": "Hikarinagi",
+    "shortName": "Hi",
+    "url": "https://www.hikarinagi.org",
+    "category": "acg_games",
+    "description": "一个ACGN文化社区",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-90",
+    "name": "摸鱼茶话会",
+    "shortName": "摸鱼",
+    "url": "https://luol.top",
+    "category": "acg_games",
+    "description": "摸鱼茶话会",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-91",
+    "name": "NekoGAL",
+    "shortName": "Ne",
+    "url": "https://www.nekogal.com",
+    "category": "acg_games",
+    "description": "NekoGAL",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-92",
+    "name": "Nysoure",
+    "shortName": "Ny",
+    "url": "https://nysoure.com",
+    "category": "acg_games",
+    "description": "一个galgame分享网站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-93",
+    "name": "LyCorisGAL",
+    "shortName": "Ly",
+    "url": "https://www.lycorisgal.com",
+    "category": "acg_games",
+    "description": "Gal引导资源站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-94",
+    "name": "次元小屋",
+    "shortName": "次元",
+    "url": "https://cyxw.xyz",
+    "category": "acg_games",
+    "description": "次元小屋",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-95",
+    "name": "宮代千紗",
+    "shortName": "宮代",
+    "url": "https://gdqs.org",
+    "category": "acg_games",
+    "description": "宮代千紗",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-96",
+    "name": "ACG游戏姬",
+    "shortName": "AC",
+    "url": "https://acgyxjvip.com",
+    "category": "acg_games",
+    "description": "ACG游戏姬",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-97",
+    "name": "稻荷GAL",
+    "shortName": "稻荷",
+    "url": "https://inarigal.com",
+    "category": "acg_games",
+    "description": "Galgame资源分享社区",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-98",
+    "name": "鲲 Galgame 补丁",
+    "shortName": "鲲G",
+    "url": "https://www.moyu.moe",
+    "category": "acg_games",
+    "description": "Galgame 补丁资源下载站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-99",
+    "name": "喵源领域",
+    "shortName": "喵源",
+    "url": "https://www.nyantaku.com",
+    "category": "acg_games",
+    "description": "喵源领域",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-100",
+    "name": "Singureo",
+    "shortName": "Si",
+    "url": "https://www.singureo.com",
+    "category": "acg_games",
+    "description": "galgame资源网站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-101",
+    "name": "Galgamex",
+    "shortName": "Ga",
+    "url": "https://www.galgamex.net",
+    "category": "acg_games",
+    "description": "Galgamex 二次元资源分享社区",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-102",
+    "name": "书音的图书馆",
+    "shortName": "书音",
+    "url": "https://www.shionlib.com",
+    "category": "acg_games",
+    "description": "书音的图书馆",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-103",
+    "name": "绮梦ACG",
+    "shortName": "绮梦",
+    "url": "https://game.acgs.one",
+    "category": "acg_games",
+    "description": "绮梦ACG",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-104",
+    "name": "月谣",
+    "shortName": "月谣",
+    "url": "https://www.sayafx.vip",
+    "category": "acg_games",
+    "description": "免费GalGame资源站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-105",
+    "name": "xxacg",
+    "shortName": "xx",
+    "url": "https://xxacg.net",
+    "category": "acg_games",
+    "description": "xxacg",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-106",
+    "name": "GGS",
+    "shortName": "GG",
+    "url": "https://gal.saop.cc",
+    "category": "acg_games",
+    "description": "GGS",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-107",
+    "name": "梓澪の妙妙屋",
+    "shortName": "梓澪",
+    "url": "https://gal.games",
+    "category": "acg_games",
+    "description": "梓澪の妙妙屋",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-108",
+    "name": "GALXP",
+    "shortName": "GA",
+    "url": "https://www.galdl.com",
+    "category": "acg_games",
+    "description": "GALXP",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-109",
+    "name": "wafuwafu",
+    "shortName": "wa",
+    "url": "https://wafuwafu.com",
+    "category": "acg_games",
+    "description": "wafuwafu",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-110",
+    "name": "青桔网",
+    "shortName": "青桔",
+    "url": "https://www.qingju.org",
+    "category": "acg_games",
+    "description": "青桔网",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-111",
+    "name": "TouchGAL",
+    "shortName": "To",
+    "url": "https://www.touchgal.ink",
+    "category": "acg_games",
+    "description": "TouchGAL",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-112",
+    "name": "在线黄油列表",
+    "shortName": "在线",
+    "url": "https://amemei9f-lists.top/posts/49e03169/#%E9%81%8A%E6%88%B2%E6%B8%85%E5%96%AE",
+    "category": "acg_games",
+    "description": "在线黄油列表",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-113",
+    "name": "小鳥遊曉の会员制餐厅",
+    "shortName": "小鳥",
+    "url": "https://t-satoru.top",
+    "category": "acg_games",
+    "description": "小鳥遊曉の会员制餐厅",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-114",
+    "name": "Galgamer",
+    "shortName": "Ga",
+    "url": "https://galgamer.moe",
+    "category": "acg_games",
+    "description": "Galgamer 重樱小学堂",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-115",
+    "name": "失落的小站",
+    "shortName": "失落",
+    "url": "https://www.shinnku.com",
+    "category": "acg_games",
+    "description": "失落的小站",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-116",
+    "name": "量子ACG",
+    "shortName": "量子",
+    "url": "https://lzacg.cc",
+    "category": "acg_games",
+    "description": "量子ACG",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-117",
+    "name": "绅士天堂",
+    "shortName": "绅士",
+    "url": "https://www.chgal.com",
+    "category": "acg_games",
+    "description": "绅士天堂",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-118",
+    "name": "ACGNGAME",
+    "shortName": "AC",
+    "url": "https://acgn.games",
+    "category": "acg_games",
+    "description": "ACGNGAME",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-119",
+    "name": "ACG嘤嘤怪",
+    "shortName": "AC",
+    "url": "https://acgyyg.ru",
+    "category": "acg_games",
+    "description": "ACG嘤嘤怪",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-120",
+    "name": "2DJGAME",
+    "shortName": "2D",
+    "url": "https://bbs4.2djgame.net/home/forum.php",
+    "category": "acg_games",
+    "description": "2DJGAME",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-121",
+    "name": "忧郁的loli/忧郁的弟弟",
+    "shortName": "忧郁",
+    "url": "https://www.ttloli.com",
+    "category": "acg_games",
+    "description": "忧郁的loli",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-122",
+    "name": "GAL图书馆",
+    "shortName": "GA",
+    "url": "https://gallibrary.pw",
+    "category": "acg_games",
+    "description": "GAL图书馆",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-123",
+    "name": "2DFan",
+    "shortName": "2D",
+    "url": "https://2dfmax.top",
+    "category": "acg_games",
+    "description": "2DFan [补丁攻略存档]",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-124",
+    "name": "澄空学园",
+    "shortName": "澄空",
+    "url": "https://bbs.sumisora.net",
+    "category": "acg_games",
+    "description": "澄空学园",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-125",
+    "name": "Mikocon",
+    "shortName": "Mi",
+    "url": "https://www.mikocon.com",
+    "category": "acg_games",
+    "description": "Mikocon",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-126",
+    "name": "初音的青葱",
+    "shortName": "初音",
+    "url": "https://fufugal.com",
+    "category": "acg_games",
+    "description": "初音的青葱 [注册后需要等两个月才能看到链接]",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-127",
+    "name": "ACG港湾",
+    "shortName": "AC",
+    "url": "https://www.acggw.me",
+    "category": "acg_games",
+    "description": "ACG港湾",
+    "tags": [
+      "ACG游戏"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "acgbox-128",
+    "name": "御爱同萌",
+    "shortName": "御爱",
+    "url": "https://www.ai2.moe",
+    "category": "acg_community",
+    "description": "御爱同萌",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-129",
+    "name": "喵普拉斯",
+    "shortName": "喵普",
+    "url": "https://www.neko-plus.net",
+    "category": "acg_community",
+    "description": "喵普拉斯 NekoPlus",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-130",
+    "name": "悠风社",
+    "shortName": "悠风",
+    "url": "https://www.yep621.com",
+    "category": "acg_community",
+    "description": "悠风社，泛二次元讨论社区",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-131",
+    "name": "F岛",
+    "shortName": "F岛",
+    "url": "https://acgfdao.com",
+    "category": "acg_community",
+    "description": "F岛二次元社区",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-132",
+    "name": "Sperteの次元茶馆",
+    "shortName": "Sp",
+    "url": "https://www.cycg.xyz",
+    "category": "acg_community",
+    "description": "Sperteの次元茶馆",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-133",
+    "name": "翼梦舞城",
+    "shortName": "翼梦",
+    "url": "http://www.otomedream.com",
+    "category": "acg_community",
+    "description": "翼梦舞城",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-134",
+    "name": "ZodGame",
+    "shortName": "Zo",
+    "url": "https://zodgame.xyz",
+    "category": "acg_community",
+    "description": "ZodGame [关闭注册]",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-135",
+    "name": "灵梦广场",
+    "shortName": "灵梦",
+    "url": "https://bbs.reimu.net",
+    "category": "acg_community",
+    "description": "灵梦广场",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-136",
+    "name": "天使动漫论坛",
+    "shortName": "天使",
+    "url": "https://www.tsdm39.com",
+    "category": "acg_community",
+    "description": "天使动漫论坛",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-137",
+    "name": "ACGN社区",
+    "shortName": "AC",
+    "url": "https://www.acgnsq.com",
+    "category": "acg_community",
+    "description": "ACGN社区",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-138",
+    "name": "资源统筹局",
+    "shortName": "资源",
+    "url": "https://gkdworld.eu.org",
+    "category": "acg_community",
+    "description": "资源统筹局 [答题注册]",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-139",
+    "name": "梦次元",
+    "shortName": "梦次",
+    "url": "http://mcyacg.com",
+    "category": "acg_community",
+    "description": "梦次元",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-140",
+    "name": "绅士同盟",
+    "shortName": "绅士",
+    "url": "https://sstm.moe",
+    "category": "acg_community",
+    "description": "绅士同盟",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-141",
+    "name": "KDays论坛",
+    "shortName": "KD",
+    "url": "https://bbs2.kdays.net",
+    "category": "acg_community",
+    "description": "KDays论坛",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-142",
+    "name": "星空论坛",
+    "shortName": "星空",
+    "url": "https://bbs2.seikuu.com",
+    "category": "acg_community",
+    "description": "星空论坛",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-143",
+    "name": "绯月ScarletMoon",
+    "shortName": "绯月",
+    "url": "https://bbs.kfpromax.com",
+    "category": "acg_community",
+    "description": "绯月论坛",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-144",
+    "name": "天使二次元",
+    "shortName": "天使",
+    "url": "https://bbs.tianshi.one",
+    "category": "acg_community",
+    "description": "天使二次元",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-145",
+    "name": "ACG里世界",
+    "shortName": "AC",
+    "url": "https://acgn.zone",
+    "category": "acg_community",
+    "description": "ACG里世界",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-146",
+    "name": "南+ South Plus",
+    "shortName": "南+",
+    "url": "https://www.blue-plus.net",
+    "category": "acg_community",
+    "description": "南+ South Plus",
+    "tags": [
+      "ACG社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "acgbox-147",
+    "name": "ASMR Online",
+    "shortName": "AS",
+    "url": "https://asmr-300.com",
+    "category": "asmr",
+    "description": "ASMR Online [荐]",
+    "tags": [
+      "ASMR"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "acgbox-148",
+    "name": "ASMR基佬中心",
+    "shortName": "AS",
+    "url": "https://www.asmr.pw",
+    "category": "asmr",
+    "description": "ASMR基佬中心 [网盘]",
+    "tags": [
+      "ASMR"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "acgbox-149",
+    "name": "绮梦·还悠",
+    "shortName": "绮梦",
+    "url": "https://huanyou.zip",
+    "category": "asmr",
+    "description": "GAL 动漫原声带以及ASMR的综合收录站",
+    "tags": [
+      "ASMR"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "acgbox-150",
+    "name": "雨中小町",
+    "shortName": "雨中",
+    "url": "https://www.rainkmc.com",
+    "category": "asmr",
+    "description": "雨中小町",
+    "tags": [
+      "ASMR"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "acgbox-151",
+    "name": "禁漫天堂",
+    "shortName": "禁漫",
+    "url": "https://jmcomicog.net",
+    "category": "comics",
+    "description": "禁漫天堂发布页",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-152",
+    "name": "nhentai",
+    "shortName": "nh",
+    "url": "https://nhentai.net",
+    "category": "comics",
+    "description": "nhentai",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-153",
+    "name": "ExHentai",
+    "shortName": "Ex",
+    "url": "https://exhentai.org",
+    "category": "comics",
+    "description": "ExHentai [需在表站注册账号]",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-154",
+    "name": "NiceCat",
+    "shortName": "Ni",
+    "url": "https://web.nicecat.cc",
+    "category": "comics",
+    "description": "NiceCat",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-155",
+    "name": "SchaleNetwork",
+    "shortName": "Sc",
+    "url": "https://gitgud.io/Schale/schale-network",
+    "category": "comics",
+    "description": "SchaleNetwork 发布页 [英译]",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-156",
+    "name": "NoyAcg",
+    "shortName": "No",
+    "url": "https://noy1.top",
+    "category": "comics",
+    "description": "NoyAcg [需要登录]",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "checkin",
+    "costLabel": "需登录/签到",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-157",
+    "name": "哔咔漫画",
+    "shortName": "哔咔",
+    "url": "https://manhuapica.com/pdownload",
+    "category": "comics",
+    "description": "哔咔漫画 [登录]",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "checkin",
+    "costLabel": "需登录/签到",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "acgbox-158",
+    "name": "绅士漫画",
+    "shortName": "绅士",
+    "url": "https://wnacg01.link",
+    "category": "comics",
+    "description": "绅士漫画发布页",
+    "tags": [
+      "在线本子"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  }
+]
