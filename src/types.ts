@@ -62,6 +62,7 @@ export interface AppearanceSettings {
   showDescription: boolean;
   showDomain: boolean;
   showBadges: boolean;
+  enablePortalConfirm: boolean;
   wallpaperUrl: string;
   wallpaperBlur: number;
   wallpaperOpacity: number;

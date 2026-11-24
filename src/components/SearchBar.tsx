@@ -8,6 +8,7 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   searchableSites: SiteItem[];
   mode: AppMode;
+  onNavigate: (url: string, site: SiteItem, keyword?: string) => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -15,6 +16,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
   searchableSites,
   mode,
+  onNavigate,
 }) => {
   const cleanedInfo = useMemo(() => cleanSearchQuery(query), [query]);
   const [useRaw, setUseRaw] = React.useState(false);
@@ -111,6 +113,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     href={targetHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+                        return;
+                      }
+                      e.preventDefault();
+                      onNavigate(targetHref, site, effectiveQuery);
+                    }}
                     title={site.searchNote || `在 ${site.name} 中搜索「${effectiveQuery}」`}
                     className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium transition-all hover:-translate-y-0.5 ${
                       isRisk

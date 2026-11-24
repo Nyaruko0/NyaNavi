@@ -19,6 +19,7 @@ export const DEFAULT_APPEARANCE: AppearanceSettings = {
   showDescription: true,
   showDomain: true,
   showBadges: true,
+  enablePortalConfirm: true,
   wallpaperUrl: '',
   wallpaperBlur: 8,
   wallpaperOpacity: 18,
@@ -294,6 +295,15 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                   type="checkbox"
                   checked={settings.showBadges}
                   onChange={(e) => update('showBadges', e.target.checked)}
+                  className="h-4 w-4 rounded accent-[var(--nya-accent)]"
+                />
+              </label>
+              <label className="flex cursor-pointer items-center justify-between">
+                <span className="text-slate-600 dark:text-slate-300">开启二次元传送门跳转确认</span>
+                <input
+                  type="checkbox"
+                  checked={settings.enablePortalConfirm}
+                  onChange={(e) => update('enablePortalConfirm', e.target.checked)}
                   className="h-4 w-4 rounded accent-[var(--nya-accent)]"
                 />
               </label>

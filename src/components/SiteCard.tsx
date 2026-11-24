@@ -18,6 +18,7 @@ interface SiteCardProps {
   cleanedQuery?: string;
   canManage: boolean;
   appearance: AppearanceSettings;
+  onNavigate: (url: string, site: SiteItem, keyword?: string) => void;
   onTogglePin: (id: string) => void;
   onEdit: (site: SiteItem) => void;
   onDelete: (id: string) => void;
@@ -57,6 +58,7 @@ export const SiteCard: React.FC<SiteCardProps> = ({
   cleanedQuery,
   canManage,
   appearance,
+  onNavigate,
   onTogglePin,
   onEdit,
   onDelete,
@@ -64,6 +66,16 @@ export const SiteCard: React.FC<SiteCardProps> = ({
 }) => {
   const host = getHostname(site.url);
   const isCompact = appearance.density === 'compact';
+
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    url: string,
+    keyword?: string,
+  ) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    onNavigate(url, site, keyword);
+  };
 
   const statusDot = (() => {
     if (!health || health.state === 'idle') {
@@ -98,6 +110,7 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             href={site.url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => handleLinkClick(e, site.url)}
             className="flex min-w-0 flex-1 items-center gap-3"
           >
             <SiteIcon
@@ -232,6 +245,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
               href={buildSearchUrl(site.searchUrl, cleanedQuery)}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) =>
+                handleLinkClick(e, buildSearchUrl(site.searchUrl!, cleanedQuery), cleanedQuery)
+              }
               title={site.searchNote || `在 ${site.name} 搜索「${cleanedQuery}」`}
               className="inline-flex items-center gap-1 rounded-lg bg-[var(--nya-accent-soft)] px-2 py-1 text-[11px] font-medium text-[var(--nya-accent)] transition hover:opacity-85"
             >
@@ -243,6 +259,7 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             href={site.url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => handleLinkClick(e, site.url)}
             className="inline-flex items-center gap-0.5 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             访问

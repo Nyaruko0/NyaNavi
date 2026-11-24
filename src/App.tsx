@@ -37,6 +37,12 @@ import {
   DEFAULT_APPEARANCE,
   SettingsDrawer,
 } from './components/SettingsDrawer';
+import {
+  pickPortalMessage,
+  PortalModal,
+  type PortalTarget,
+} from './components/PortalModal';
+import type { PortalMessage } from './data/portalMessages';
 
 const STORAGE_PINS_KEY = 'nyanavi_pins_v1';
 const STORAGE_MODE_KEY = 'nyanavi_mode_v1';
@@ -118,6 +124,8 @@ export default function App() {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [editingSite, setEditingSite] = useState<SiteItem | null>(null);
+  const [portalTarget, setPortalTarget] = useState<PortalTarget | null>(null);
+  const [portalMessage, setPortalMessage] = useState<PortalMessage | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
   const canManage = adminVerified && Boolean(ghConfig);
@@ -535,6 +543,25 @@ export default function App() {
     showToast('已退出站长模式，当前为访客只读视图');
   }, [showToast]);
 
+  const handleNavigate = useCallback(
+    (url: string, site: SiteItem, keyword?: string) => {
+      // 工作模式或关闭传送门开关时直接新标签页静默打开
+      if (mode === 'work' || !appearance.enablePortalConfirm) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      setPortalTarget({ url, site, keyword });
+      setPortalMessage((prev) => pickPortalMessage(prev?.id));
+    },
+    [appearance.enablePortalConfirm, mode],
+  );
+
+  const handleConfirmPortal = useCallback(() => {
+    if (!portalTarget) return;
+    window.open(portalTarget.url, '_blank', 'noopener,noreferrer');
+    setPortalTarget(null);
+  }, [portalTarget]);
+
   const gridColsClass =
     appearance.columns === 2
       ? 'grid-cols-1 sm:grid-cols-2'
@@ -743,6 +770,7 @@ export default function App() {
               onChange={setQuery}
               searchableSites={modeSites}
               mode={mode}
+              onNavigate={handleNavigate}
             />
 
             {groupedSections.length === 0 || groupedSections.every((g) => g.items.length === 0) ? (
@@ -806,6 +834,7 @@ export default function App() {
                           cleanedQuery={cleanedQuery}
                           canManage={canManage}
                           appearance={appearance}
+                          onNavigate={handleNavigate}
                           onTogglePin={handleTogglePin}
                           onEdit={(s) => {
                             setEditingSite(s);
@@ -871,6 +900,15 @@ export default function App() {
           showToast('已恢复默认外观设置');
         }}
         onClose={() => setSettingsOpen(false)}
+      />
+
+      {/* 二次元地名传送门跳转确认弹窗 */}
+      <PortalModal
+        target={portalTarget}
+        message={portalMessage}
+        onReroll={() => setPortalMessage((prev) => pickPortalMessage(prev?.id))}
+        onConfirm={handleConfirmPortal}
+        onClose={() => setPortalTarget(null)}
       />
 
       {/* 轻量 Toast 提示 */}
