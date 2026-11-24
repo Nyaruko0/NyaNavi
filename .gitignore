@@ -6,4 +6,5 @@ dist-ssr
 .env
 .env.*
 HANDOFF.md
+AGENTS.md
 
