@@ -6954,7 +6954,7 @@
     "name": "Telegram",
     "shortName": "Te",
     "url": "https://telegram.org",
-    "category": "web_tools",
+    "category": "tg_channels",
     "description": "Telegram官网",
     "tags": [
       "Telegram"
@@ -6970,7 +6970,7 @@
     "name": "Telegram Web",
     "shortName": "Te",
     "url": "https://web.telegram.org",
-    "category": "web_tools",
+    "category": "tg_channels",
     "description": "Telegram 网页版",
     "tags": [
       "Telegram"
@@ -6986,7 +6986,7 @@
     "name": "Telegraph",
     "shortName": "Te",
     "url": "https://telegra.ph",
-    "category": "web_tools",
+    "category": "tg_channels",
     "description": "Telegraph 写文章",
     "tags": [
       "Telegram"
@@ -7361,7 +7361,7 @@
     ],
     "costTier": "free",
     "costLabel": "免费",
-    "nsfw": true,
+    "nsfw": false,
     "accent": "#f472b6",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/t.me_lolisuki.jpg"
   },
@@ -8518,22 +8518,6 @@
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/03/1743018430-copilot.microsoft.com_.png"
   },
   {
-    "id": "acgbox-ext-266",
-    "name": "文心一言",
-    "shortName": "文心",
-    "url": "https://yiyan.baidu.com",
-    "category": "ai_image_search",
-    "description": "百度推出的基于文心大模型的AI对话互动工具",
-    "tags": [
-      "AI网站"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/yiyan.baidu_.com_.png"
-  },
-  {
     "id": "acgbox-ext-267",
     "name": "Gemini",
     "shortName": "Ge",
@@ -8795,15 +8779,16 @@
     "shortName": "My",
     "url": "https://mydowndown.com/y2",
     "category": "web_tools",
-    "description": "工具大全 · 收录自 ACG 盒子",
+    "description": "YouTube视频下载",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "工具大全"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0284c7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/mydowndown.com.png"
+    "pinned": false,
+    "accent": "#0284c7"
   },
   {
     "id": "acgbox-ext-284",
@@ -11652,38 +11637,6 @@
     "nsfw": false,
     "accent": "#334155",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.putty.org.png"
-  },
-  {
-    "id": "acgbox-ext-462",
-    "name": "17CE",
-    "shortName": "17",
-    "url": "https://www.17ce.com",
-    "category": "web_tools",
-    "description": "站长工具 · 收录自 ACG 盒子",
-    "tags": [
-      "站长工具"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#334155",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.17ce.com.bmp"
-  },
-  {
-    "id": "acgbox-ext-463",
-    "name": "ping.fit",
-    "shortName": "pi",
-    "url": "http://ping.fit",
-    "category": "web_tools",
-    "description": "站长工具 · 收录自 ACG 盒子",
-    "tags": [
-      "站长工具"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#334155",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.qiqidongman.com.png"
   },
   {
     "id": "acgbox-ext-464",
