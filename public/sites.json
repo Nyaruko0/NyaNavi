@@ -6125,7 +6125,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/11/www.gbarom.cn_.webp"
   },
   {
     "id": "acgbox-ext-121",
@@ -6142,7 +6143,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/06/www.91tvg.com_.png"
   },
   {
     "id": "acgbox-ext-122",
@@ -6159,7 +6161,8 @@
     ],
     "nsfw": false,
     "pinned": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.steampowered.com.png"
   },
   {
     "id": "acgbox-ext-123",
@@ -6176,7 +6179,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.epicgames.com.png"
   },
   {
     "id": "acgbox-ext-124",
@@ -6273,7 +6277,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/ymnet.png"
   },
   {
     "id": "acgbox-ext-130",
@@ -6290,7 +6295,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/www.io233.com_.webp"
   },
   {
     "id": "acgbox-ext-131",
@@ -6307,7 +6313,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/no.png"
   },
   {
     "id": "acgbox-ext-132",
@@ -6324,7 +6331,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/dos.zczc.cz.png"
   },
   {
     "id": "acgbox-ext-133",
@@ -6776,22 +6784,6 @@
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/imgdh.com.png"
   },
   {
-    "id": "acgbox-ext-168",
-    "name": "Telegram",
-    "shortName": "Te",
-    "url": "https://telegram.org",
-    "category": "tg_channels",
-    "description": "Telegram官网",
-    "tags": [
-      "Telegram"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/telegram.org_.png"
-  },
-  {
     "id": "acgbox-ext-169",
     "name": "Telegram Web",
     "shortName": "Te",
@@ -7174,22 +7166,6 @@
     "nsfw": false,
     "accent": "#f472b6",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/t.me_pxwwudebag.jpg"
-  },
-  {
-    "id": "acgbox-ext-193",
-    "name": "ロリ好き",
-    "shortName": "ロリ",
-    "url": "https://t.me/lolisuki",
-    "category": "tg_channels",
-    "description": "ロリ好き",
-    "tags": [
-      "TG·美图"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#f472b6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/t.me_lolisuki.jpg"
   },
   {
     "id": "acgbox-ext-194",
