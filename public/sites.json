@@ -77,18 +77,18 @@
     "shortName": "芯幻",
     "url": "https://neohent.ai/",
     "category": "acg_resources",
-    "description": "综合命中率最高（热门前 100 实测命中 83 条），涵盖 AI 动画、MMD、游戏与度盘二维码。",
-    "tags": [
-      "高命中率",
-      "AI动画",
-      "MMD"
-    ],
+    "description": "涵盖 AI 动画、MMD、游戏",
     "costTier": "points",
     "costLabel": "积分/VIP",
     "searchUrl": "https://neohent.ai/search?q={q}",
     "searchNote": "公开可搜，下载需登录",
     "clients": [
       "官方 NeoSekai APP"
+    ],
+    "tags": [
+      "高命中率",
+      "AI动画",
+      "MMD"
     ],
     "nsfw": true,
     "pinned": true,
