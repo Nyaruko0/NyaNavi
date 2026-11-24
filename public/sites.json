@@ -8503,7 +8503,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/01/1738333175-www.deepseek.com_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/01/1738333175-www.deepseek.com_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-265",
@@ -8535,7 +8536,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/bard.google.com_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/bard.google.com_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-268",
@@ -8551,7 +8553,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/12/chat.openai.com_.webp"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/12/chat.openai.com_.webp",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-269",
@@ -8647,7 +8650,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/11/soutubot.moe_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/11/soutubot.moe_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-275",
@@ -9225,7 +9229,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/Tampermonkey.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/Tampermonkey.png",
+    "pinned": false
   },
   {
     "id": "acgbox-ext-311",
@@ -9258,150 +9263,6 @@
     "nsfw": false,
     "accent": "#6366f1",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/greasyfork.org.png"
-  },
-  {
-    "id": "acgbox-ext-313",
-    "name": "拷贝漫画增强",
-    "shortName": "拷贝",
-    "url": "https://greasyfork.org/zh-CN/scripts/421371-%E6%8B%B7%E8%B4%9D%E6%BC%AB%E7%94%BB%E5%A2%9E%E5%BC%BA",
-    "category": "work_extensions",
-    "description": "拷贝漫画增强",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPg0KICAgICAgICAgICAgICAgIDxyZWN0IGZpbGw9InJnYigyMjksMTM3LDIwMCkiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMTc5LDExNCwyMjkpIiBjeD0iMTYiIGN5PSI4IiByPSI2MCIgIG9wYWNpdHk9Ii40Ij48L2NpcmNsZT4NCiAgICAgICAgICAgICAgICA8Y2lyY2xlIGZpbGw9InJnYigyMjksMTIyLDExNCkiIGN4PSI3OSIgY3k9IjE1OCIgcj0iNTAiICBvcGFjaXR5PSIuNiI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnTWljcm9zb2Z0IFlhaGVpJyI+5ou3PC90ZXh0Pjwvc3ZnPg=="
-  },
-  {
-    "id": "acgbox-ext-314",
-    "name": "Bilibili Evolved",
-    "shortName": "Bi",
-    "url": "https://github.com/the1812/Bilibili-Evolved",
-    "category": "work_extensions",
-    "description": "Bilibili Evolved",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/Bilibili-Evolved.png"
-  },
-  {
-    "id": "acgbox-ext-315",
-    "name": "E站注射器",
-    "shortName": "E站",
-    "url": "https://github.com/EhTagTranslation/EhSyringe",
-    "category": "work_extensions",
-    "description": "E站注射器，将中文翻译注入到 E 站体内",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/EhSyringe.png"
-  },
-  {
-    "id": "acgbox-ext-316",
-    "name": "解除B站区域限制",
-    "shortName": "解除",
-    "url": "https://greasyfork.org/zh-CN/scripts/25718-%E8%A7%A3%E9%99%A4b%E7%AB%99%E5%8C%BA%E5%9F%9F%E9%99%90%E5%88%B6",
-    "category": "work_extensions",
-    "description": "解除B站区域限制",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/no.png"
-  },
-  {
-    "id": "acgbox-ext-317",
-    "name": "eHunter",
-    "shortName": "eH",
-    "url": "https://openuserjs.org/scripts/alexchen/eHunter",
-    "category": "work_extensions",
-    "description": "eHunter：提供卷轴式/书本式阅",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/greasyfork.org.png"
-  },
-  {
-    "id": "acgbox-ext-318",
-    "name": "二维码小助手",
-    "shortName": "二维",
-    "url": "https://chrome.google.com/webstore/detail/%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%B0%8F%E5%8A%A9%E6%89%8B/acdfkjjfbghehjbojgnmjijpbgahmhee",
-    "category": "work_extensions",
-    "description": "生成/识别页面二维码",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%B0%8F%E5%8A%A9%E6%89%8B.png"
-  },
-  {
-    "id": "acgbox-ext-319",
-    "name": "微博图片反查",
-    "shortName": "微博",
-    "url": "https://chrome.google.com/webstore/detail/%E5%BE%AE%E5%8D%9A%E5%9B%BE%E7%89%87%E5%8F%8D%E6%9F%A5/egbnikffkpbahjabjhgblnfgbcnckjop",
-    "category": "work_extensions",
-    "description": "图片查看博主",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/%E5%BE%AE%E5%8D%9A%E5%9B%BE%E7%89%87%E5%8F%8D%E6%9F%A5.png"
-  },
-  {
-    "id": "acgbox-ext-320",
-    "name": "Pixiv 批量下载器",
-    "shortName": "Pi",
-    "url": "https://pixiv.download",
-    "category": "work_extensions",
-    "description": "Pixiv 批量下载器",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/Powerful%20Pixiv%20Downloader.png"
-  },
-  {
-    "id": "acgbox-ext-321",
-    "name": "AdGuard 广告拦截器",
-    "shortName": "Ad",
-    "url": "https://chrome.google.com/webstore/detail/adguard-adblocker/bgnkhhnnamicmpeenaelnjfhikgbkllg",
-    "category": "work_extensions",
-    "description": "AdGuard 广告拦截器",
-    "tags": [
-      "浏览器扩展"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/AdGuard%E5%B9%BF%E5%91%8A%E6%8B%A6%E6%88%AA%E5%99%A8.png"
   },
   {
     "id": "acgbox-ext-322",
@@ -9564,22 +9425,6 @@
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/cn.msi.com.png"
   },
   {
-    "id": "acgbox-ext-332",
-    "name": "waifu2x-caffe",
-    "shortName": "wa",
-    "url": "https://github.com/lltcggie/waifu2x-caffe/releases",
-    "category": "tools",
-    "description": "图片降噪",
-    "tags": [
-      "软件推荐"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/waifu2x-caffe.png"
-  },
-  {
     "id": "acgbox-ext-333",
     "name": "OBS Studio",
     "shortName": "OB",
@@ -9610,22 +9455,6 @@
     "nsfw": false,
     "accent": "#0ea5e9",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.qiqidongman.com.png"
-  },
-  {
-    "id": "acgbox-ext-335",
-    "name": "Cimoc",
-    "shortName": "Ci",
-    "url": "https://github.com/feilongfl/Cimoc/releases",
-    "category": "tools",
-    "description": "Cimoc",
-    "tags": [
-      "安卓APP"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#10b981",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/feilongfl_Cimoc.png"
   },
   {
     "id": "acgbox-ext-336",
@@ -9977,7 +9806,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#3b82f6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/translate.google.cn.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/translate.google.cn.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-358",
