@@ -9,7 +9,7 @@
   },
   {
     "id": "acg_games",
-    "name": "ACG游戏",
+    "name": "游戏",
     "description": "Galgame、RPG、单机游戏、Mod 与同人游戏站",
     "icon": "Gamepad2"
   },
@@ -207,11 +207,5 @@
     "icon": "AppWindow",
     "workAllowed": true,
     "hideInMoyu": true
-  },
-  {
-    "id": "cat-1795556899635",
-    "name": "单机游戏",
-    "description": "单机游戏",
-    "icon": "Gamepad2"
   }
 ]
