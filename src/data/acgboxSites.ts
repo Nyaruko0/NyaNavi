@@ -5207,7 +5207,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegram",
     "shortName": "Te",
     "url": "https://telegram.org",
-    "category": "tg_channels",
+    "category": "web_tools",
     "description": "Telegram官网",
     "tags": [
       "Telegram"
@@ -5223,7 +5223,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegram Web",
     "shortName": "Te",
     "url": "https://web.telegram.org",
-    "category": "tg_channels",
+    "category": "web_tools",
     "description": "Telegram 网页版",
     "tags": [
       "Telegram"
@@ -5239,7 +5239,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "name": "Telegraph",
     "shortName": "Te",
     "url": "https://telegra.ph",
-    "category": "tg_channels",
+    "category": "web_tools",
     "description": "Telegraph 写文章",
     "tags": [
       "Telegram"
@@ -5614,7 +5614,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     ],
     "costTier": "free",
     "costLabel": "免费",
-    "nsfw": false,
+    "nsfw": true,
     "accent": "#f472b6",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/t.me_lolisuki.jpg"
   },

@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const visibleCategories = categories.filter((c) => {
     if (mode === 'work' && !c.workAllowed) return false;
-    if (mode === 'moyu' && c.nsfwOnly) return false;
+    if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
     if (c.privateOnly && !canViewPrivate) return false;
     return true;
   });

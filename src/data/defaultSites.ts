@@ -14,9 +14,8 @@ export const CATEGORIES: CategoryMeta[] = [
   {
     id: 'acg_games',
     name: 'ACG 游戏',
-    description: 'Galgame、RPG、同人游戏与高命中率汉化源站',
+    description: 'Galgame、RPG、单机游戏、Mod 与同人游戏站',
     icon: 'Gamepad2',
-    nsfwOnly: true,
   },
   {
     id: 'acg_resources',
@@ -28,9 +27,8 @@ export const CATEGORIES: CategoryMeta[] = [
   {
     id: 'acg_community',
     name: 'ACG 社区论坛',
-    description: '上游首发自购、二次元同好论坛与资源交流社区',
+    description: 'S1、NGA、X岛及上游二次元同好交流社区',
     icon: 'Users',
-    nsfwOnly: true,
   },
   {
     id: 'comics',
@@ -122,6 +120,7 @@ export const CATEGORIES: CategoryMeta[] = [
     description: 'AI 站点聚合与 SauceNAO / Trace.moe 等识图搜番神器',
     icon: 'ScanSearch',
     workAllowed: true,
+    hideInMoyu: true,
   },
   {
     id: 'web_tools',
@@ -130,22 +129,25 @@ export const CATEGORIES: CategoryMeta[] = [
     description: '免费图床、文件互传、在线翻译、临时邮箱、测速与站长工具',
     icon: 'Toolbox',
     workAllowed: true,
+    hideInMoyu: true,
   },
   {
     id: 'tools',
-    name: '开源客户端与工具',
-    workName: '开源效率与阅读工具',
-    description: '跨平台漫画/小说阅读器、解压工具与实用助手',
+    name: '开源软件与实用工具',
+    workName: '开源软件与效率工具',
+    description: '开源客户端、浏览器扩展、解压与实用软件分享',
     icon: 'Wrench',
     workAllowed: true,
+    hideInMoyu: true,
   },
   {
     id: 'dev_work',
-    name: '工作台与常用效率',
-    workName: '工作台与开发文档',
-    description: '工作模式下的主力参考、代码托管与日常检索入口',
+    name: '工作台与技术论坛',
+    workName: '工作台与技术论坛',
+    description: '开发文档、代码托管与 LINUX DO / NodeSeek / 吾爱破解等技术社区',
     icon: 'Briefcase',
     workAllowed: true,
+    hideInMoyu: true,
   },
 ];
 

@@ -86,8 +86,10 @@ export interface CategoryMeta {
   icon: string;
   nsfwOnly?: boolean;
   privateOnly?: boolean;
-  /** 是否在纯“工作模式”下展示（否则仅在摸鱼/NSFW模式下展示） */
+  /** 是否属于工作模式分类（工具、开源软件、AI、技术论坛等） */
   workAllowed?: boolean;
+  /** 摸鱼模式下是否隐藏（避免把办公工具/技术论坛混入纯娱乐摸鱼模式） */
+  hideInMoyu?: boolean;
 }
 
 export type HealthState = 'idle' | 'checking' | 'online' | 'warn' | 'offline';

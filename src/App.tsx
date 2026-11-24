@@ -73,6 +73,10 @@ const WORK_CATEGORY_IDS = new Set(
   CATEGORIES.filter((c) => c.workAllowed).map((c) => c.id),
 );
 
+const MOYU_HIDDEN_CATEGORY_IDS = new Set(
+  CATEGORIES.filter((c) => c.hideInMoyu || c.nsfwOnly).map((c) => c.id),
+);
+
 const DEFAULT_FALLBACK_ICON_MAP = new Map(
   DEFAULT_SITES.filter((s) => s.fallbackIcon).map((s) => [s.id, s.fallbackIcon!]),
 );
@@ -406,7 +410,7 @@ export default function App() {
     const cat = CATEGORIES.find((c) => c.id === activeSection);
     if (
       (mode === 'work' && cat && !cat.workAllowed) ||
-      (mode === 'moyu' && cat?.nsfwOnly) ||
+      (mode === 'moyu' && cat && (cat.nsfwOnly || cat.hideInMoyu)) ||
       (cat?.privateOnly && !canViewPrivate)
     ) {
       setActiveSection('all');
@@ -425,7 +429,9 @@ export default function App() {
       return displaySites.filter((s) => !s.nsfw && WORK_CATEGORY_IDS.has(s.category));
     }
     if (mode === 'moyu') {
-      return displaySites.filter((s) => !s.nsfw);
+      return displaySites.filter(
+        (s) => !s.nsfw && !MOYU_HIDDEN_CATEGORY_IDS.has(s.category),
+      );
     }
     return displaySites;
   }, [displaySites, mode]);
@@ -523,7 +529,7 @@ export default function App() {
 
     for (const cat of CATEGORIES) {
       if (mode === 'work' && !cat.workAllowed) continue;
-      if (mode === 'moyu' && cat.nsfwOnly) continue;
+      if (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) continue;
       if (cat.privateOnly && !canViewPrivate) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
@@ -1195,7 +1201,7 @@ export default function App() {
               </button>
               {CATEGORIES.filter((c) => {
                 if (mode === 'work' && !c.workAllowed) return false;
-                if (mode === 'moyu' && c.nsfwOnly) return false;
+                if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
                 if (c.privateOnly && !canViewPrivate) return false;
                 return true;
               }).map((cat) => {
