@@ -3401,7 +3401,7 @@
     "name": "Gamer520 (Switch520)",
     "shortName": "520",
     "url": "https://www.gamer520.com/",
-    "category": "cat-1795556899635",
+    "category": "acg_games",
     "description": "Switch 与 PC 单机游戏综合分享站。",
     "costTier": "free",
     "costLabel": "免费",
@@ -3419,7 +3419,7 @@
     "name": "Koyso",
     "shortName": "KS",
     "url": "https://koyso.com/",
-    "category": "cat-1795556899635",
+    "category": "acg_games",
     "description": "简洁高速的 PC 单机游戏直链下载站。",
     "costTier": "free",
     "costLabel": "免费",
@@ -6117,14 +6117,15 @@
     "url": "http://www.gbarom.cn",
     "category": "acg_games",
     "description": "掌机迷",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "游戏下载"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/11/www.gbarom.cn_.webp"
+    "pinned": false,
+    "accent": "#8b5cf6"
   },
   {
     "id": "acgbox-ext-121",
@@ -6133,14 +6134,15 @@
     "url": "https://www.tekqart.com/forum.php",
     "category": "acg_games",
     "description": "91TVG",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "游戏下载"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#8b5cf6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/06/www.91tvg.com_.png"
+    "pinned": false,
+    "accent": "#8b5cf6"
   },
   {
     "id": "acgbox-ext-122",
@@ -6149,15 +6151,15 @@
     "url": "https://store.steampowered.com",
     "category": "acg_games",
     "description": "Steam",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "游戏平台"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.steampowered.com.png",
-    "pinned": true
+    "pinned": true,
+    "accent": "#6366f1"
   },
   {
     "id": "acgbox-ext-123",
@@ -6166,14 +6168,15 @@
     "url": "https://store.epicgames.com",
     "category": "acg_games",
     "description": "Epic游戏商城",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "游戏平台"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#6366f1",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/store.epicgames.com.png"
+    "pinned": false,
+    "accent": "#6366f1"
   },
   {
     "id": "acgbox-ext-124",
@@ -6262,14 +6265,15 @@
     "url": "https://www.yikm.net",
     "category": "acg_games",
     "description": "小霸王游戏",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "在线游戏"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#a855f7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/ymnet.png"
+    "pinned": false,
+    "accent": "#a855f7"
   },
   {
     "id": "acgbox-ext-130",
@@ -6278,14 +6282,15 @@
     "url": "https://www.io233.com",
     "category": "acg_games",
     "description": "io游戏",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "在线游戏"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#a855f7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/www.io233.com_.webp"
+    "pinned": false,
+    "accent": "#a855f7"
   },
   {
     "id": "acgbox-ext-131",
@@ -6294,14 +6299,15 @@
     "url": "http://www.famicn.com",
     "category": "acg_games",
     "description": "中文家用游戏博物馆",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "在线游戏"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#a855f7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/no.png"
+    "pinned": false,
+    "accent": "#a855f7"
   },
   {
     "id": "acgbox-ext-132",
@@ -6310,14 +6316,15 @@
     "url": "https://dos.zczc.cz",
     "category": "acg_games",
     "description": "在线DOS游戏/Flash 保存计划",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "在线游戏"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
-    "accent": "#a855f7",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/dos.zczc.cz.png"
+    "pinned": false,
+    "accent": "#a855f7"
   },
   {
     "id": "acgbox-ext-133",
@@ -11734,13 +11741,15 @@
     "url": "https://wiki.biligame.com/blhx/%E9%A6%96%E9%A1%B5",
     "category": "anime_community",
     "description": "碧蓝航线舰娘图鉴、装备节奏榜与活动攻略 Wiki。",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "游戏Wiki",
       "Infinity"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
     "nsfw": false,
+    "pinned": false,
     "accent": "#38bdf8"
   },
   {
@@ -11774,54 +11783,6 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#475569"
-  },
-  {
-    "id": "inf-schaledb",
-    "name": "SchaleDB",
-    "shortName": "夏莱",
-    "url": "https://schaledb.brightsu.cn/",
-    "category": "anime_community",
-    "description": "蔚蓝档案学生数值、技能倍率、总力战与关卡数据库。",
-    "tags": [
-      "蔚蓝档案",
-      "游戏Wiki"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9"
-  },
-  {
-    "id": "inf-kivo-wiki",
-    "name": "古书馆 (Kivo Wiki)",
-    "shortName": "古书",
-    "url": "https://kivo.wiki/",
-    "category": "anime_community",
-    "description": "蔚蓝档案全角色设定、剧情对话与活动资料百科。",
-    "tags": [
-      "蔚蓝档案",
-      "游戏Wiki"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#38bdf8"
-  },
-  {
-    "id": "inf-ba-gamekee",
-    "name": "蔚蓝档案 GameKee",
-    "shortName": "档案",
-    "url": "https://ba.gamekee.com/",
-    "category": "anime_community",
-    "description": "蔚蓝档案中文攻略、卡池未来视与角色节奏榜 Wiki。",
-    "tags": [
-      "蔚蓝档案",
-      "游戏Wiki"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0284c7"
   },
   {
     "id": "inf-svgdb",
