@@ -416,7 +416,8 @@
       "网页端"
     ],
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "pinned": true
   },
   {
     "id": "acgbox",
@@ -479,7 +480,8 @@
       "网页端"
     ],
     "nsfw": false,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "pinned": true
   },
   {
     "id": "venera",
@@ -3775,22 +3777,6 @@
     "accent": "#ec4899"
   },
   {
-    "id": "chrome-arona-icu",
-    "name": "什亭之匣 (蔚蓝档案)",
-    "shortName": "什亭",
-    "url": "https://arona.icu/",
-    "category": "anime_community",
-    "description": "《蔚蓝档案》学生图鉴、总力战攻略与日常工具站。",
-    "tags": [
-      "蔚蓝档案",
-      "攻略工具"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#38bdf8"
-  },
-  {
     "id": "chrome-gamekee",
     "name": "GameKee 二游 Wiki",
     "shortName": "GK",
@@ -6842,118 +6828,6 @@
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/imgdh.com.png"
   },
   {
-    "id": "acgbox-ext-161",
-    "name": "碧蓝档案剧情站",
-    "shortName": "碧蓝",
-    "url": "https://blue-archive.io",
-    "category": "anime_community",
-    "description": "碧蓝档案剧情站",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/07/1720823439-blue-archive.io_.png"
-  },
-  {
-    "id": "acgbox-ext-162",
-    "name": "基沃托斯古书馆",
-    "shortName": "基沃",
-    "url": "https://kivo.wiki",
-    "category": "anime_community",
-    "description": "基沃托斯古书馆",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/01/kivo.wiki_.png"
-  },
-  {
-    "id": "acgbox-ext-163",
-    "name": "蔚蓝档案标题生成器",
-    "shortName": "蔚蓝",
-    "url": "https://tmp.nulla.top/ba-logo",
-    "category": "anime_community",
-    "description": "蔚蓝档案标题生成器",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/10/tmp.nulla_.top_.png"
-  },
-  {
-    "id": "acgbox-ext-164",
-    "name": "Blue Archive Character Planner",
-    "shortName": "Bl",
-    "url": "https://ba.gc.gg",
-    "category": "anime_community",
-    "description": "蔚蓝档案总力算分",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/ba.gc_.gg_.png"
-  },
-  {
-    "id": "acgbox-ext-165",
-    "name": "BlueArchive素材早見表",
-    "shortName": "Bl",
-    "url": "https://ba.game-db.tw",
-    "category": "anime_community",
-    "description": "蔚蓝档案升级材料参考",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/ba.game-db.tw_.png"
-  },
-  {
-    "id": "acgbox-ext-166",
-    "name": "Schale",
-    "shortName": "Sc",
-    "url": "https://schaledb.com",
-    "category": "anime_community",
-    "description": "Schale 蔚蓝档案数据库",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/08/schale.gg_.png"
-  },
-  {
-    "id": "acgbox-ext-167",
-    "name": "碧蓝档案wiki-GameKee",
-    "shortName": "碧蓝",
-    "url": "https://ba.gamekee.com",
-    "category": "anime_community",
-    "description": "碧蓝档案wiki-GameKee",
-    "tags": [
-      "蔚蓝档案"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": false,
-    "accent": "#0ea5e9",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/01/ba.gamekee.com_.png"
-  },
-  {
     "id": "acgbox-ext-168",
     "name": "Telegram",
     "shortName": "Te",
@@ -8023,7 +7897,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/05/www.douyin.com_.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/05/www.douyin.com_.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-235",
@@ -8055,7 +7930,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.bilibili.com.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.bilibili.com.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-237",
@@ -8087,7 +7963,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.youtube.com.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.youtube.com.png",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-239",
@@ -8471,7 +8348,8 @@
     "costLabel": "免费",
     "nsfw": false,
     "accent": "#14b8a6",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/1lib.domains.webp"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/1lib.domains.webp",
+    "pinned": true
   },
   {
     "id": "acgbox-ext-263",
