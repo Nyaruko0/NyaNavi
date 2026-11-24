@@ -5,12 +5,7 @@
     "shortName": "南+",
     "url": "https://www.south-plus.net/",
     "category": "acg_community",
-    "description": "最上游 [自购] 与新汉化总源头，社区氛围活跃，SP 币可日常签到获取。",
-    "tags": [
-      "自购首发",
-      "汉化总源头",
-      "论坛"
-    ],
+    "description": "最上游 [自购] 与新汉化总源头，社区氛围活跃，SP 币可日常签到获取",
     "costTier": "checkin",
     "costLabel": "签到免费",
     "searchUrl": "https://www.south-plus.net/search.php",
@@ -18,6 +13,11 @@
     "searchRisk": "cooldown",
     "clients": [
       "第三方 south-plus-pro"
+    ],
+    "tags": [
+      "自购首发",
+      "汉化总源头",
+      "论坛"
     ],
     "nsfw": true,
     "pinned": true,
@@ -29,12 +29,7 @@
     "shortName": "V站",
     "url": "https://www.vikacg.com/",
     "category": "acg_resources",
-    "description": "免登录直接可见链接，涵盖 anime / 3D 二创，常用 TeraBox + 夸克 + 迅雷三盘（常见密码 sp@game）。",
-    "tags": [
-      "免登录",
-      "3D二创",
-      "三盘分流"
-    ],
+    "description": "常用 TeraBox + 夸克 + 迅雷三盘",
     "costTier": "free",
     "costLabel": "免费",
     "searchUrl": "https://www.vikacg.com/search?s={q}",
@@ -42,6 +37,11 @@
     "searchRisk": "spa",
     "clients": [
       "网页端"
+    ],
+    "tags": [
+      "免登录",
+      "3D二创",
+      "三盘分流"
     ],
     "nsfw": true,
     "pinned": true,
@@ -443,18 +443,18 @@
     "shortName": "BGM",
     "url": "https://bgm.tv/",
     "category": "anime_community",
-    "description": "中文 ACG 评分、条目百科、追番进度与制作人员数据库。",
-    "tags": [
-      "番剧评分",
-      "条目百科",
-      "追番"
-    ],
+    "description": "中文 ACG 评分、条目百科、追番进度与制作人员数据库",
     "costTier": "free",
     "costLabel": "免费",
     "searchUrl": "https://bgm.tv/subject_search/{q}?cat=all",
     "clients": [
       "网页端",
       "多款第三方APP"
+    ],
+    "tags": [
+      "番剧评分",
+      "条目百科",
+      "追番"
     ],
     "nsfw": false,
     "pinned": true,
