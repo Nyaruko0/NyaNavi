@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import type { CategoryId, CategoryMeta, CostTier, SiteItem } from '../types';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Briefcase, Fish, Flame, X } from 'lucide-react';
+import type { AppMode, CategoryId, CategoryMeta, CostTier, SiteItem } from '../types';
 
 interface SiteModalProps {
   open: boolean;
   editingSite: SiteItem | null;
   categories: CategoryMeta[];
-  defaultNsfw: boolean;
+  defaultMode: AppMode;
   onClose: () => void;
   onSave: (site: SiteItem) => void;
 }
@@ -22,17 +22,39 @@ const ACCENT_PRESETS = [
   '#1e293b',
 ];
 
+function getCategoriesForMode(categories: CategoryMeta[], targetMode: AppMode): CategoryMeta[] {
+  if (targetMode === 'work') {
+    return categories.filter((c) => Boolean(c.workAllowed));
+  }
+  if (targetMode === 'moyu') {
+    return categories.filter((c) => !c.workAllowed && !c.nsfwOnly && !c.privateOnly);
+  }
+  return categories.filter((c) => !c.workAllowed);
+}
+
+function inferSiteMode(site: SiteItem, categories: CategoryMeta[]): AppMode {
+  const cat = categories.find((c) => c.id === site.category);
+  if (site.privateOnly || site.category === 'private_vault' || site.nsfw || cat?.nsfwOnly) {
+    return 'nsfw';
+  }
+  if (cat?.workAllowed) {
+    return 'work';
+  }
+  return 'moyu';
+}
+
 export const SiteModal: React.FC<SiteModalProps> = ({
   open,
   editingSite,
   categories,
-  defaultNsfw,
+  defaultMode,
   onClose,
   onSave,
 }) => {
   const [name, setName] = useState('');
   const [shortName, setShortName] = useState('');
   const [url, setUrl] = useState('');
+  const [siteMode, setSiteMode] = useState<AppMode>(defaultMode);
   const [category, setCategory] = useState<CategoryId>('acg_games');
   const [description, setDescription] = useState('');
   const [costTier, setCostTier] = useState<CostTier>('free');
@@ -41,17 +63,40 @@ export const SiteModal: React.FC<SiteModalProps> = ({
   const [searchNote, setSearchNote] = useState('');
   const [clientsText, setClientsText] = useState('');
   const [tagsText, setTagsText] = useState('');
-  const [nsfw, setNsfw] = useState(defaultNsfw);
   const [privateOnly, setPrivateOnly] = useState(false);
   const [accent, setAccent] = useState(ACCENT_PRESETS[0]);
   const [icon, setIcon] = useState('');
 
+  const modeCategories = useMemo(
+    () => getCategoriesForMode(categories, siteMode),
+    [categories, siteMode],
+  );
+
+  const handleModeChange = (nextMode: AppMode) => {
+    setSiteMode(nextMode);
+    if (nextMode !== 'nsfw') {
+      setPrivateOnly(false);
+    }
+    const allowed = getCategoriesForMode(categories, nextMode);
+    if (!allowed.some((c) => c.id === category)) {
+      const preferred: Record<AppMode, CategoryId> = {
+        work: 'dev_work',
+        moyu: 'anime_stream',
+        nsfw: 'acg_games',
+      };
+      const fallback = allowed.find((c) => c.id === preferred[nextMode]) || allowed[0];
+      if (fallback) setCategory(fallback.id);
+    }
+  };
+
   useEffect(() => {
     if (!open) return;
     if (editingSite) {
+      const inferred = inferSiteMode(editingSite, categories);
       setName(editingSite.name);
       setShortName(editingSite.shortName || '');
       setUrl(editingSite.url);
+      setSiteMode(inferred);
       setCategory(editingSite.category);
       setDescription(editingSite.description);
       setCostTier(editingSite.costTier);
@@ -60,15 +105,22 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setSearchNote(editingSite.searchNote || '');
       setClientsText((editingSite.clients || []).join(', '));
       setTagsText((editingSite.tags || []).join(', '));
-      setNsfw(editingSite.nsfw);
       setPrivateOnly(Boolean(editingSite.privateOnly || editingSite.category === 'private_vault'));
       setAccent(editingSite.accent || ACCENT_PRESETS[0]);
       setIcon(editingSite.icon || '');
     } else {
+      const allowed = getCategoriesForMode(categories, defaultMode);
+      const preferred: Record<AppMode, CategoryId> = {
+        work: 'dev_work',
+        moyu: 'anime_stream',
+        nsfw: 'acg_games',
+      };
+      const initCat = allowed.find((c) => c.id === preferred[defaultMode]) || allowed[0];
       setName('');
       setShortName('');
       setUrl('https://');
-      setCategory(defaultNsfw ? 'acg_games' : 'dev_work');
+      setSiteMode(defaultMode);
+      setCategory(initCat ? initCat.id : 'dev_work');
       setDescription('');
       setCostTier('free');
       setCostLabel('免费');
@@ -76,12 +128,11 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setSearchNote('');
       setClientsText('');
       setTagsText('');
-      setNsfw(defaultNsfw);
       setPrivateOnly(false);
       setAccent(ACCENT_PRESETS[Math.floor(Math.random() * ACCENT_PRESETS.length)]);
       setIcon('');
     }
-  }, [open, editingSite, defaultNsfw]);
+  }, [open, editingSite, defaultMode, categories]);
 
   if (!open) return null;
 
@@ -92,6 +143,9 @@ export const SiteModal: React.FC<SiteModalProps> = ({
     const normalizedUrl = /^https?:\/\//i.test(url.trim())
       ? url.trim()
       : `https://${url.trim()}`;
+
+    const isPrivate = privateOnly || category === 'private_vault';
+    const isNsfw = siteMode === 'nsfw' || isPrivate;
 
     const site: SiteItem = {
       id: editingSite?.id || `custom-${Date.now()}`,
@@ -113,8 +167,8 @@ export const SiteModal: React.FC<SiteModalProps> = ({
         .split(/[,，]/)
         .map((s) => s.trim())
         .filter(Boolean),
-      nsfw: privateOnly || category === 'private_vault' ? true : nsfw,
-      privateOnly: privateOnly || category === 'private_vault' ? true : undefined,
+      nsfw: isNsfw,
+      privateOnly: isPrivate ? true : undefined,
       pinned: editingSite?.pinned ?? false,
       accent,
       icon: icon.trim() || undefined,
@@ -183,6 +237,51 @@ export const SiteModal: React.FC<SiteModalProps> = ({
             />
           </div>
 
+          {/* 所属模式（工作 / 摸鱼 / NSFW）三段选择器 */}
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-slate-300">
+              所属模式 *
+            </label>
+            <div className="grid grid-cols-3 gap-1.5 rounded-xl bg-slate-100/90 p-1 dark:bg-slate-800/80">
+              <button
+                type="button"
+                onClick={() => handleModeChange('work')}
+                className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold transition ${
+                  siteMode === 'work'
+                    ? 'bg-white text-sky-600 shadow-xs dark:bg-slate-700 dark:text-sky-300'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                }`}
+              >
+                <Briefcase className="h-3.5 w-3.5" />
+                工作
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModeChange('moyu')}
+                className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold transition ${
+                  siteMode === 'moyu'
+                    ? 'bg-teal-500 text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                }`}
+              >
+                <Fish className="h-3.5 w-3.5" />
+                摸鱼
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModeChange('nsfw')}
+                className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold transition ${
+                  siteMode === 'nsfw'
+                    ? 'bg-[var(--nya-accent)] text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                }`}
+              >
+                <Flame className="h-3.5 w-3.5" />
+                NSFW
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
@@ -195,12 +294,12 @@ export const SiteModal: React.FC<SiteModalProps> = ({
                   setCategory(nextCat);
                   if (nextCat === 'private_vault') {
                     setPrivateOnly(true);
-                    setNsfw(true);
+                    setSiteMode('nsfw');
                   }
                 }}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               >
-                {categories.map((cat) => (
+                {modeCategories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
                   </option>
@@ -311,23 +410,15 @@ export const SiteModal: React.FC<SiteModalProps> = ({
           </div>
 
           <div className="space-y-2 pt-1">
-            <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-200">
-              <input
-                type="checkbox"
-                checked={nsfw}
-                onChange={(e) => setNsfw(e.target.checked)}
-                className="h-4 w-4 rounded accent-pink-500"
-              />
-              标记为 NSFW（工作模式下自动隐藏）
-            </label>
-
             <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-violet-700 dark:text-violet-300">
               <input
                 type="checkbox"
                 checked={privateOnly}
                 onChange={(e) => {
                   setPrivateOnly(e.target.checked);
-                  if (e.target.checked) setNsfw(true);
+                  if (e.target.checked) {
+                    setSiteMode('nsfw');
+                  }
                 }}
                 className="h-4 w-4 rounded accent-violet-500"
               />

@@ -1341,7 +1341,7 @@ export default function App() {
         open={modalOpen && canManage}
         editingSite={editingSite}
         categories={CATEGORIES}
-        defaultNsfw={mode === 'nsfw'}
+        defaultMode={mode}
         onClose={() => setModalOpen(false)}
         onSave={handleSaveSite}
       />
