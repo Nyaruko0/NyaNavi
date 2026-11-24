@@ -21,21 +21,31 @@ import { cleanSearchQuery } from './utils/cleanQuery';
 import { checkSiteHealth } from './utils/healthCheck';
 import {
   clearGitHubConfig,
+  DEFAULT_GITHUB_CONFIG,
+  fetchEncryptedVaultFromGitHub,
+  fetchGitHubUsername,
   fetchPrivateSitesFromGitHub,
   fetchSitesFromGitHub,
   getPrivateRepoConfig,
   loadGitHubConfig,
+  saveEncryptedVaultToGitHub,
   saveGitHubConfig,
   savePrivateSitesToGitHub,
   saveSitesToGitHub,
   verifyGitHubToken,
   type GitHubConfig,
 } from './utils/githubSync';
+import {
+  decryptVaultSites,
+  encryptVaultSites,
+  type EncryptedVaultPayload,
+} from './utils/vaultCrypto';
 import { Sidebar } from './components/Sidebar';
 import { SearchBar } from './components/SearchBar';
 import { SiteCard } from './components/SiteCard';
 import { SiteModal } from './components/SiteModal';
 import { AdminModal } from './components/AdminModal';
+import { VaultUnlockModal } from './components/VaultUnlockModal';
 import {
   ACCENT_THEMES,
   DEFAULT_APPEARANCE,
@@ -53,6 +63,7 @@ const STORAGE_PINS_KEY = 'nyanavi_pins_v1';
 const STORAGE_MODE_KEY = 'nyanavi_mode_v1';
 const STORAGE_THEME_KEY = 'nyanavi_theme_v1';
 const STORAGE_APPEARANCE_KEY = 'nyanavi_appearance_v1';
+const STORAGE_FRIEND_PASS_KEY = 'nyanavi_friend_pass_v1';
 
 const DEFAULT_FALLBACK_ICON_MAP = new Map(
   DEFAULT_SITES.filter((s) => s.fallbackIcon).map((s) => [s.id, s.fallbackIcon!]),
@@ -100,6 +111,10 @@ function loadInitialAppearance(): AppearanceSettings {
 export default function App() {
   const [sites, setSites] = useState<SiteItem[]>(DEFAULT_SITES);
   const [privateSites, setPrivateSites] = useState<SiteItem[]>([]);
+  const [friendVaultSites, setFriendVaultSites] = useState<SiteItem[]>([]);
+  const [friendUnlocked, setFriendUnlocked] = useState<boolean>(false);
+  const [friendUser, setFriendUser] = useState<string | undefined>(undefined);
+  const [vaultModalOpen, setVaultModalOpen] = useState<boolean>(false);
   const [localPins, setLocalPins] = useState<Record<string, boolean>>(loadLocalPins);
   const [appearance, setAppearance] = useState<AppearanceSettings>(loadInitialAppearance);
 
@@ -137,6 +152,7 @@ export default function App() {
   const [toast, setToast] = useState<string | null>(null);
 
   const canManage = adminVerified && Boolean(ghConfig);
+  const canViewPrivate = canManage || friendUnlocked;
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -166,7 +182,56 @@ export default function App() {
     };
   }, []);
 
-  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取公开库 + 独立私有扩展库
+  // 1b. 若好友在浏览器里记住了凭证，启动时自动校验 GitHub 身份（如需要）并拉取 ./vault.enc 本地解密
+  useEffect(() => {
+    const savedRaw = localStorage.getItem(STORAGE_FRIEND_PASS_KEY);
+    if (!savedRaw) return;
+    let savedPass = savedRaw;
+    let savedToken = '';
+    try {
+      const parsed = JSON.parse(savedRaw);
+      if (parsed && typeof parsed === 'object' && parsed.passphrase) {
+        savedPass = String(parsed.passphrase);
+        savedToken = typeof parsed.ghToken === 'string' ? parsed.ghToken : '';
+      }
+    } catch {
+      // 兼容旧版纯字符串暗号
+    }
+
+    let cancelled = false;
+    fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then(async (payload: EncryptedVaultPayload | null) => {
+        if (cancelled || !payload) return;
+        let verifiedUser: string | undefined;
+        if (payload.requireGitHubAuth || savedToken) {
+          if (!savedToken) throw new Error('need github token');
+          verifiedUser = await fetchGitHubUsername(savedToken);
+        }
+        const decrypted = await decryptVaultSites(payload, savedPass);
+        if (decrypted.allowedUsers.length > 0) {
+          const u = verifiedUser?.toLowerCase() || '';
+          const ownerLower = DEFAULT_GITHUB_CONFIG.owner.toLowerCase();
+          if (!u || (u !== ownerLower && !decrypted.allowedUsers.includes(u))) {
+            throw new Error('not allowed');
+          }
+        }
+        if (!cancelled) {
+          setFriendVaultSites(decrypted.sites);
+          setFriendUnlocked(true);
+          setFriendUser(verifiedUser);
+        }
+      })
+      .catch(() => {
+        // 暗号/白名单变更或 Token 失效时静默清除
+        localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // 2. 若本地存有站长 GitHub Token，启动时自动验证写权限并拉取公开库 + 私有库（或密文库）
   useEffect(() => {
     if (!ghConfig) {
       setAdminVerified(false);
@@ -183,9 +248,21 @@ export default function App() {
         setAdminUser(res.username);
         const [latest, privList] = await Promise.all([
           fetchSitesFromGitHub(ghConfig).catch(() => null),
-          getPrivateRepoConfig(ghConfig)
-            ? fetchPrivateSitesFromGitHub(ghConfig).catch(() => [])
-            : Promise.resolve([]),
+          (async () => {
+            if (getPrivateRepoConfig(ghConfig)) {
+              const fromPrivRepo = await fetchPrivateSitesFromGitHub(ghConfig).catch(() => []);
+              if (fromPrivRepo.length > 0) return fromPrivRepo;
+            }
+            if (ghConfig.vaultPassphrase?.trim()) {
+              const enc = await fetchEncryptedVaultFromGitHub(ghConfig).catch(() => null);
+              if (enc) {
+                return decryptVaultSites(enc, ghConfig.vaultPassphrase)
+                  .then((d) => d.sites)
+                  .catch(() => []);
+              }
+            }
+            return [];
+          })(),
         ]);
         if (!cancelled && latest && latest.sites.length > 0) {
           setSites(hydrateSites(latest.sites));
@@ -279,19 +356,20 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [showToast]);
 
-  // 退出站长模式或切到工作模式时，若当前停留在私密分类，自动切回全部
+  // 退出站长模式/锁定暗号或切到工作模式时，若当前停留在私密分类，自动切回全部
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.id === activeSection);
-    if ((mode === 'work' && cat?.nsfwOnly) || (cat?.privateOnly && !canManage)) {
+    if ((mode === 'work' && cat?.nsfwOnly) || (cat?.privateOnly && !canViewPrivate)) {
       setActiveSection('all');
     }
-  }, [mode, canManage, activeSection]);
+  }, [mode, canViewPrivate, activeSection]);
 
-  // 合并展示列表：仅站长登录后合并私有扩展库站点（物理分离，访客不可见）
+  // 合并展示列表：站长登录合并 privateSites，好友暗号解锁合并只读 friendVaultSites
   const displaySites = useMemo(() => {
     if (canManage) return [...privateSites, ...sites];
-    return sites.map((s) => (s.id in localPins ? { ...s, pinned: localPins[s.id] } : s));
-  }, [sites, privateSites, localPins, canManage]);
+    const base = friendUnlocked ? [...friendVaultSites, ...sites] : sites;
+    return base.map((s) => (s.id in localPins ? { ...s, pinned: localPins[s.id] } : s));
+  }, [sites, privateSites, friendVaultSites, friendUnlocked, localPins, canManage]);
 
   const modeSites = useMemo(() => {
     return mode === 'work' ? displaySites.filter((s) => !s.nsfw) : displaySites;
@@ -390,7 +468,7 @@ export default function App() {
 
     for (const cat of CATEGORIES) {
       if (mode === 'work' && cat.nsfwOnly) continue;
-      if (cat.privateOnly && !canManage) continue;
+      if (cat.privateOnly && !canViewPrivate) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
       sections.push({
@@ -496,14 +574,29 @@ export default function App() {
         results.push(`公开站 (${pubRes.commitSha})`);
       }
 
-      // 2. 独立私有仓库：仅在配置了有效 Private 仓库且有变动时提交
+      // 2. 私密库同步：支持同步到独立 Private 仓库，以及用好友暗号 AES-256 加密同步到 public/vault.enc
       if (hasUnsyncedPrivate) {
-        if (!getPrivateRepoConfig(ghConfig)) {
-          throw new Error('请先在“站长登录”弹窗中填写独立 Private 私有仓库名，再同步私密站点');
+        const hasPrivRepo = Boolean(getPrivateRepoConfig(ghConfig));
+        const hasPassphrase = Boolean(ghConfig.vaultPassphrase?.trim());
+        if (!hasPrivRepo && !hasPassphrase) {
+          throw new Error(
+            '请先在“站长登录”弹窗中填写“独立私有仓库名”或“好友共享暗号”，再同步私密站点',
+          );
         }
-        const privRes = await savePrivateSitesToGitHub(ghConfig, privateSites);
+        if (hasPrivRepo) {
+          const privRes = await savePrivateSitesToGitHub(ghConfig, privateSites);
+          results.push(`私有库 (${privRes.commitSha})`);
+        }
+        if (hasPassphrase) {
+          const encrypted = await encryptVaultSites(
+            privateSites,
+            ghConfig.vaultPassphrase!,
+            ghConfig.vaultAllowedUsers,
+          );
+          const encRes = await saveEncryptedVaultToGitHub(ghConfig, encrypted);
+          results.push(`加密暗号库 (${encRes.commitSha})`);
+        }
         setHasUnsyncedPrivate(false);
-        results.push(`私有库 (${privRes.commitSha})`);
       }
 
       showToast(`已同步至 GitHub：${results.join(' · ')}`);
@@ -636,28 +729,88 @@ export default function App() {
 
   const handleAdminAuthenticated = useCallback(
     async (config: GitHubConfig, username?: string) => {
+      const prevPass = ghConfig?.vaultPassphrase?.trim() || '';
+      const nextPass = config.vaultPassphrase?.trim() || '';
+      const prevUsers = ghConfig?.vaultAllowedUsers?.trim() || '';
+      const nextUsers = config.vaultAllowedUsers?.trim() || '';
       saveGitHubConfig(config);
       setGhConfig(config);
       setAdminVerified(true);
       setAdminUser(username);
       const [latest, privList] = await Promise.all([
         fetchSitesFromGitHub(config).catch(() => null),
-        getPrivateRepoConfig(config)
-          ? fetchPrivateSitesFromGitHub(config).catch(() => [])
-          : Promise.resolve([]),
+        (async () => {
+          if (getPrivateRepoConfig(config)) {
+            const fromPrivRepo = await fetchPrivateSitesFromGitHub(config).catch(() => []);
+            if (fromPrivRepo.length > 0) return fromPrivRepo;
+          }
+          if (nextPass) {
+            const enc = await fetchEncryptedVaultFromGitHub(config).catch(() => null);
+            if (enc) {
+              return decryptVaultSites(enc, nextPass)
+                .then((d) => d.sites)
+                .catch(() => []);
+            }
+          }
+          return [];
+        })(),
       ]);
       if (latest && latest.sites.length > 0) {
         setSites(hydrateSites(latest.sites));
       }
-      setPrivateSites(privList);
+      if (privList.length > 0) {
+        setPrivateSites(privList);
+      }
+      // 如果站长修改了好友暗号或好友白名单，自动亮起未同步提示，方便一键重加密
+      if (
+        nextPass &&
+        (nextPass !== prevPass || nextUsers !== prevUsers) &&
+        (privList.length > 0 || privateSites.length > 0)
+      ) {
+        setHasUnsyncedPrivate(true);
+      }
       showToast(
         `站长模式已解锁${username ? `（@${username}）` : ''}${
           privList.length > 0 ? ` · 已加载 ${privList.length} 个私密站点` : ''
         }`,
       );
     },
+    [ghConfig?.vaultPassphrase, ghConfig?.vaultAllowedUsers, privateSites.length, showToast],
+  );
+
+  const handleFriendUnlocked = useCallback(
+    (
+      decryptedSites: SiteItem[],
+      passphrase: string,
+      remember: boolean,
+      ghToken?: string,
+      ghUser?: string,
+    ) => {
+      setFriendVaultSites(decryptedSites);
+      setFriendUnlocked(true);
+      setFriendUser(ghUser);
+      if (remember) {
+        localStorage.setItem(
+          STORAGE_FRIEND_PASS_KEY,
+          JSON.stringify({ passphrase, ghToken: ghToken || '' }),
+        );
+      } else {
+        localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+      }
+      showToast(
+        `验证通过${ghUser ? `（@${ghUser}）` : ''}！已解锁 ${decryptedSites.length} 个私密站点`,
+      );
+    },
     [showToast],
   );
+
+  const handleFriendLock = useCallback(() => {
+    localStorage.removeItem(STORAGE_FRIEND_PASS_KEY);
+    setFriendVaultSites([]);
+    setFriendUnlocked(false);
+    setFriendUser(undefined);
+    showToast('已锁定私密库并清除本地凭证');
+  }, [showToast]);
 
   const handleAdminLogout = useCallback(() => {
     clearGitHubConfig();
@@ -730,10 +883,13 @@ export default function App() {
           totalCount={modeSites.length}
           mode={mode}
           canManage={canManage}
+          canViewPrivate={canViewPrivate}
+          friendUnlocked={friendUnlocked}
           adminUser={adminUser}
           mobileOpen={mobileMenuOpen}
           onCloseMobile={() => setMobileMenuOpen(false)}
           onOpenAdmin={() => setAdminModalOpen(true)}
+          onOpenVaultUnlock={() => setVaultModalOpen(true)}
           onAddSite={() => {
             setEditingSite(null);
             setModalOpen(true);
@@ -931,7 +1087,7 @@ export default function App() {
               </button>
               {CATEGORIES.filter((c) => {
                 if (mode === 'work' && c.nsfwOnly) return false;
-                if (c.privateOnly && !canManage) return false;
+                if (c.privateOnly && !canViewPrivate) return false;
                 return true;
               }).map((cat) => {
                 const count = categoryCounts[cat.id] ?? 0;
@@ -1070,6 +1226,18 @@ export default function App() {
         onClose={() => setAdminModalOpen(false)}
         onAuthenticated={handleAdminAuthenticated}
         onLogout={handleAdminLogout}
+      />
+
+      {/* 好友暗号解锁弹窗 */}
+      <VaultUnlockModal
+        open={vaultModalOpen}
+        isUnlocked={friendUnlocked}
+        unlockedCount={friendVaultSites.length}
+        friendUsername={friendUser}
+        ownerUsername={ghConfig?.owner || DEFAULT_GITHUB_CONFIG.owner}
+        onClose={() => setVaultModalOpen(false)}
+        onUnlocked={handleFriendUnlocked}
+        onLock={handleFriendLock}
       />
 
       {/* 外观与版面美化抽屉 */}

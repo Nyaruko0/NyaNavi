@@ -1,4 +1,5 @@
 import type { SiteItem } from '../types';
+import type { EncryptedVaultPayload } from './vaultCrypto';
 
 export interface GitHubConfig {
   owner: string;
@@ -10,6 +11,10 @@ export interface GitHubConfig {
   privateRepo?: string;
   privateBranch?: string;
   privatePath?: string;
+  /** 可选：好友共享暗号，填写后同步时会额外加密生成 public/vault.enc 供朋友凭暗号只读解锁 */
+  vaultPassphrase?: string;
+  /** 可选：允许解锁密文库的好友 GitHub 用户名白名单（逗号分隔，留空则不限制 GitHub 身份） */
+  vaultAllowedUsers?: string;
 }
 
 export interface GitHubVerifyResult {
@@ -49,6 +54,10 @@ export function loadGitHubConfig(): GitHubConfig | null {
         privateRepo: typeof parsed.privateRepo === 'string' ? parsed.privateRepo.trim() : '',
         privateBranch: parsed.privateBranch || 'main',
         privatePath: parsed.privatePath || 'private-sites.json',
+        vaultPassphrase:
+          typeof parsed.vaultPassphrase === 'string' ? parsed.vaultPassphrase : '',
+        vaultAllowedUsers:
+          typeof parsed.vaultAllowedUsers === 'string' ? parsed.vaultAllowedUsers : '',
       };
     }
   } catch {
@@ -91,6 +100,31 @@ function ghHeaders(token: string): Record<string, string> {
     Authorization: `Bearer ${token}`,
     'X-GitHub-Api-Version': '2022-11-28',
   };
+}
+
+/**
+ * 验证好友的 GitHub Token 并返回其真实 GitHub 用户名（不需要任何仓库写权限）
+ */
+export async function fetchGitHubUsername(token: string): Promise<string> {
+  const clean = token.trim();
+  if (!clean) {
+    throw new Error('请输入你的 GitHub Token 完成登录校验');
+  }
+  const res = await fetch('https://api.github.com/user', {
+    headers: ghHeaders(clean),
+    cache: 'no-store',
+  });
+  if (res.status === 401) {
+    throw new Error('GitHub Token 无效或已过期');
+  }
+  if (!res.ok) {
+    throw new Error(`GitHub 身份校验失败 (HTTP ${res.status})`);
+  }
+  const data = await res.json();
+  if (!data?.login) {
+    throw new Error('未能读取到 GitHub 用户名');
+  }
+  return String(data.login);
 }
 
 /**
@@ -281,6 +315,78 @@ export async function savePrivateSitesToGitHub(
     normalized,
     `chore(private): update private-sites.json (${normalized.length} sites)`,
   );
+}
+
+const VAULT_ENC_PATH = 'public/vault.enc';
+
+/**
+ * 从主仓库直接拉取加密密文 public/vault.enc（绕过 Pages CDN 缓存）
+ */
+export async function fetchEncryptedVaultFromGitHub(
+  config: GitHubConfig,
+): Promise<EncryptedVaultPayload | null> {
+  const res = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}?ref=${encodeURIComponent(config.branch)}`,
+    {
+      headers: ghHeaders(config.token),
+      cache: 'no-store',
+    },
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (!data?.content) return null;
+  const parsed = JSON.parse(decodeBase64Utf8(data.content));
+  return parsed as EncryptedVaultPayload;
+}
+
+/**
+ * 将 AES-256-GCM 加密后的密文写入主仓库 public/vault.enc（文件内不含任何明文网址）
+ */
+export async function saveEncryptedVaultToGitHub(
+  config: GitHubConfig,
+  payload: EncryptedVaultPayload,
+): Promise<GitHubSaveResult> {
+  let sha: string | undefined;
+  const getRes = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}?ref=${encodeURIComponent(config.branch)}`,
+    {
+      headers: ghHeaders(config.token),
+      cache: 'no-store',
+    },
+  );
+  if (getRes.ok) {
+    const existing = await getRes.json();
+    sha = existing?.sha;
+  }
+
+  const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
+  const putRes = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}`,
+    {
+      method: 'PUT',
+      headers: {
+        ...ghHeaders(config.token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'chore(vault): update encrypted vault.enc',
+        content,
+        branch: config.branch,
+        ...(sha ? { sha } : {}),
+      }),
+    },
+  );
+
+  if (!putRes.ok) {
+    const errBody = await putRes.json().catch(() => ({}));
+    throw new Error(errBody?.message || `密文同步失败 (HTTP ${putRes.status})`);
+  }
+
+  const result = await putRes.json();
+  return {
+    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
+    commitUrl: result?.commit?.html_url || `https://github.com/${config.owner}/${config.repo}`,
+  };
 }
 
 /**

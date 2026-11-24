@@ -37,6 +37,10 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [repo, setRepo] = useState(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
   const [branch, setBranch] = useState(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
   const [privateRepo, setPrivateRepo] = useState(currentConfig?.privateRepo || '');
+  const [vaultPassphrase, setVaultPassphrase] = useState(currentConfig?.vaultPassphrase || '');
+  const [vaultAllowedUsers, setVaultAllowedUsers] = useState(
+    currentConfig?.vaultAllowedUsers || '',
+  );
   const [token, setToken] = useState(currentConfig?.token || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,6 +66,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       privateRepo: privateRepo.trim(),
       privateBranch: 'main',
       privatePath: 'private-sites.json',
+      vaultPassphrase: vaultPassphrase.trim(),
+      vaultAllowedUsers: vaultAllowedUsers.trim(),
     };
 
     const res = await verifyGitHubToken(cfg);
@@ -178,7 +184,42 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-violet-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               />
               <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
-                填写后自动读取/同步该私有仓库的 <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">private-sites.json</code>，系统会强制校验其为 Private，严禁写入公开仓库。创建 Token 时一并勾选此私有仓库的 Contents 读写权限即可。
+                填写后自动读取/同步该私有仓库的 <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">private-sites.json</code>，系统会强制校验其为 Private，严禁写入公开仓库。
+              </p>
+            </div>
+
+            <div>
+              <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <KeyRound className="h-3.5 w-3.5 text-pink-500" />
+                好友共享暗号（可选，AES-256 加密后开放给朋友只读）
+              </label>
+              <input
+                type="password"
+                value={vaultPassphrase}
+                onChange={(e) => setVaultPassphrase(e.target.value)}
+                placeholder="设一句只有你和朋友知道的暗号（改暗号后同步即生效）"
+                autoComplete="off"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              />
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
+                填写后点“同步到 GitHub”会自动在本地将私密站点加密为纯随机密文 <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">public/vault.enc</code>（无明文网址），朋友凭暗号即可只读解锁。
+              </p>
+            </div>
+
+            <div>
+              <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <ShieldCheck className="h-3.5 w-3.5 text-sky-500" />
+                允许解锁的好友 GitHub 用户名（可选，逗号分隔）
+              </label>
+              <input
+                type="text"
+                value={vaultAllowedUsers}
+                onChange={(e) => setVaultAllowedUsers(e.target.value)}
+                placeholder="例如：friendA, friendB（留空则仅凭明文密钥即可解锁）"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-sky-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              />
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
+                好友白名单会和网址一起加密，外人不可见。填写后好友须先验证自己的 GitHub 身份 + 输入明文密钥才可获取。
               </p>
             </div>
 

@@ -37,10 +37,13 @@ interface SidebarProps {
   totalCount: number;
   mode: AppMode;
   canManage: boolean;
+  canViewPrivate: boolean;
+  friendUnlocked: boolean;
   adminUser?: string;
   mobileOpen: boolean;
   onCloseMobile: () => void;
   onOpenAdmin: () => void;
+  onOpenVaultUnlock: () => void;
   onAddSite: () => void;
   onExport: () => void;
   onImport: (file: File) => void;
@@ -75,10 +78,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   totalCount,
   mode,
   canManage,
+  canViewPrivate,
+  friendUnlocked,
   adminUser,
   mobileOpen,
   onCloseMobile,
   onOpenAdmin,
+  onOpenVaultUnlock,
   onAddSite,
   onExport,
   onImport,
@@ -88,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const visibleCategories = categories.filter((c) => {
     if (mode === 'work' && c.nsfwOnly) return false;
-    if (c.privateOnly && !canManage) return false;
+    if (c.privateOnly && !canViewPrivate) return false;
     return true;
   });
 
@@ -299,15 +305,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onOpenAdmin();
                 onCloseMobile();
               }}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200/90 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200/90 bg-white/90 px-2.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40"
             >
               <KeyRound className="h-3.5 w-3.5" />
               站长登录
             </button>
+            {mode !== 'work' && (
+              <button
+                type="button"
+                onClick={() => {
+                  onOpenVaultUnlock();
+                  onCloseMobile();
+                }}
+                title={friendUnlocked ? '好友暗号已解锁（点击可锁定）' : '输入好友暗号解锁私密库'}
+                className={`flex items-center justify-center gap-1 rounded-xl border px-2.5 py-2 text-xs font-semibold transition ${
+                  friendUnlocked
+                    ? 'border-violet-300/80 bg-violet-50 text-violet-700 hover:bg-violet-100/70 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300'
+                    : 'border-slate-200/90 bg-white/90 text-slate-600 hover:border-violet-300 hover:text-violet-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
+                }`}
+              >
+                <Lock className="h-3.5 w-3.5" />
+                {friendUnlocked ? '已解锁' : '暗号'}
+              </button>
+            )}
             <button
               type="button"
               onClick={onExport}
-              title="导出当前站点 JSON"
+              title="导出当前公开站点 JSON"
               className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white/90 p-2 text-slate-500 transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400"
             >
               <Download className="h-3.5 w-3.5" />
