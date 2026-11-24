@@ -8,6 +8,81 @@ export interface PortalMessage {
 }
 
 export const PORTAL_MESSAGES: PortalMessage[] = [
+  // === Galgame 经典地标 ===
+  {
+    id: 'hoori',
+    place: '穗织镇',
+    badge: '温泉乡 · 丛雨丸认证',
+    body: '电车已缓缓驶入「穗织镇」！拔出神刀之前请先做好被幼刀吐槽的心理准备，现在就进村吗？',
+    confirmText: '进村拔刀！',
+    cancelText: '下次再泡温泉',
+  },
+  {
+    id: 'hikarizaka',
+    place: '光坂小镇',
+    badge: '樱花坡道 · 光玉收集',
+    body: '樱花正飘落在「光坂小镇」的坡道上——别忘了备好纸巾，要一起踏上这段新的路线吗？',
+    confirmText: '走上坡道',
+    cancelText: '先买份早苗面包',
+  },
+  {
+    id: 'torishirojima',
+    place: '鸟白岛',
+    badge: '濑户内海 · 渡轮靠岸',
+    body: '渡轮的汽笛声响起，盛夏的「鸟白岛」就在眼前。暑假才刚刚开始，现在登岛探索吗？',
+    confirmText: '骑车环岛去！',
+    cancelText: '先打会儿乒乓',
+  },
+  {
+    id: 'okukozome',
+    place: '奥木染町',
+    badge: '夏日乡间 · 避暑列车',
+    body: '蝉鸣声渐渐清晰，通往「奥木染町」的乡间列车即将到站。记得随手反锁玄关门，确认出发吗？',
+    confirmText: '下车进镇',
+    cancelText: '先吹会儿夏风',
+  },
+  {
+    id: 'houjou',
+    place: '峰城大附属学园',
+    badge: '初雪降临 · 胃药常备',
+    body: '音乐室里隐约传来了《届かない恋》的旋律……确定要在初雪这天踏入「峰城大附属」的修罗场吗？',
+    confirmText: '为什么会变成这样呢',
+    cancelText: '先吃两片胃药',
+  },
+  {
+    id: 'hinamizawa',
+    place: '雏见泽村',
+    badge: '绵流祭前夜 · 蝉鸣渐响',
+    body: '前方即将进入「雏见泽村」，村里偶有柴刀出没且切勿随便吞下陌生萩饼……仍要前往吗？',
+    confirmText: '头铁进村！',
+    cancelText: '嘘だ！我溜了',
+  },
+  {
+    id: 'mihama',
+    place: '美滨学园',
+    badge: '全封闭寄宿制 · 转学通知',
+    body: '穿过高耸的校门就是「美滨学园」了。里面全员都是身怀绝技的问题少女，确定要办理转学吗？',
+    confirmText: '立刻转学报道',
+    cancelText: '我只想当普通人',
+  },
+  {
+    id: 'yumihari',
+    place: '弓张市',
+    badge: '樱之诗 · 艺术巡礼',
+    body: '微风拂过「弓张市」的画室，满城樱花正在纸页间飘落——准备好推开下一扇通往新世界的门了吗？',
+    confirmText: '推开画室之门',
+    cancelText: '再赏一会儿樱',
+  },
+  {
+    id: 'fuyuki',
+    place: '冬木市',
+    badge: '夜间巡礼 · 煤气预警',
+    body: '今晚的「冬木市」煤气管道看起来不太安分……御主，确认要前往该坐标展开探索吗？',
+    confirmText: '以令咒之名，冲！',
+    cancelText: '先苟在教堂',
+  },
+
+  // === 保留的二次元经典坐标 ===
   {
     id: 'akihabara',
     place: '秋叶原',
@@ -41,14 +116,6 @@ export const PORTAL_MESSAGES: PortalMessage[] = [
     cancelText: '怕被退治，溜了',
   },
   {
-    id: 'chaldea',
-    place: '迦勒底',
-    badge: '人理延续保障机构',
-    body: '灵子转移坐标已锁定「迦勒底」管制室！达·芬奇亲提醒：出发前请检查网速与梯子状态。',
-    confirmText: '开始灵子转移',
-    cancelText: '取消筐体启动',
-  },
-  {
     id: 'aincrad',
     place: '艾恩葛朗特',
     badge: '浮游城 · 第 1 层',
@@ -65,38 +132,6 @@ export const PORTAL_MESSAGES: PortalMessage[] = [
     cancelText: '下次一定',
   },
   {
-    id: 'astral-express',
-    place: '星穹列车',
-    badge: '跃迁倒计时 · 3, 2, 1',
-    body: '帕姆播报：下一站跃迁坐标已校准！请抓紧扶手，准备随「星穹列车」前往新世界帕！',
-    confirmText: '开始跃迁帕！',
-    cancelText: '车厢里再坐会儿',
-  },
-  {
-    id: 'beika',
-    place: '米花町',
-    badge: '高危区域 · 推理预警',
-    body: '前方目的地位于「米花町」，请自觉远离戴黑框眼镜的小学生与密室建筑。仍要前往吗？',
-    confirmText: '头铁硬闯',
-    cancelText: '珍爱生命，撤退',
-  },
-  {
-    id: 'fuyuki',
-    place: '冬木市',
-    badge: '夜间巡礼 · 煤气预警',
-    body: '今晚的「冬木市」煤气管道看起来不太安分……御主，确认要前往该坐标展开探索吗？',
-    confirmText: '以令咒之名，冲！',
-    cancelText: '先苟在教堂',
-  },
-  {
-    id: 'konoha',
-    place: '木叶隐村',
-    badge: '火影岩 · 通灵坐标',
-    body: '通灵之术准备完毕！确定要放下手里的一乐拉面，火影跑直奔「木叶隐村」外的新坐标吗？',
-    confirmText: '结印出发',
-    cancelText: '再吃一碗拉面',
-  },
-  {
     id: 'axel',
     place: '阿克塞尔新手镇',
     badge: '冒险者公会 · 悬赏板',
@@ -111,22 +146,6 @@ export const PORTAL_MESSAGES: PortalMessage[] = [
     body: '同步率 400% 确认！初号机已就位，是否立即沿轨道弹射前往「第 3 新东京市」目标区域？',
     confirmText: '弹射出发！',
     cancelText: '算了，今天不逃也不上',
-  },
-  {
-    id: 'platform-934',
-    place: '异世界九又四分之三站台',
-    badge: '次元裂缝 · 特快列车',
-    body: '虽然好像串台了，但反正都是异世界！猫头鹰已经叼来「异世界站台」车票，现在闭眼穿墙吗？',
-    confirmText: '闭眼冲墙',
-    cancelText: '怕撞墙，先等等',
-  },
-  {
-    id: 'holy-land',
-    place: '二次元圣地',
-    badge: '次元壁厚度 0.01mm',
-    body: '前方检测到高浓度精神食粮！次元壁已薄如蝉翼，是否即刻踏上这场「二次元圣地」巡礼？',
-    confirmText: '突破次元壁',
-    cancelText: '守住理智',
   },
 ];
 
