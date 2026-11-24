@@ -11353,5 +11353,696 @@
     "nsfw": false,
     "accent": "#475569",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/02/www.virustotal.com_gui_home_upload.png"
+  },
+  {
+    "id": "inf-v2ex",
+    "name": "V2EX",
+    "shortName": "V2",
+    "url": "https://www.v2ex.com/",
+    "category": "dev_work",
+    "description": "创意工作者与开发者技术交流社区。",
+    "tags": [
+      "技术社区",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#1e293b"
+  },
+  {
+    "id": "inf-linuxdo-credit",
+    "name": "L 站积分",
+    "shortName": "L站",
+    "url": "https://credit.linux.do/home",
+    "category": "dev_work",
+    "description": "LINUX DO 社区积分与信任等级数据看板。",
+    "tags": [
+      "技术社区",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "inf-cnki",
+    "name": "中国知网 (CNKI)",
+    "shortName": "知网",
+    "url": "https://www.cnki.net/",
+    "category": "dev_work",
+    "description": "中文期刊论文、硕博论文与学术文献检索平台。",
+    "tags": [
+      "学术检索",
+      "Infinity"
+    ],
+    "costTier": "points",
+    "costLabel": "机构/付费",
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "inf-gscholar",
+    "name": "Google 学术",
+    "shortName": "学术",
+    "url": "https://scholar.google.com/",
+    "category": "dev_work",
+    "description": "全球学术论文、会议文献与引用关系搜索引擎。",
+    "tags": [
+      "学术检索",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://scholar.google.com/scholar?q={q}",
+    "nsfw": false,
+    "accent": "#3b82f6"
+  },
+  {
+    "id": "inf-wiki",
+    "name": "Wikipedia",
+    "shortName": "Wiki",
+    "url": "https://www.wikipedia.org/",
+    "category": "dev_work",
+    "description": "自由开放的全球多语种维基百科全书。",
+    "tags": [
+      "百科",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://zh.wikipedia.org/wiki/Special:Search?search={q}",
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "inf-zhihu",
+    "name": "知乎",
+    "shortName": "知乎",
+    "url": "https://www.zhihu.com/",
+    "category": "dev_work",
+    "description": "中文互联网问答与深度专栏知识社区。",
+    "tags": [
+      "问答社区",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.zhihu.com/search?type=content&q={q}",
+    "nsfw": false,
+    "accent": "#0066ff"
+  },
+  {
+    "id": "inf-jiujiu-ielts",
+    "name": "九九雅思",
+    "shortName": "雅思",
+    "url": "https://jiujiuen.cn/",
+    "category": "dev_work",
+    "description": "一站式雅思备考、真题刷题与口语练习平台。",
+    "tags": [
+      "英语学习",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "inf-ithome",
+    "name": "IT 之家",
+    "shortName": "IT",
+    "url": "https://www.ithome.com/",
+    "category": "dev_work",
+    "description": "数码科技、软硬件新品与互联网行业快讯社区。",
+    "tags": [
+      "科技资讯",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#dc2626"
+  },
+  {
+    "id": "inf-skillsmp",
+    "name": "Agent Skills Market",
+    "shortName": "AS",
+    "url": "https://skillsmp.com/zh",
+    "category": "dev_work",
+    "description": "AI Agent 技能扩展、工作流与提示词市场。",
+    "tags": [
+      "AI开发",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "inf-fmhy",
+    "name": "FMHY",
+    "shortName": "FM",
+    "url": "https://fmhy.net/",
+    "category": "dev_work",
+    "description": "FreeMediaHeckYeah，全球最全开源免费软件与数字资源百科。",
+    "tags": [
+      "资源百科",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "inf-chongbuluo",
+    "name": "虫部落快搜",
+    "shortName": "虫部",
+    "url": "https://search.chongbuluo.com/",
+    "category": "dev_work",
+    "description": "多引擎学术、数据、开发与资源聚合搜索入口。",
+    "tags": [
+      "聚合搜索",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "inf-pipiwang",
+    "name": "皮皮智绘 · AI 创作",
+    "shortName": "智绘",
+    "url": "https://img.pipiwangcom.com/",
+    "category": "work_ai",
+    "description": "在线 AI 图像生成与创意绘图工具。",
+    "tags": [
+      "AI绘画",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "inf-gmail",
+    "name": "Gmail",
+    "shortName": "GM",
+    "url": "https://mail.google.com/",
+    "category": "work_mail",
+    "description": "Google 电子邮箱服务入口。",
+    "tags": [
+      "邮箱",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ea4335"
+  },
+  {
+    "id": "inf-baidupan",
+    "name": "百度网盘",
+    "shortName": "度盘",
+    "url": "https://pan.baidu.com/",
+    "category": "work_p2p",
+    "description": "常用云端网盘存储与资源分享转存入口。",
+    "tags": [
+      "网盘",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费/会员",
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "inf-chaonengsou",
+    "name": "超能搜",
+    "shortName": "超搜",
+    "url": "https://www.chaonengsou.com/",
+    "category": "work_p2p",
+    "description": "聚合百度/夸克/阿里云等多网盘资源搜索引擎。",
+    "tags": [
+      "网盘搜索",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "inf-extfans",
+    "name": "扩展迷",
+    "shortName": "扩展",
+    "url": "https://extfans.com/",
+    "category": "work_extensions",
+    "description": "Chrome / Edge 浏览器插件离线 CRX 下载与评测站。",
+    "tags": [
+      "浏览器扩展",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "inf-appinn",
+    "name": "小众软件",
+    "shortName": "小众",
+    "url": "https://www.appinn.com/",
+    "category": "tools",
+    "description": "专注发掘免费、小巧、实用的跨平台效率软件。",
+    "tags": [
+      "软件推荐",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "inf-500px",
+    "name": "500px",
+    "shortName": "500",
+    "url": "https://500px.com/",
+    "category": "artworks",
+    "description": "全球高清摄影作品与视觉艺术灵感社区。",
+    "tags": [
+      "高清摄影",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#06b6d4"
+  },
+  {
+    "id": "inf-lofter",
+    "name": "LOFTER 乐乎",
+    "shortName": "乐乎",
+    "url": "https://www.lofter.com/",
+    "category": "artworks",
+    "description": "同人插画、二次元二创、同人文与兴趣创作社区。",
+    "tags": [
+      "同人插画",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "inf-fishhawk",
+    "name": "轻小说机翻机器人",
+    "shortName": "机翻",
+    "url": "https://books.fishhawk.top/",
+    "category": "light_novels",
+    "description": "开源日轻生肉自动 AI 翻译与在线阅读平台。",
+    "tags": [
+      "日轻小说",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "inf-zlib",
+    "name": "Z-Library",
+    "shortName": "ZL",
+    "url": "https://zh.1lib.sk/",
+    "category": "media_ent",
+    "description": "全球海量免费电子书、轻小说与学术文献数字图书馆。",
+    "tags": [
+      "电子书籍",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "inf-twitter",
+    "name": "Twitter / X",
+    "shortName": "X",
+    "url": "https://x.com/",
+    "category": "acg_community",
+    "description": "全球画师动态、番剧官方情报与即时社交平台。",
+    "tags": [
+      "社交媒体",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#1e293b"
+  },
+  {
+    "id": "inf-instagram",
+    "name": "Instagram",
+    "shortName": "IG",
+    "url": "https://www.instagram.com/",
+    "category": "acg_community",
+    "description": "图片视觉、Cosplay 与创作者日常动态社交平台。",
+    "tags": [
+      "社交媒体",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#e11d48"
+  },
+  {
+    "id": "inf-9gag",
+    "name": "9GAG",
+    "shortName": "9G",
+    "url": "https://9gag.com/",
+    "category": "acg_community",
+    "description": "全球 Meme 梗图、搞笑动图与日常摸鱼社区。",
+    "tags": [
+      "梗图社区",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#334155"
+  },
+  {
+    "id": "inf-blhx-wiki",
+    "name": "碧蓝航线 Wiki",
+    "shortName": "碧蓝",
+    "url": "https://wiki.biligame.com/blhx/%E9%A6%96%E9%A1%B5",
+    "category": "anime_community",
+    "description": "碧蓝航线舰娘图鉴、装备节奏榜与活动攻略 Wiki。",
+    "tags": [
+      "游戏Wiki",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "inf-calamity-wiki",
+    "name": "泰拉瑞亚灾厄 Wiki",
+    "shortName": "灾厄",
+    "url": "https://calamity.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5",
+    "category": "anime_community",
+    "description": "泰拉瑞亚 Calamity Mod 中文灰机维基攻略与合成表。",
+    "tags": [
+      "游戏Wiki",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "inf-scp-cn",
+    "name": "SCP 基金会中文维基",
+    "shortName": "SCP",
+    "url": "https://scp-wiki-cn.wikidot.com/",
+    "category": "anime_community",
+    "description": "SCP 异常项目档案与科幻怪谈协作创作维基。",
+    "tags": [
+      "百科维基",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "inf-schaledb",
+    "name": "SchaleDB",
+    "shortName": "夏莱",
+    "url": "https://schaledb.brightsu.cn/",
+    "category": "anime_community",
+    "description": "蔚蓝档案学生数值、技能倍率、总力战与关卡数据库。",
+    "tags": [
+      "蔚蓝档案",
+      "游戏Wiki"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "inf-kivo-wiki",
+    "name": "古书馆 (Kivo Wiki)",
+    "shortName": "古书",
+    "url": "https://kivo.wiki/",
+    "category": "anime_community",
+    "description": "蔚蓝档案全角色设定、剧情对话与活动资料百科。",
+    "tags": [
+      "蔚蓝档案",
+      "游戏Wiki"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "inf-ba-gamekee",
+    "name": "蔚蓝档案 GameKee",
+    "shortName": "档案",
+    "url": "https://ba.gamekee.com/",
+    "category": "anime_community",
+    "description": "蔚蓝档案中文攻略、卡池未来视与角色节奏榜 Wiki。",
+    "tags": [
+      "蔚蓝档案",
+      "游戏Wiki"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "inf-svgdb",
+    "name": "影之诗 1 代卡图库",
+    "shortName": "SZB",
+    "url": "https://svgdb.me/carddatabase",
+    "category": "anime_community",
+    "description": "Shadowverse 历代卡面高清立绘、异画与角色语音数据库。",
+    "tags": [
+      "游戏Wiki",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "inf-cthulhu",
+    "name": "克苏鲁俱乐部",
+    "shortName": "克总",
+    "url": "https://www.cthulhuclub.com/",
+    "category": "anime_community",
+    "description": "克苏鲁神话背景设定与 COC 跑团模组资料站。",
+    "tags": [
+      "跑团百科",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0f766e"
+  },
+  {
+    "id": "inf-lolidoc",
+    "name": "LoliDoc 导航",
+    "shortName": "LD",
+    "url": "https://lolidoc.com/",
+    "category": "anime_community",
+    "description": "轻量二次元与实用上网导航站。",
+    "tags": [
+      "导航",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "inf-95dir",
+    "name": "95 分类目录",
+    "shortName": "95",
+    "url": "https://www.95dir.com/",
+    "category": "anime_community",
+    "description": "综合中文网址分类目录索引。",
+    "tags": [
+      "导航",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb7185"
+  },
+  {
+    "id": "inf-qianxun",
+    "name": "千寻导航",
+    "shortName": "千寻",
+    "url": "https://qianxundh.xyz/",
+    "category": "anime_community",
+    "description": "简洁实用的聚合网址导航。",
+    "tags": [
+      "导航",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "inf-hifast",
+    "name": "快导航网",
+    "shortName": "快导",
+    "url": "https://www.hifast.cn/",
+    "category": "anime_community",
+    "description": "多分类综合快捷导航站。",
+    "tags": [
+      "导航",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "inf-chesscom",
+    "name": "Chess.com",
+    "shortName": "国象",
+    "url": "https://www.chess.com/",
+    "category": "acg_games",
+    "description": "全球最大在线国际象棋对弈、解谜与复盘平台。",
+    "tags": [
+      "在线棋牌",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#16a34a"
+  },
+  {
+    "id": "inf-lichess",
+    "name": "Lichess",
+    "shortName": "LC",
+    "url": "https://lichess.org/zh",
+    "category": "acg_games",
+    "description": "完全免费、无广告的开源国际象棋在线对战与引擎分析站。",
+    "tags": [
+      "在线棋牌",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": false,
+    "accent": "#334155"
+  },
+  {
+    "id": "inf-seiya",
+    "name": "诚也的部屋",
+    "shortName": "诚也",
+    "url": "https://seiya-saiga.com/",
+    "category": "acg_games",
+    "description": "日系 Galgame 殿堂级全路线文字攻略老牌站点。",
+    "tags": [
+      "Gal攻略",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "inf-touchgal",
+    "name": "TouchGal",
+    "shortName": "TG",
+    "url": "https://www.touchgal.us/",
+    "category": "acg_games",
+    "description": "一站式 Galgame 文化社区、补丁与资源交流站。",
+    "tags": [
+      "Galgame",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "inf-haogal",
+    "name": "HaoGal",
+    "shortName": "HG",
+    "url": "https://haogal.com/",
+    "category": "acg_games",
+    "description": "精选 Galgame 汉化资源整理与下载站。",
+    "tags": [
+      "Galgame",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#db2777"
+  },
+  {
+    "id": "inf-letmoe",
+    "name": "LetMoe",
+    "shortName": "LM",
+    "url": "https://www.letmoe.com/",
+    "category": "acg_games",
+    "description": "二次元 Galgame 与同人游戏资源分享站。",
+    "tags": [
+      "Galgame",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#a855f7"
+  },
+  {
+    "id": "inf-ayouth",
+    "name": "Ayouth 的主站",
+    "shortName": "AY",
+    "url": "https://ayouth.top/",
+    "category": "acg_resources",
+    "description": "ACGN 资源整合、实用工具与同人分享站。",
+    "tags": [
+      "ACG资源",
+      "Infinity"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
   }
 ]
