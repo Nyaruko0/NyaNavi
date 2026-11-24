@@ -39,9 +39,9 @@ const RADIUS_CLASS = {
 };
 
 const PADDING_CLASS = {
-  comfortable: 'p-4.5',
-  default: 'p-3.5',
-  compact: 'p-3',
+  comfortable: 'p-4.5 sm:p-5',
+  default: 'p-4',
+  compact: 'p-3.5',
 };
 
 function getHostname(url: string): string {
@@ -123,30 +123,30 @@ export const SiteCard: React.FC<SiteCardProps> = ({
               size={isCompact ? 'sm' : 'md'}
             />
             <div className="min-w-0">
-              <h3 className="truncate text-[14.5px] font-semibold tracking-tight text-slate-800 transition-colors group-hover:text-[var(--nya-accent)] dark:text-slate-100">
+              <h3 className="truncate text-base font-semibold tracking-tight text-slate-800 transition-colors group-hover:text-[var(--nya-accent)] dark:text-slate-100">
                 {site.name}
               </h3>
               {appearance.showDomain && (
-                <p className="mt-0.5 truncate text-[11.5px] text-slate-400 dark:text-slate-500">
+                <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-slate-500">
                   {host}
                 </p>
               )}
             </div>
           </a>
 
-          {/* 右上轻量化操作按钮 */}
+          {/* 右上操作按钮（移动端常显防无 hover，PC 端悬停显现） */}
           <div className="flex shrink-0 items-center gap-0.5">
             <button
               type="button"
               onClick={() => onTogglePin(site.id)}
-              title={site.pinned ? '取消收藏置顶' : '收藏并置顶'}
-              className={`rounded-lg p-1.5 transition ${
+              title={site.pinned ? '取消推荐置顶' : '加入推荐置顶'}
+              className={`rounded-lg p-2 sm:p-1.5 transition ${
                 site.pinned
                   ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10'
-                  : 'text-slate-300 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-slate-100 hover:text-amber-500 dark:text-slate-600 dark:hover:bg-slate-800'
+                  : 'text-slate-300 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100 hover:bg-slate-100 hover:text-amber-500 dark:text-slate-600 dark:hover:bg-slate-800'
               }`}
             >
-              <Star className={`h-3.5 w-3.5 ${site.pinned ? 'fill-amber-400' : ''}`} />
+              <Star className={`h-4 w-4 ${site.pinned ? 'fill-amber-400' : ''}`} />
             </button>
             {canManage && (
               <>
@@ -154,17 +154,17 @@ export const SiteCard: React.FC<SiteCardProps> = ({
                   type="button"
                   onClick={() => onEdit(site)}
                   title="编辑站点"
-                  className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                  className="rounded-lg p-2 sm:p-1.5 text-slate-400 sm:opacity-0 transition sm:group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                 >
-                  <Pencil className="h-3.5 w-3.5" />
+                  <Pencil className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                 </button>
                 <button
                   type="button"
                   onClick={() => onDelete(site.id)}
                   title="删除站点"
-                  className="rounded-lg p-1.5 text-slate-400 opacity-0 transition group-hover:opacity-100 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/15 dark:hover:text-rose-400"
+                  className="rounded-lg p-2 sm:p-1.5 text-slate-400 sm:opacity-0 transition sm:group-hover:opacity-100 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/15 dark:hover:text-rose-400"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                 </button>
               </>
             )}
@@ -173,23 +173,23 @@ export const SiteCard: React.FC<SiteCardProps> = ({
 
         {/* 简介 */}
         {appearance.showDescription && !isCompact && (
-          <p className="mt-2.5 line-clamp-2 text-[12.5px] leading-[1.6] text-slate-500 dark:text-slate-400">
+          <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
             {site.description}
           </p>
         )}
 
         {/* 精简徽标行 */}
         {appearance.showBadges && !isCompact && (
-          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
             <span
-              className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-medium ${COST_BADGE_STYLE[site.costTier]}`}
+              className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${COST_BADGE_STYLE[site.costTier]}`}
             >
               {site.costLabel}
             </span>
 
             {site.clients && site.clients.length > 0 && site.clients[0] !== '网页端' && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-indigo-500/8 px-1.5 py-0.5 text-[11px] font-medium text-indigo-600 dark:bg-indigo-400/12 dark:text-indigo-300">
-                <Smartphone className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1 rounded-md bg-indigo-500/8 px-2 py-0.5 text-xs font-medium text-indigo-600 dark:bg-indigo-400/12 dark:text-indigo-300">
+                <Smartphone className="h-3.5 w-3.5" />
                 {site.clients.slice(0, 2).join(' / ')}
               </span>
             )}
@@ -197,9 +197,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             {site.searchRisk === 'cost' && (
               <span
                 title={site.searchNote}
-                className="inline-flex items-center gap-0.5 rounded-md bg-rose-500/10 px-1.5 py-0.5 text-[11px] font-medium text-rose-600 dark:text-rose-300"
+                className="inline-flex items-center gap-0.5 rounded-md bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-600 dark:text-rose-300"
               >
-                <AlertTriangle className="h-3 w-3" />
+                <AlertTriangle className="h-3.5 w-3.5" />
                 扣币
               </span>
             )}
@@ -207,9 +207,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             {site.searchRisk === 'cooldown' && (
               <span
                 title={site.searchNote}
-                className="inline-flex items-center gap-0.5 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[11px] font-medium text-amber-700 dark:text-amber-300"
+                className="inline-flex items-center gap-0.5 rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-300"
               >
-                <AlertTriangle className="h-3 w-3" />
+                <AlertTriangle className="h-3.5 w-3.5" />
                 10s冷却
               </span>
             )}
@@ -220,7 +220,7 @@ export const SiteCard: React.FC<SiteCardProps> = ({
       {/* 底部极简状态与入口 */}
       <div
         className={`flex items-center justify-between gap-2 border-t border-slate-100/90 dark:border-slate-800/70 ${
-          isCompact ? 'mt-2.5 pt-2' : 'mt-3 pt-2.5'
+          isCompact ? 'mt-2.5 pt-2' : 'mt-3.5 pt-2.5'
         }`}
       >
         <button
@@ -233,9 +233,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
                 ? `本机浏览器连通性探测：${health.note || '正常'}`
                 : '点击检测站点连通性与延迟'
           }
-          className="inline-flex items-center gap-1.5 rounded-md px-1 py-0.5 text-[11px] font-medium text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 sm:px-1.5 sm:py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${statusDot.color}`} />
+          <span className={`h-2 w-2 rounded-full ${statusDot.color}`} />
           <span>{statusDot.label}</span>
         </button>
 
@@ -249,9 +249,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
                 handleLinkClick(e, buildSearchUrl(site.searchUrl!, cleanedQuery), cleanedQuery)
               }
               title={site.searchNote || `在 ${site.name} 搜索「${cleanedQuery}」`}
-              className="inline-flex items-center gap-1 rounded-lg bg-[var(--nya-accent-soft)] px-2 py-1 text-[11px] font-medium text-[var(--nya-accent)] transition hover:opacity-85"
+              className="inline-flex items-center gap-1 rounded-lg bg-[var(--nya-accent-soft)] px-2.5 py-1.5 sm:px-2 sm:py-1 text-xs font-medium text-[var(--nya-accent)] transition hover:opacity-85"
             >
-              <Search className="h-3 w-3" />
+              <Search className="h-3.5 w-3.5" />
               直搜
             </a>
           )}
@@ -260,10 +260,10 @@ export const SiteCard: React.FC<SiteCardProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => handleLinkClick(e, site.url)}
-            className="inline-flex items-center gap-0.5 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+            className="inline-flex items-center gap-0.5 rounded-lg px-2.5 py-1.5 sm:px-2 sm:py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             访问
-            <ArrowUpRight className="h-3 w-3" />
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>

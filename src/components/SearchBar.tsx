@@ -42,18 +42,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="mb-6">
       <div className="group relative rounded-2xl border border-slate-200/80 bg-white/85 p-1.5 shadow-[0_1px_3px_rgba(15,23,42,0.03)] backdrop-blur-md transition-all focus-within:border-[var(--nya-accent-border)] focus-within:bg-white focus-within:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] dark:border-slate-800/90 dark:bg-[#141929]/85 dark:focus-within:bg-[#161c2e]">
-        <div className="flex items-center gap-2.5 px-3 py-1.5">
-          <Search className="h-4.5 w-4.5 shrink-0 text-slate-400 transition-colors group-focus-within:text-[var(--nya-accent)]" />
+        <div className="flex items-center gap-2.5 px-3 py-2">
+          <Search className="h-5 w-5 shrink-0 text-slate-400 transition-colors group-focus-within:text-[var(--nya-accent)]" />
           <input
+            id="nyanavi-search-input"
             type="text"
             value={query}
             onChange={(e) => onChange(e.target.value)}
             placeholder={
               mode === 'work'
-                ? '搜索站点、文档或输入关键词直搜 GitHub / MDN / DevDocs...'
-                : '筛选站点，或粘贴资源标题 / RJ号 一键清洗直搜各大源站...'
+                ? '搜索站点、文档或直搜 GitHub / MDN...'
+                : '筛选站点，或粘贴标题 / RJ号 一键直搜...'
             }
-            className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none sm:text-base dark:text-slate-100 dark:placeholder-slate-500"
+            className="w-full bg-transparent text-base text-slate-800 placeholder-slate-400 outline-none dark:text-slate-100 dark:placeholder-slate-500"
           />
           {query && (
             <button

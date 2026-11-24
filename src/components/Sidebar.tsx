@@ -150,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             type="button"
             onClick={() => handleNavClick('all')}
-            className={`mb-1 flex w-full items-center justify-between rounded-xl px-3 py-2 text-[13.5px] font-medium transition-all ${
+            className={`mb-1 flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
               activeSection === 'all'
                 ? 'bg-[var(--nya-accent-soft)] text-[var(--nya-accent)]'
                 : 'text-slate-600 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60'
@@ -202,7 +202,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={cat.id}
                   type="button"
                   onClick={() => handleNavClick(cat.id)}
-                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13.5px] font-medium transition-all ${
+                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all ${
                     isActive
                       ? 'bg-[var(--nya-accent-soft)] text-[var(--nya-accent)]'
                       : 'text-slate-600 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60'

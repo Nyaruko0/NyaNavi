@@ -6,6 +6,7 @@
   --nya-accent-2: #38bdf8;
   --nya-accent-soft: rgba(236, 72, 153, 0.1);
   --nya-accent-border: rgba(236, 72, 153, 0.35);
+  --nya-root-size: 16.5px;
   --nya-font-sans: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
   --nya-font-round: "Plus Jakarta Sans", "PingFang SC", "Hiragino Maru Gothic ProN", "Yuanti SC", "Noto Sans SC", sans-serif;
   --nya-font-mono: "JetBrains Mono", "Noto Sans SC", ui-monospace, SFMono-Regular, monospace;
@@ -14,14 +15,17 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-size: var(--nya-root-size);
     font-family: var(--nya-font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply bg-[#f8f9fc] text-slate-800 transition-colors duration-300;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .dark body {
@@ -69,7 +73,16 @@
   background-image: none;
 }
 
-/* 极简细滚动条 */
+/* 移动端横向分类胶囊栏隐藏滚动条 */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 极简细滚动条（桌面端） */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

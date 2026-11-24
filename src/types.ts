@@ -50,6 +50,7 @@ export type AccentPreset = 'sakura' | 'sky' | 'violet' | 'emerald' | 'amber';
 export type CardDensity = 'comfortable' | 'default' | 'compact';
 export type CardRadius = 'soft' | 'medium' | 'sharp';
 export type FontStyle = 'sans' | 'round' | 'mono';
+export type FontSizeScale = 'sm' | 'md' | 'lg' | 'xl';
 export type BackgroundStyle = 'glow' | 'dots' | 'minimal';
 
 export interface AppearanceSettings {
@@ -58,6 +59,7 @@ export interface AppearanceSettings {
   density: CardDensity;
   radius: CardRadius;
   fontStyle: FontStyle;
+  fontSize: FontSizeScale;
   bgStyle: BackgroundStyle;
   showDescription: boolean;
   showDomain: boolean;

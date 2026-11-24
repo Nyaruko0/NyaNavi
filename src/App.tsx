@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity,
+  ArrowUp,
   Briefcase,
   CloudUpload,
   Flame,
@@ -35,6 +36,7 @@ import { AdminModal } from './components/AdminModal';
 import {
   ACCENT_THEMES,
   DEFAULT_APPEARANCE,
+  FONT_SIZE_SCALES,
   SettingsDrawer,
 } from './components/SettingsDrawer';
 import {
@@ -118,6 +120,7 @@ export default function App() {
   const [query, setQuery] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 
   const [healthMap, setHealthMap] = useState<Record<string, HealthResult>>({});
   const [batchChecking, setBatchChecking] = useState<boolean>(false);
@@ -196,7 +199,9 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_APPEARANCE_KEY, JSON.stringify(appearance));
     const theme = ACCENT_THEMES[appearance.accent] || ACCENT_THEMES.sakura;
+    const fontScale = FONT_SIZE_SCALES[appearance.fontSize] || FONT_SIZE_SCALES.md;
     const root = document.documentElement;
+    root.style.setProperty('--nya-root-size', fontScale.rootPx);
     root.style.setProperty('--nya-accent', mode === 'work' ? '#0284c7' : theme.primary);
     root.style.setProperty('--nya-accent-2', mode === 'work' ? '#6366f1' : theme.secondary);
     root.style.setProperty(
@@ -209,6 +214,15 @@ export default function App() {
     );
   }, [appearance, mode]);
 
+  // 监听滚动显示返回顶部按钮
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 420);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_MODE_KEY, mode);
     document.title =
@@ -220,7 +234,7 @@ export default function App() {
     document.documentElement.classList.toggle('dark', dark);
   }, [dark]);
 
-  // 快捷键 Alt+W 秒切 工作模式 / NSFW 模式
+  // 快捷键 Alt+W 秒切模式，/ 快捷聚焦搜索框
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.altKey && e.key.toLowerCase() === 'w') {
@@ -232,6 +246,18 @@ export default function App() {
           );
           return next;
         });
+        return;
+      }
+      if (
+        e.key === '/' &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey &&
+        !(e.target instanceof HTMLInputElement) &&
+        !(e.target instanceof HTMLTextAreaElement)
+      ) {
+        e.preventDefault();
+        document.getElementById('nyanavi-search-input')?.focus();
       }
     };
     window.addEventListener('keydown', onKeyDown);
@@ -618,10 +644,10 @@ export default function App() {
 
         {/* 右侧主内容区 */}
         <div className="lg:pl-64">
-          {/* 极简顶部工具栏 */}
-          <header className="sticky top-0 z-20 border-b border-slate-200/60 bg-white/75 backdrop-blur-xl dark:border-slate-800/70 dark:bg-[#0c101b]/75">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-              <div className="flex items-center gap-2.5">
+          {/* 极简顶部工具栏（Android 窄屏 & PC 宽屏自适应） */}
+          <header className="sticky top-0 z-20 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl dark:border-slate-800/70 dark:bg-[#0c101b]/80">
+            <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-3 py-2.5 sm:px-6">
+              <div className="flex min-w-0 items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(true)}
@@ -631,21 +657,26 @@ export default function App() {
                   <Menu className="h-5 w-5" />
                 </button>
 
+                {/* 移动端精简品牌名 */}
+                <span className="truncate text-base font-bold tracking-tight text-slate-800 sm:hidden dark:text-white">
+                  {mode === 'work' ? 'NyaDesk' : 'NyaNavi'}
+                </span>
+
                 <div className="hidden items-center gap-2 sm:flex">
                   {mode === 'work' ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-2.5 py-1 text-[11.5px] font-medium text-sky-700 dark:text-sky-300">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 dark:text-sky-300">
                       <ShieldCheck className="h-3.5 w-3.5" />
                       工作模式 · {modeSites.length} 站
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--nya-accent-soft)] px-2.5 py-1 text-[11.5px] font-medium text-[var(--nya-accent)]">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--nya-accent-soft)] px-3 py-1 text-xs font-medium text-[var(--nya-accent)]">
                       <Flame className="h-3.5 w-3.5" />
                       完整模式 · {modeSites.length} 站
                     </span>
                   )}
 
                   {healthSummary.total > 0 && (
-                    <span className="hidden items-center gap-2 rounded-full border border-slate-200/70 bg-white/70 px-2.5 py-1 text-[11px] text-slate-500 md:inline-flex dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
+                    <span className="hidden items-center gap-2 rounded-full border border-slate-200/70 bg-white/70 px-2.5 py-1 text-xs text-slate-500 md:inline-flex dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
                       <span className="text-emerald-600 dark:text-emerald-400">
                         ● {healthSummary.online}
                       </span>
@@ -657,7 +688,7 @@ export default function App() {
               </div>
 
               {/* 右侧功能切换区 */}
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
                 {/* 站长专属：同步到 GitHub 按钮 */}
                 {canManage && (
                   <button
@@ -764,7 +795,7 @@ export default function App() {
           </header>
 
           {/* 主体内容 */}
-          <main className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6">
+          <main className="mx-auto max-w-[1440px] px-3.5 pt-5 pb-20 sm:px-6 sm:pt-6">
             <SearchBar
               query={query}
               onChange={setQuery}
@@ -772,6 +803,52 @@ export default function App() {
               mode={mode}
               onNavigate={handleNavigate}
             />
+
+            {/* Android / 移动端专属横向滑动分类胶囊条 */}
+            <div className="no-scrollbar -mx-3.5 mb-5 flex items-center gap-2 overflow-x-auto px-3.5 pb-1 lg:hidden">
+              <button
+                type="button"
+                onClick={() => setActiveSection('all')}
+                className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                  activeSection === 'all'
+                    ? 'border-transparent bg-[var(--nya-accent)] text-white shadow-xs'
+                    : 'border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
+                }`}
+              >
+                全部 ({modeSites.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSection('pinned')}
+                className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                  activeSection === 'pinned'
+                    ? 'border-transparent bg-amber-500 text-white shadow-xs'
+                    : 'border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
+                }`}
+              >
+                站长推荐😋 ({pinnedSites.length})
+              </button>
+              {CATEGORIES.filter((c) => !(mode === 'work' && c.nsfwOnly)).map((cat) => {
+                const count = categoryCounts[cat.id] ?? 0;
+                if (count === 0) return null;
+                const active = activeSection === cat.id;
+                const label = mode === 'work' && cat.workName ? cat.workName : cat.name;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setActiveSection(cat.id)}
+                    className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                      active
+                        ? 'border-transparent bg-[var(--nya-accent)] text-white shadow-xs'
+                        : 'border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
+                    }`}
+                  >
+                    {label} ({count})
+                  </button>
+                );
+              })}
+            </div>
 
             {groupedSections.length === 0 || groupedSections.every((g) => g.items.length === 0) ? (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white/70 py-16 text-center dark:border-slate-800 dark:bg-slate-900/40">
@@ -802,9 +879,9 @@ export default function App() {
                   <section key={section.id}>
                     <div className="mb-3.5 flex items-baseline justify-between gap-2">
                       <div>
-                        <h2 className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-slate-800 dark:text-white">
+                        <h2 className="flex items-center gap-2 text-base font-semibold tracking-tight text-slate-800 sm:text-lg dark:text-white">
                           <span
-                            className="h-3.5 w-1 rounded-full"
+                            className="h-4 w-1 rounded-full"
                             style={{
                               background:
                                 mode === 'work'
@@ -818,7 +895,7 @@ export default function App() {
                           </span>
                         </h2>
                         {section.description && (
-                          <p className="mt-0.5 pl-3 text-xs text-slate-400 dark:text-slate-500">
+                          <p className="mt-1 pl-3 text-xs text-slate-400 dark:text-slate-500">
                             {section.description}
                           </p>
                         )}
@@ -911,9 +988,21 @@ export default function App() {
         onClose={() => setPortalTarget(null)}
       />
 
+      {/* 返回顶部悬浮按钮 */}
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="返回顶部"
+          className="fixed right-4 bottom-6 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 sm:right-6 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
+
       {/* 轻量 Toast 提示 */}
       {toast && (
-        <div className="fixed right-5 bottom-5 z-50 rounded-xl bg-slate-900/90 px-4 py-2.5 text-xs font-medium text-white shadow-lg backdrop-blur-md dark:bg-white/95 dark:text-slate-900">
+        <div className="fixed right-4 bottom-20 z-50 rounded-xl bg-slate-900/90 px-4 py-2.5 text-xs font-medium text-white shadow-lg backdrop-blur-md sm:right-5 sm:bottom-6 dark:bg-white/95 dark:text-slate-900">
           {toast}
         </div>
       )}

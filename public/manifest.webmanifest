@@ -1,0 +1,17 @@
+{
+  "name": "NyaNavi · 二次元与 ACG 精选导航",
+  "short_name": "NyaNavi",
+  "description": "清爽极简的二次元 ACG 导航与智能直搜站",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8f9fc",
+  "theme_color": "#ec4899",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

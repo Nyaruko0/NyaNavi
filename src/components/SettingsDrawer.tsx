@@ -6,8 +6,16 @@ import type {
   BackgroundStyle,
   CardDensity,
   CardRadius,
+  FontSizeScale,
   FontStyle,
 } from '../types';
+
+export const FONT_SIZE_SCALES: Record<FontSizeScale, { label: string; rootPx: string }> = {
+  sm: { label: '精巧', rootPx: '15px' },
+  md: { label: '标准', rootPx: '16.5px' },
+  lg: { label: '大字', rootPx: '18px' },
+  xl: { label: '特大', rootPx: '19.5px' },
+};
 
 export const DEFAULT_APPEARANCE: AppearanceSettings = {
   accent: 'sakura',
@@ -15,6 +23,7 @@ export const DEFAULT_APPEARANCE: AppearanceSettings = {
   density: 'default',
   radius: 'soft',
   fontStyle: 'sans',
+  fontSize: 'md',
   bgStyle: 'glow',
   showDescription: true,
   showDomain: true,
@@ -95,26 +104,26 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
         onClick={onClose}
       />
 
-      {/* 右侧抽屉 */}
-      <aside className="relative z-10 flex h-full w-full max-w-sm flex-col border-l border-slate-200/80 bg-white/95 shadow-2xl backdrop-blur-2xl dark:border-slate-800/80 dark:bg-[#111626]/95">
+      {/* 右侧抽屉（移动端宽屏舒适触控） */}
+      <aside className="relative z-10 flex h-full w-[90vw] max-w-sm flex-col border-l border-slate-200/80 bg-white/95 shadow-2xl backdrop-blur-2xl dark:border-slate-800/80 dark:bg-[#111626]/95">
         <div className="flex items-center justify-between border-b border-slate-200/70 px-5 py-4 dark:border-slate-800/80">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-[var(--nya-accent)]" />
-            <h2 className="text-sm font-semibold tracking-tight text-slate-800 dark:text-white">
+            <h2 className="text-base font-semibold tracking-tight text-slate-800 dark:text-white">
               外观与版面设置
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             aria-label="关闭设置"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5 text-xs">
+        <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5 text-sm">
           {/* 1. 主题点缀色 */}
           <section>
             <div className="mb-2.5 flex items-center gap-1.5 font-semibold text-slate-700 dark:text-slate-200">
@@ -242,32 +251,63 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
           {/* 3. 字体与视觉元素 */}
           <section className="space-y-3.5">
-            <div className="flex items-center gap-1.5 font-semibold text-slate-700 dark:text-slate-200">
-              <Type className="h-3.5 w-3.5 text-slate-400" />
-              字体与信息精简
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <Type className="h-4 w-4 text-slate-400" />
+              字号、字体与信息精简
             </div>
 
-            <div className="grid grid-cols-3 gap-1.5 rounded-xl bg-slate-100/90 p-1 dark:bg-slate-800/80">
-              {(
-                [
-                  ['sans', '现代黑体'],
-                  ['round', '轻圆风格'],
-                  ['mono', '极客等宽'],
-                ] as Array<[FontStyle, string]>
-              ).map(([val, label]) => (
-                <button
-                  key={val}
-                  type="button"
-                  onClick={() => update('fontStyle', val)}
-                  className={`rounded-lg py-1.5 font-medium transition ${
-                    settings.fontStyle === val
-                      ? 'bg-white text-slate-900 shadow-xs dark:bg-slate-700 dark:text-white'
-                      : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+            {/* 全局字号 4 档调节 */}
+            <div>
+              <div className="mb-1.5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>全局字号大小</span>
+                <span className="font-mono text-[0.75rem] text-[var(--nya-accent)]">
+                  {FONT_SIZE_SCALES[settings.fontSize]?.label} · {FONT_SIZE_SCALES[settings.fontSize]?.rootPx}
+                </span>
+              </div>
+              <div className="grid grid-cols-4 gap-1.5 rounded-xl bg-slate-100/90 p-1 dark:bg-slate-800/80">
+                {(['sm', 'md', 'lg', 'xl'] as FontSizeScale[]).map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => update('fontSize', val)}
+                    className={`rounded-lg py-2 text-xs font-medium transition ${
+                      settings.fontSize === val
+                        ? 'bg-white text-slate-900 shadow-xs dark:bg-slate-700 dark:text-white'
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                    }`}
+                  >
+                    {FONT_SIZE_SCALES[val].label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-1.5 text-xs text-slate-500 dark:text-slate-400">
+                字体风格
+              </div>
+              <div className="grid grid-cols-3 gap-1.5 rounded-xl bg-slate-100/90 p-1 dark:bg-slate-800/80">
+                {(
+                  [
+                    ['sans', '现代黑体'],
+                    ['round', '轻圆风格'],
+                    ['mono', '极客等宽'],
+                  ] as Array<[FontStyle, string]>
+                ).map(([val, label]) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => update('fontStyle', val)}
+                    className={`rounded-lg py-2 text-xs font-medium transition ${
+                      settings.fontStyle === val
+                        ? 'bg-white text-slate-900 shadow-xs dark:bg-slate-700 dark:text-white'
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2 rounded-xl border border-slate-200/70 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-900/40">
