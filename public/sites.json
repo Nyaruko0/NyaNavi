@@ -581,7 +581,8 @@
       "Mobile"
     ],
     "nsfw": false,
-    "accent": "#1e293b"
+    "accent": "#1e293b",
+    "pinned": true
   },
   {
     "id": "mdn",
@@ -4032,7 +4033,8 @@
     "costLabel": "免费",
     "searchUrl": "https://linux.do/search?q={q}",
     "nsfw": false,
-    "accent": "#f59e0b"
+    "accent": "#f59e0b",
+    "pinned": true
   },
   {
     "id": "chrome-nodeseek",
@@ -4065,7 +4067,8 @@
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#ef4444"
+    "accent": "#ef4444",
+    "pinned": true
   },
   {
     "id": "chrome-hello-algo",
@@ -4097,7 +4100,8 @@
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "pinned": false
   },
   {
     "id": "chrome-xiaolincoding",
@@ -8788,7 +8792,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#0284c7"
+    "accent": "#0284c7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/mydowndown.com.png"
   },
   {
     "id": "acgbox-ext-284",
