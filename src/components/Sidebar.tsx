@@ -224,7 +224,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <span className="flex items-center gap-2.5">
               <Star className="h-4 w-4 text-amber-500" />
-              站长推荐😋
+              站长爱看😋
             </span>
             <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">
               {pinnedCount}

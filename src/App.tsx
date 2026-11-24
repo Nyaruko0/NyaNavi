@@ -489,7 +489,7 @@ export default function App() {
         activeSection === 'pinned'
           ? {
               id: 'pinned',
-              name: '站长推荐😋',
+              name: '站长爱看😋',
               description: canManage
                 ? '站长精选推荐的置顶入口（可同步到 GitHub）'
                 : '站长精选推荐 + 你本地星标收藏的高频入口',
@@ -530,7 +530,7 @@ export default function App() {
     if (pinnedSites.length > 0) {
       sections.push({
         id: 'pinned-top',
-        title: '站长推荐😋',
+        title: '站长爱看😋',
         description: '站长精选推荐的高频入口',
         items: pinnedSites,
       });
@@ -1207,7 +1207,7 @@ export default function App() {
                     : 'border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
                 }`}
               >
-                站长推荐😋 ({pinnedSites.length})
+                站长爱看😋 ({pinnedSites.length})
               </button>
               {CATEGORIES.filter((c) => {
                 if (mode === 'work' && !c.workAllowed) return false;
