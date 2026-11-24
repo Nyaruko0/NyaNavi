@@ -29,7 +29,12 @@ function loadInitialSites(): SiteItem[] {
     const raw = localStorage.getItem(STORAGE_SITES_KEY);
     if (!raw) return DEFAULT_SITES;
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // 增量合并：保留用户已有配置/收藏/自定义站点，同时自动补入新版本新增的内置站点
+      const existingIds = new Set(parsed.map((item: SiteItem) => item.id));
+      const additions = DEFAULT_SITES.filter((item) => !existingIds.has(item.id));
+      return additions.length > 0 ? [...parsed, ...additions] : parsed;
+    }
   } catch {
     // ignore corrupted local storage
   }

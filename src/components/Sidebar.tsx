@@ -1,18 +1,27 @@
 import React from 'react';
 import {
+  BookMarked,
   BookOpen,
   Briefcase,
+  Compass,
   Download,
+  DownloadCloud,
+  FileText,
+  Flame,
+  FolderArchive,
   Gamepad2,
+  Headphones,
+  Image,
   Library,
   Plus,
   RotateCcw,
   Sparkles,
   Star,
+  Tv,
   Upload,
+  Users,
   Wrench,
   X,
-  Compass,
 } from 'lucide-react';
 import type { AppMode, CategoryId, CategoryMeta } from '../types';
 
@@ -33,9 +42,18 @@ interface SidebarProps {
 }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Flame,
   Gamepad2,
+  FolderArchive,
+  Users,
   BookOpen,
+  Headphones,
   Library,
+  Tv,
+  DownloadCloud,
+  BookMarked,
+  FileText,
+  Image,
   Sparkles,
   Wrench,
   Briefcase,
@@ -66,8 +84,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col justify-between">
-      <div>
+    <div className="flex h-full flex-col">
+      {/* 顶部固定：品牌头部 */}
+      <div className="shrink-0">
         {/* 品牌头部 */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4">
           <div className="flex items-center gap-3">
@@ -158,9 +177,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
           </button>
         </div>
+      </div>
 
-        {/* 分类目录 */}
-        <div className="mt-4 px-3">
+      {/* 分类目录（独立可滚动） */}
+      <div className="mt-3 flex-1 overflow-y-auto px-3 pb-3">
           <div className="mb-1.5 px-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             分类目录
           </div>
@@ -195,11 +215,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
               );
             })}
           </nav>
-        </div>
       </div>
 
       {/* 底部管理操作区 */}
-      <div className="border-t border-slate-200/70 p-3 dark:border-slate-800/80">
+      <div className="shrink-0 border-t border-slate-200/70 p-3 dark:border-slate-800/80">
         <button
           type="button"
           onClick={() => {

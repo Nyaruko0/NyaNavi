@@ -1,7 +1,16 @@
 export type CategoryId =
   | 'posts'
+  | 'acg_games'
+  | 'acg_resources'
+  | 'acg_community'
   | 'comics'
+  | 'asmr'
   | 'novels'
+  | 'anime_stream'
+  | 'anime_download'
+  | 'comics_sfw'
+  | 'light_novels'
+  | 'artworks'
   | 'anime_community'
   | 'tools'
   | 'dev_work';

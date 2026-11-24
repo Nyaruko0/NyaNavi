@@ -1,31 +1,95 @@
 import type { CategoryMeta, SiteItem } from '../types';
+import { ACGBOX_SITES } from './acgboxSites';
 
 export const CATEGORIES: CategoryMeta[] = [
   {
     id: 'posts',
-    name: '资源论坛 · 游戏与 3D',
-    description: '实测高命中率上游源站，含网盘资源、同人游戏、3D/AI 动画',
+    name: '实测核心源站',
+    description: '前期实测高命中率上游源站，含网盘资源、同人游戏、3D/AI 动画',
+    icon: 'Flame',
+    nsfwOnly: true,
+  },
+  {
+    id: 'acg_games',
+    name: 'ACG 游戏',
+    description: 'Galgame、RPG、同人游戏下载与聚合站',
     icon: 'Gamepad2',
     nsfwOnly: true,
   },
   {
+    id: 'acg_resources',
+    name: 'ACG 资源 · 网盘 · 磁力',
+    description: '综合 ACG 资源站、共享网盘仓库与 BT 磁力索引',
+    icon: 'FolderArchive',
+    nsfwOnly: true,
+  },
+  {
+    id: 'acg_community',
+    name: 'ACG 社区论坛',
+    description: '二次元同好论坛与资源交流社区',
+    icon: 'Users',
+    nsfwOnly: true,
+  },
+  {
     id: 'comics',
-    name: '在线漫画与本子',
+    name: '在线本子与里漫',
     description: '免登录直读与开源阅读器源站',
     icon: 'BookOpen',
     nsfwOnly: true,
   },
   {
+    id: 'asmr',
+    name: 'ASMR 与音声',
+    description: '同人音声与在线 ASMR 资源站',
+    icon: 'Headphones',
+    nsfwOnly: true,
+  },
+  {
     id: 'novels',
-    name: '轻小说与书库',
+    name: '在线小说与书库',
     description: '免登录在线阅读与 Legado 书源站点',
     icon: 'Library',
     nsfwOnly: true,
   },
   {
+    id: 'anime_stream',
+    name: '在线动漫',
+    workName: '在线番剧',
+    description: '高清在线番剧与动画流媒体站点',
+    icon: 'Tv',
+  },
+  {
+    id: 'anime_download',
+    name: '动漫下载',
+    workName: '番剧 BT / 字幕组',
+    description: '动漫花园、蜜柑计划、Nyaa 等 BT 追番源',
+    icon: 'DownloadCloud',
+  },
+  {
+    id: 'comics_sfw',
+    name: '在线漫画',
+    workName: '全年龄漫画',
+    description: '日漫、国漫、韩漫在线阅读站点',
+    icon: 'BookMarked',
+  },
+  {
+    id: 'light_novels',
+    name: '日轻小说',
+    workName: '轻小说文库',
+    description: '日轻小说在线阅读、EPUB 下载与机翻社区',
+    icon: 'FileText',
+  },
+  {
+    id: 'artworks',
+    name: '次元美图',
+    workName: '插画与壁纸',
+    description: 'Pixiv、Danbooru 与高清二次元插画壁纸站',
+    icon: 'Image',
+  },
+  {
     id: 'anime_community',
-    name: '番剧社区与导航',
-    workName: 'ACG 资讯与社区',
+    name: '番剧百科与导航',
+    workName: 'ACG 百科与导航',
     description: '全年龄向番剧数据库、Galgame 公益索引与参考导航',
     icon: 'Sparkles',
   },
@@ -45,7 +109,7 @@ export const CATEGORIES: CategoryMeta[] = [
   },
 ];
 
-export const DEFAULT_SITES: SiteItem[] = [
+const CORE_SITES: SiteItem[] = [
   // ================= 1. 网盘资源 / 游戏 / 3D / AI 动画 =================
   {
     id: 'south-plus',
@@ -523,3 +587,5 @@ export const DEFAULT_SITES: SiteItem[] = [
     accent: '#d97706',
   },
 ];
+
+export const DEFAULT_SITES: SiteItem[] = [...CORE_SITES, ...ACGBOX_SITES];
