@@ -855,7 +855,8 @@
     ],
     "nsfw": false,
     "pinned": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776701848-www.tvtfun.net_.png"
   },
   {
     "id": "acgbox-14",
@@ -2986,7 +2987,8 @@
     "costLabel": "免费",
     "nsfw": true,
     "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.south-plus.net.png"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.south-plus.net.png",
+    "pinned": true
   },
   {
     "id": "acgbox-147",
@@ -3098,7 +3100,8 @@
     "costLabel": "免费",
     "nsfw": true,
     "accent": "#f97316",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/exhentai.org.ico"
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/exhentai.org.ico",
+    "pinned": true
   },
   {
     "id": "acgbox-154",
