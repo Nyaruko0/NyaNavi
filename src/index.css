@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-[#f7f8fc] text-slate-800 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-[#0f1320] text-slate-100;
+  }
+}
+
+/* 清爽明亮的二次元微光背景 */
+.nya-bg-light {
+  background-image:
+    radial-gradient(at 10% 0%, rgba(255, 107, 157, 0.08) 0px, transparent 42%),
+    radial-gradient(at 92% 6%, rgba(56, 189, 248, 0.1) 0px, transparent 40%),
+    radial-gradient(at 50% 100%, rgba(167, 139, 250, 0.06) 0px, transparent 45%);
+}
+
+.dark .nya-bg-light {
+  background-image:
+    radial-gradient(at 12% 0%, rgba(236, 72, 153, 0.11) 0px, transparent 42%),
+    radial-gradient(at 90% 8%, rgba(56, 189, 248, 0.1) 0px, transparent 42%);
+}
+
+/* 工作模式：更克制沉稳的极简灰蓝底 */
+.nya-bg-work {
+  background-image:
+    radial-gradient(at 85% 0%, rgba(14, 165, 233, 0.06) 0px, transparent 45%);
+}
+
+/* 自定义细滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
