@@ -657,8 +657,8 @@ export default function App() {
                   <Menu className="h-5 w-5" />
                 </button>
 
-                {/* 移动端精简品牌名 */}
-                <span className="truncate text-base font-bold tracking-tight text-slate-800 sm:hidden dark:text-white">
+                {/* 移动端精简品牌名（不截断） */}
+                <span className="shrink-0 text-sm font-bold tracking-tight text-slate-800 sm:hidden dark:text-white">
                   {mode === 'work' ? 'NyaDesk' : 'NyaNavi'}
                 </span>
 
@@ -721,7 +721,7 @@ export default function App() {
                   type="button"
                   disabled={batchChecking}
                   onClick={handleBatchCheck}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 disabled:opacity-60 dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-slate-600"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 disabled:opacity-60 dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-slate-600"
                   title="批量检测当前可见站点的连通性与延迟"
                 >
                   {batchChecking ? (
@@ -743,13 +743,13 @@ export default function App() {
                       setMode('work');
                       showToast('已切换至工作模式');
                     }}
-                    className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                    className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium transition-all ${
                       mode === 'work'
                         ? 'bg-white text-sky-600 shadow-2xs dark:bg-slate-700 dark:text-sky-300'
                         : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
                     }`}
                   >
-                    <Briefcase className="h-3.5 w-3.5" />
+                    <Briefcase className="hidden h-3.5 w-3.5 sm:inline" />
                     工作
                   </button>
                   <button
@@ -758,13 +758,13 @@ export default function App() {
                       setMode('nsfw');
                       showToast('已切换至 NSFW 完整模式');
                     }}
-                    className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                    className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium transition-all ${
                       mode === 'nsfw'
                         ? 'bg-[var(--nya-accent)] text-white shadow-2xs'
                         : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
                     }`}
                   >
-                    <Flame className="h-3.5 w-3.5" />
+                    <Flame className="hidden h-3.5 w-3.5 sm:inline" />
                     NSFW
                   </button>
                 </div>
@@ -773,8 +773,8 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setSettingsOpen(true)}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200"
-                  title="自定义主题色、列数、密度、字体与背景壁纸"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-medium text-slate-600 transition hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200"
+                  title="自定义字号、主题色、列数、密度与背景壁纸"
                 >
                   <SlidersHorizontal className="h-3.5 w-3.5" />
                   <span className="hidden md:inline">外观</span>

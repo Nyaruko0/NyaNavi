@@ -172,11 +172,11 @@ export const PortalModal: React.FC<PortalModalProps> = ({
               立即前往
             </span>
 
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-xl border border-slate-200/90 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 sm:py-2 sm:text-xs dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="w-full whitespace-nowrap rounded-xl border border-slate-200/90 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 sm:w-auto sm:py-2 sm:text-xs dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 {message.cancelText}
               </button>
@@ -186,10 +186,10 @@ export const PortalModal: React.FC<PortalModalProps> = ({
                 style={{
                   background: 'linear-gradient(135deg, var(--nya-accent), var(--nya-accent-2))',
                 }}
-                className="inline-flex items-center justify-center gap-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 active:scale-[0.98] sm:py-2 sm:text-xs"
+                className="inline-flex w-full items-center justify-center gap-1 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 active:scale-[0.98] sm:w-auto sm:py-2 sm:text-xs"
               >
                 {message.confirmText}
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-4 w-4 shrink-0" />
               </button>
             </div>
           </div>
