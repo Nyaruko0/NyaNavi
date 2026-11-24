@@ -847,14 +847,15 @@
     "url": "https://www.tvtfun.net",
     "category": "anime_stream",
     "description": "番剧自由 从这里开始",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
     "tags": [
       "在线动漫"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
-    "accent": "#38bdf8",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776701848-www.tvtfun.net_.png"
+    "nsfw": false,
+    "pinned": false,
+    "accent": "#38bdf8"
   },
   {
     "id": "acgbox-14",
@@ -3888,15 +3889,17 @@
     "url": "https://civitai.com/",
     "category": "artworks",
     "description": "全球最大的开源 AI 绘画模型、LoRA 与作品分享社区。",
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://civitai.com/search/models?query={q}",
+    "clients": [],
     "tags": [
       "AI绘画",
       "LoRA",
       "模型库"
     ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "searchUrl": "https://civitai.com/search/models?query={q}",
-    "nsfw": true,
+    "nsfw": false,
+    "pinned": false,
     "accent": "#2563eb"
   },
   {
@@ -5765,70 +5768,6 @@
     "nsfw": false,
     "accent": "#06b6d4",
     "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/wallhaven.cc.png"
-  },
-  {
-    "id": "acgbox-ext-95",
-    "name": "高德地图",
-    "shortName": "高德",
-    "url": "https://www.amap.com",
-    "category": "artworks",
-    "description": "涩图/美图 · 收录自 ACG 盒子",
-    "tags": [
-      "涩图/美图"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
-    "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.amap.com.png"
-  },
-  {
-    "id": "acgbox-ext-96",
-    "name": "Google 地图",
-    "shortName": "Go",
-    "url": "https://www.google.com/maps",
-    "category": "artworks",
-    "description": "涩图/美图 · 收录自 ACG 盒子",
-    "tags": [
-      "涩图/美图"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
-    "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/google.com_maps.ico"
-  },
-  {
-    "id": "acgbox-ext-97",
-    "name": "腾讯地图",
-    "shortName": "腾讯",
-    "url": "https://map.qq.com",
-    "category": "artworks",
-    "description": "涩图/美图 · 收录自 ACG 盒子",
-    "tags": [
-      "涩图/美图"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
-    "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/map.qq.com.png"
-  },
-  {
-    "id": "acgbox-ext-98",
-    "name": "百度地图",
-    "shortName": "百度",
-    "url": "https://map.baidu.com",
-    "category": "artworks",
-    "description": "涩图/美图 · 收录自 ACG 盒子",
-    "tags": [
-      "涩图/美图"
-    ],
-    "costTier": "free",
-    "costLabel": "免费",
-    "nsfw": true,
-    "accent": "#f43f5e",
-    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/map.baidu.com.png"
   },
   {
     "id": "acgbox-ext-99",
