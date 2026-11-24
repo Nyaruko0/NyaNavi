@@ -409,12 +409,15 @@ export default function App() {
   }, [lastNonWorkMode, showToast]);
 
   // 退出站长模式/锁定暗号或切换模式时，若当前停留在不可见分类，自动切回全部
+  // 退出站长模式/锁定暗号或切换模式时，若当前停留在非当前模式的分类，自动切回全部
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.id === activeSection);
+    if (!cat) return;
     if (
-      (mode === 'work' && cat && !cat.workAllowed) ||
-      (mode === 'moyu' && cat && (cat.nsfwOnly || cat.hideInMoyu)) ||
-      (cat?.privateOnly && !canViewPrivate)
+      (mode === 'work' && !cat.workAllowed) ||
+      (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) ||
+      (mode === 'nsfw' && cat.workAllowed) ||
+      (cat.privateOnly && !canViewPrivate)
     ) {
       setActiveSection('all');
     }
@@ -427,6 +430,7 @@ export default function App() {
     return base.map((s) => (s.id in localPins ? { ...s, pinned: localPins[s.id] } : s));
   }, [sites, privateSites, friendVaultSites, friendUnlocked, localPins, canManage]);
 
+  // 三模式严格独立：工作（纯工具/技术）、摸鱼（纯全年龄娱乐）、NSFW（纯里站+私密库）
   const modeSites = useMemo(() => {
     if (mode === 'work') {
       return displaySites.filter((s) => !s.nsfw && WORK_CATEGORY_IDS.has(s.category));
@@ -436,7 +440,9 @@ export default function App() {
         (s) => !s.nsfw && !MOYU_HIDDEN_CATEGORY_IDS.has(s.category),
       );
     }
-    return displaySites;
+    return displaySites.filter(
+      (s) => (s.nsfw || s.category === 'private_vault') && !WORK_CATEGORY_IDS.has(s.category),
+    );
   }, [displaySites, mode]);
 
   const categoryCounts = useMemo(() => {
@@ -533,6 +539,7 @@ export default function App() {
     for (const cat of CATEGORIES) {
       if (mode === 'work' && !cat.workAllowed) continue;
       if (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) continue;
+      if (mode === 'nsfw' && cat.workAllowed) continue;
       if (cat.privateOnly && !canViewPrivate) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
@@ -1030,7 +1037,7 @@ export default function App() {
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--nya-accent-soft)] px-3 py-1 text-xs font-medium text-[var(--nya-accent)]">
                       <Flame className="h-3.5 w-3.5" />
-                      完整模式 · {modeSites.length} 站
+                      NSFW 模式 · {modeSites.length} 站
                     </span>
                   )}
 
@@ -1205,6 +1212,7 @@ export default function App() {
               {CATEGORIES.filter((c) => {
                 if (mode === 'work' && !c.workAllowed) return false;
                 if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
+                if (mode === 'nsfw' && c.workAllowed) return false;
                 if (c.privateOnly && !canViewPrivate) return false;
                 return true;
               }).map((cat) => {

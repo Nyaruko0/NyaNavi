@@ -121,7 +121,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const visibleCategories = categories.filter((c) => {
     if (mode === 'work' && !c.workAllowed) return false;
     if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
+    if (mode === 'nsfw' && c.workAllowed) return false;
     if (c.privateOnly && !canViewPrivate) return false;
+    // 每个模式只展示当前模式下确实有站点的专属目录（私密库解锁后始终保留入口）
+    if (!c.privateOnly && (counts[c.id as CategoryId] ?? 0) === 0) return false;
     return true;
   });
 
