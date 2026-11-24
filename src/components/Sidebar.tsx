@@ -12,7 +12,9 @@ import {
   FileText,
   Film,
   Flame,
+  Folder,
   FolderArchive,
+  FolderPlus,
   Gamepad2,
   Globe,
   Headphones,
@@ -57,6 +59,7 @@ interface SidebarProps {
   mobileOpen: boolean;
   onCloseMobile: () => void;
   onOpenAdmin: () => void;
+  onManageCategories: () => void;
   onAddSite: () => void;
   onExport: () => void;
   onImport: (file: File) => void;
@@ -66,6 +69,7 @@ interface SidebarProps {
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Lock,
   Flame,
+  Folder,
   Gamepad2,
   FolderArchive,
   Users,
@@ -111,6 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   mobileOpen,
   onCloseMobile,
   onOpenAdmin,
+  onManageCategories,
   onAddSite,
   onExport,
   onImport,
@@ -123,8 +128,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
     if (mode === 'nsfw' && c.workAllowed) return false;
     if (c.privateOnly && !canViewPrivate) return false;
-    // 每个模式只展示当前模式下确实有站点的专属目录（私密库解锁后始终保留入口）
-    if (!c.privateOnly && (counts[c.id as CategoryId] ?? 0) === 0) return false;
+    // 普通访客隐藏 0 站点的空目录；站长保留自定义新目录方便继续往里加站
+    if (!canManage && !c.privateOnly && (counts[c.id as CategoryId] ?? 0) === 0) return false;
     return true;
   });
 
@@ -235,8 +240,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* 分类目录（独立可滚动） */}
       <div className="mt-3 flex-1 overflow-y-auto px-3 pb-3">
-          <div className="mb-1.5 px-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-            分类目录
+          <div className="mb-1.5 flex items-center justify-between px-2.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              分类目录
+            </span>
+            {canManage && (
+              <button
+                type="button"
+                onClick={() => {
+                  onManageCategories();
+                  onCloseMobile();
+                }}
+                title="新增、重命名或删除分类目录"
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-slate-500 transition hover:bg-slate-100 hover:text-[var(--nya-accent)] dark:text-slate-400 dark:hover:bg-slate-800"
+              >
+                <FolderPlus className="h-3.5 w-3.5" />
+                管理
+              </button>
+            )}
           </div>
           <nav className="space-y-1">
             {visibleCategories.map((cat) => {
@@ -334,44 +355,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           </>
         ) : (
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => {
-                onOpenAdmin();
-                onCloseMobile();
-              }}
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
-                authRole === 'member'
-                  ? friendUnlocked
-                    ? 'border-violet-300/80 bg-violet-50 text-violet-700 hover:bg-violet-100/70 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300'
-                    : 'border-sky-300/80 bg-sky-50 text-sky-700 hover:bg-sky-100/70 dark:border-sky-500/40 dark:bg-sky-500/15 dark:text-sky-300'
-                  : 'border-slate-200/90 bg-white/90 text-slate-700 hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40'
-              }`}
-            >
-              {authRole === 'member' ? (
-                <>
-                  <Lock className="h-3.5 w-3.5" />
-                  <span className="truncate">
-                    @{authUser} · {friendUnlocked ? '已解锁' : '输密钥'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <KeyRound className="h-3.5 w-3.5" />
-                  GitHub 登录
-                </>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onExport}
-              title="导出当前公开站点 JSON"
-              className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white/90 p-2 text-slate-500 transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400"
-            >
-              <Download className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              onOpenAdmin();
+              onCloseMobile();
+            }}
+            className={`flex w-full items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+              authRole === 'member'
+                ? friendUnlocked
+                  ? 'border-violet-300/80 bg-violet-50 text-violet-700 hover:bg-violet-100/70 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300'
+                  : 'border-sky-300/80 bg-sky-50 text-sky-700 hover:bg-sky-100/70 dark:border-sky-500/40 dark:bg-sky-500/15 dark:text-sky-300'
+                : 'border-slate-200/90 bg-white/90 text-slate-700 hover:border-pink-300 hover:text-pink-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-pink-500/40'
+            }`}
+          >
+            {authRole === 'member' ? (
+              <>
+                <Lock className="h-3.5 w-3.5" />
+                <span className="truncate">
+                  @{authUser} · {friendUnlocked ? '已解锁' : '输密钥'}
+                </span>
+              </>
+            ) : (
+              <>
+                <KeyRound className="h-3.5 w-3.5" />
+                GitHub 登录
+              </>
+            )}
+          </button>
         )}
 
         <input

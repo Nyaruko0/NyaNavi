@@ -25,7 +25,8 @@ export type CategoryId =
   | 'work_p2p'
   | 'work_ip'
   | 'work_extensions'
-  | 'tools';
+  | 'tools'
+  | (string & {});
 
 export type CostTier = 'free' | 'checkin' | 'points' | 'paid';
 

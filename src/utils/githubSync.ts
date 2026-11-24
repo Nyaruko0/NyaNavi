@@ -1,4 +1,4 @@
-import type { SiteItem } from '../types';
+import type { CategoryMeta, SiteItem } from '../types';
 import type { EncryptedVaultPayload } from './vaultCrypto';
 
 export interface GitHubConfig {
@@ -453,6 +453,79 @@ export async function saveSitesToGitHub(
   if (!putRes.ok) {
     const errBody = await putRes.json().catch(() => ({}));
     throw new Error(errBody?.message || `提交失败 (HTTP ${putRes.status})`);
+  }
+
+  const result = await putRes.json();
+  return {
+    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
+    commitUrl: result?.commit?.html_url || `https://github.com/${config.owner}/${config.repo}`,
+  };
+}
+
+const CATEGORIES_PATH = 'public/categories.json';
+
+/**
+ * 从 GitHub 仓库拉取最新 public/categories.json
+ */
+export async function fetchCategoriesFromGitHub(
+  config: GitHubConfig,
+): Promise<CategoryMeta[] | null> {
+  const res = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}?ref=${encodeURIComponent(config.branch)}`,
+    {
+      headers: ghHeaders(config.token),
+      cache: 'no-store',
+    },
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (!data?.content) return null;
+  const parsed = JSON.parse(decodeBase64Utf8(data.content));
+  if (!Array.isArray(parsed)) return null;
+  return parsed as CategoryMeta[];
+}
+
+/**
+ * 将自定义分类目录提交至 GitHub 仓库 public/categories.json
+ */
+export async function saveCategoriesToGitHub(
+  config: GitHubConfig,
+  categories: CategoryMeta[],
+): Promise<GitHubSaveResult> {
+  let sha: string | undefined;
+  const getRes = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}?ref=${encodeURIComponent(config.branch)}`,
+    {
+      headers: ghHeaders(config.token),
+      cache: 'no-store',
+    },
+  );
+  if (getRes.ok) {
+    const existing = await getRes.json();
+    sha = existing?.sha;
+  }
+
+  const content = encodeBase64Utf8(JSON.stringify(categories, null, 2) + '\n');
+  const putRes = await fetch(
+    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}`,
+    {
+      method: 'PUT',
+      headers: {
+        ...ghHeaders(config.token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: `chore(categories): update categories.json (${categories.length} categories) via NyaNavi Admin`,
+        content,
+        branch: config.branch,
+        ...(sha ? { sha } : {}),
+      }),
+    },
+  );
+
+  if (!putRes.ok) {
+    const errBody = await putRes.json().catch(() => ({}));
+    throw new Error(errBody?.message || `分类同步失败 (HTTP ${putRes.status})`);
   }
 
   const result = await putRes.json();

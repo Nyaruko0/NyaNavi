@@ -16,18 +16,27 @@ import {
   SlidersHorizontal,
   Sun,
 } from 'lucide-react';
-import { CATEGORIES, DEFAULT_SITES } from './data/defaultSites';
-import type { AppearanceSettings, AppMode, HealthResult, SiteItem } from './types';
+import { CATEGORIES as DEFAULT_CATEGORIES, DEFAULT_SITES } from './data/defaultSites';
+import type {
+  AppearanceSettings,
+  AppMode,
+  CategoryId,
+  CategoryMeta,
+  HealthResult,
+  SiteItem,
+} from './types';
 import { cleanSearchQuery } from './utils/cleanQuery';
 import { checkSiteHealth } from './utils/healthCheck';
 import {
   clearGitHubConfig,
   DEFAULT_GITHUB_CONFIG,
+  fetchCategoriesFromGitHub,
   fetchEncryptedVaultFromGitHub,
   fetchPrivateSitesFromGitHub,
   fetchSitesFromGitHub,
   getPrivateRepoConfig,
   loadGitHubConfig,
+  saveCategoriesToGitHub,
   saveEncryptedVaultToGitHub,
   saveGitHubConfig,
   savePrivateSitesToGitHub,
@@ -50,6 +59,7 @@ import { SearchBar } from './components/SearchBar';
 import { SiteCard } from './components/SiteCard';
 import { SiteModal } from './components/SiteModal';
 import { AdminModal } from './components/AdminModal';
+import { CategoryModal } from './components/CategoryModal';
 import {
   ACCENT_THEMES,
   DEFAULT_APPEARANCE,
@@ -69,13 +79,12 @@ const STORAGE_THEME_KEY = 'nyanavi_theme_v1';
 const STORAGE_APPEARANCE_KEY = 'nyanavi_appearance_v1';
 const STORAGE_FRIEND_PASS_KEY = 'nyanavi_friend_pass_v1';
 
-const WORK_CATEGORY_IDS = new Set(
-  CATEGORIES.filter((c) => c.workAllowed).map((c) => c.id),
-);
-
-const MOYU_HIDDEN_CATEGORY_IDS = new Set(
-  CATEGORIES.filter((c) => c.hideInMoyu || c.nsfwOnly).map((c) => c.id),
-);
+function ensurePrivateVaultCategory(list: CategoryMeta[]): CategoryMeta[] {
+  const hasVault = list.some((c) => c.id === 'private_vault');
+  if (hasVault) return list;
+  const defVault = DEFAULT_CATEGORIES.find((c) => c.id === 'private_vault');
+  return defVault ? [defVault, ...list] : list;
+}
 
 const DEFAULT_FALLBACK_ICON_MAP = new Map(
   DEFAULT_SITES.filter((s) => s.fallbackIcon).map((s) => [s.id, s.fallbackIcon!]),
@@ -125,6 +134,7 @@ function loadInitialAppearance(): AppearanceSettings {
 
 export default function App() {
   const [sites, setSites] = useState<SiteItem[]>(DEFAULT_SITES);
+  const [categories, setCategories] = useState<CategoryMeta[]>(DEFAULT_CATEGORIES);
   const [privateSites, setPrivateSites] = useState<SiteItem[]>([]);
   const [friendVaultSites, setFriendVaultSites] = useState<SiteItem[]>([]);
   const [friendUnlocked, setFriendUnlocked] = useState<boolean>(false);
@@ -135,8 +145,10 @@ export default function App() {
   const [authRole, setAuthRole] = useState<'none' | 'member' | 'admin'>('none');
   const [authUser, setAuthUser] = useState<string | undefined>(undefined);
   const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false);
   const [hasUnsynced, setHasUnsynced] = useState<boolean>(false);
   const [hasUnsyncedPrivate, setHasUnsyncedPrivate] = useState<boolean>(false);
+  const [hasUnsyncedCategories, setHasUnsyncedCategories] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
 
   const [mode, setMode] = useState<AppMode>(() => {
@@ -179,7 +191,7 @@ export default function App() {
     return () => window.clearTimeout(t);
   }, [toast]);
 
-  // 1. 启动时从静态 ./sites.json 拉取最新发布数据
+  // 1. 启动时从静态 ./sites.json 与 ./categories.json 拉取最新发布数据
   useEffect(() => {
     let cancelled = false;
     fetch(`./sites.json?t=${Date.now()}`, { cache: 'no-store' })
@@ -191,6 +203,17 @@ export default function App() {
       })
       .catch(() => {
         // 离线或本地兜底使用 DEFAULT_SITES
+      });
+
+    fetch(`./categories.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && Array.isArray(data) && data.length > 0) {
+          setCategories(ensurePrivateVaultCategory(data as CategoryMeta[]));
+        }
+      })
+      .catch(() => {
+        // 未发布 categories.json 时使用默认分类
       });
     return () => {
       cancelled = true;
@@ -286,8 +309,9 @@ export default function App() {
 
       if (res.canPush) {
         setAuthRole('admin');
-        const [latest, privList] = await Promise.all([
+        const [latest, latestCats, privList] = await Promise.all([
           fetchSitesFromGitHub(ghConfig).catch(() => null),
+          fetchCategoriesFromGitHub(ghConfig).catch(() => null),
           (async () => {
             if (getPrivateRepoConfig(ghConfig)) {
               const fromPrivRepo = await fetchPrivateSitesFromGitHub(ghConfig).catch(() => []);
@@ -306,6 +330,9 @@ export default function App() {
         ]);
         if (!cancelled && latest && latest.sites.length > 0) {
           setSites(hydrateSites(latest.sites));
+        }
+        if (!cancelled && latestCats && latestCats.length > 0) {
+          setCategories(ensurePrivateVaultCategory(latestCats));
         }
         if (!cancelled) {
           setPrivateSites(privList);
@@ -409,9 +436,19 @@ export default function App() {
   }, [lastNonWorkMode, showToast]);
 
   // 退出站长模式/锁定暗号或切换模式时，若当前停留在不可见分类，自动切回全部
+  const workCategoryIds = useMemo(
+    () => new Set(categories.filter((c) => c.workAllowed).map((c) => c.id)),
+    [categories],
+  );
+
+  const moyuHiddenCategoryIds = useMemo(
+    () => new Set(categories.filter((c) => c.hideInMoyu || c.nsfwOnly).map((c) => c.id)),
+    [categories],
+  );
+
   // 退出站长模式/锁定暗号或切换模式时，若当前停留在非当前模式的分类，自动切回全部
   useEffect(() => {
-    const cat = CATEGORIES.find((c) => c.id === activeSection);
+    const cat = categories.find((c) => c.id === activeSection);
     if (!cat) return;
     if (
       (mode === 'work' && !cat.workAllowed) ||
@@ -421,7 +458,7 @@ export default function App() {
     ) {
       setActiveSection('all');
     }
-  }, [mode, canViewPrivate, activeSection]);
+  }, [mode, canViewPrivate, activeSection, categories]);
 
   // 合并展示列表：站长登录合并 privateSites，好友暗号解锁合并只读 friendVaultSites
   const displaySites = useMemo(() => {
@@ -433,17 +470,25 @@ export default function App() {
   // 三模式严格独立：工作（纯工具/技术）、摸鱼（纯全年龄娱乐）、NSFW（纯里站+私密库）
   const modeSites = useMemo(() => {
     if (mode === 'work') {
-      return displaySites.filter((s) => !s.nsfw && WORK_CATEGORY_IDS.has(s.category));
+      return displaySites.filter((s) => !s.nsfw && workCategoryIds.has(s.category));
     }
     if (mode === 'moyu') {
       return displaySites.filter(
-        (s) => !s.nsfw && !MOYU_HIDDEN_CATEGORY_IDS.has(s.category),
+        (s) => !s.nsfw && !moyuHiddenCategoryIds.has(s.category),
       );
     }
     return displaySites.filter(
-      (s) => (s.nsfw || s.category === 'private_vault') && !WORK_CATEGORY_IDS.has(s.category),
+      (s) => (s.nsfw || s.category === 'private_vault') && !workCategoryIds.has(s.category),
     );
-  }, [displaySites, mode]);
+  }, [displaySites, mode, workCategoryIds, moyuHiddenCategoryIds]);
+
+  const allCategoryCounts = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const s of displaySites) {
+      map[s.category] = (map[s.category] || 0) + 1;
+    }
+    return map;
+  }, [displaySites]);
 
   const categoryCounts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -494,7 +539,7 @@ export default function App() {
                 ? '站长精选推荐的置顶入口（可同步到 GitHub）'
                 : '站长精选推荐 + 你本地星标收藏的高频入口',
             }
-          : CATEGORIES.find((c) => c.id === activeSection);
+          : categories.find((c) => c.id === activeSection);
 
       return [
         {
@@ -536,7 +581,7 @@ export default function App() {
       });
     }
 
-    for (const cat of CATEGORIES) {
+    for (const cat of categories) {
       if (mode === 'work' && !cat.workAllowed) continue;
       if (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) continue;
       if (mode === 'nsfw' && cat.workAllowed) continue;
@@ -552,7 +597,7 @@ export default function App() {
     }
 
     return sections;
-  }, [activeSection, canManage, filteredSites, mode, modeSites, pinnedSites, query]);
+  }, [activeSection, canManage, canViewPrivate, categories, filteredSites, mode, modeSites, pinnedSites, query]);
 
   const handleCheckSingle = useCallback(async (site: SiteItem) => {
     setHealthMap((prev) => ({
@@ -627,7 +672,7 @@ export default function App() {
     [canManage, privateSites, sites],
   );
 
-  const anyUnsynced = hasUnsynced || hasUnsyncedPrivate;
+  const anyUnsynced = hasUnsynced || hasUnsyncedPrivate || hasUnsyncedCategories;
 
   // 站长专属：严格双仓分流同步（私密站点绝不写入公开仓库！）
   const handleSyncToGitHub = useCallback(async () => {
@@ -636,14 +681,21 @@ export default function App() {
     try {
       const results: string[] = [];
 
-      // 1. 公开仓库：强制二次过滤，绝对禁止写入任何 privateOnly / private_vault 站点
-      if (hasUnsynced || !hasUnsyncedPrivate) {
+      // 1. 公开仓库站点：强制二次过滤，绝对禁止写入任何 privateOnly / private_vault 站点
+      if (hasUnsynced || (!hasUnsyncedPrivate && !hasUnsyncedCategories)) {
         const safePublicSites = sites.filter(
           (s) => !s.privateOnly && s.category !== 'private_vault',
         );
         const pubRes = await saveSitesToGitHub(ghConfig, safePublicSites);
         setHasUnsynced(false);
         results.push(`公开站 (${pubRes.commitSha})`);
+      }
+
+      // 1b. 自定义分类目录同步至 public/categories.json
+      if (hasUnsyncedCategories) {
+        const catRes = await saveCategoriesToGitHub(ghConfig, categories);
+        setHasUnsyncedCategories(false);
+        results.push(`分类目录 (${catRes.commitSha})`);
       }
 
       // 2. 私密库同步：只要私密库有改动，或已配置好友密钥且有私密站点，点击同步即确保更新私有仓与加密 vault.enc
@@ -680,7 +732,75 @@ export default function App() {
     } finally {
       setSyncing(false);
     }
-  }, [ghConfig, canManage, syncing, hasUnsynced, hasUnsyncedPrivate, sites, privateSites, showToast]);
+  }, [
+    ghConfig,
+    canManage,
+    syncing,
+    hasUnsynced,
+    hasUnsyncedPrivate,
+    hasUnsyncedCategories,
+    sites,
+    categories,
+    privateSites,
+    showToast,
+  ]);
+
+  // 站长专属：新增或编辑分类目录
+  const handleSaveCategory = useCallback(
+    (cat: CategoryMeta, isEdit: boolean) => {
+      if (!canManage) return;
+      setCategories((prev) => {
+        if (isEdit) {
+          return prev.map((c) => (c.id === cat.id ? cat : c));
+        }
+        return [...prev, cat];
+      });
+      setHasUnsyncedCategories(true);
+      showToast(
+        isEdit
+          ? `已更新目录「${cat.name}」，请点顶部“同步到 GitHub”发布`
+          : `已新建目录「${cat.name}」，请点顶部“同步到 GitHub”发布`,
+      );
+    },
+    [canManage, showToast],
+  );
+
+  // 站长专属：删除分类目录（若目录下有站点则安全迁移到同模式其他目录）
+  const handleDeleteCategory = useCallback(
+    (catId: CategoryId) => {
+      if (!canManage || catId === 'private_vault') return;
+      const target = categories.find((c) => c.id === catId);
+      if (!target) return;
+      const affected = sites.filter((s) => s.category === catId);
+      const fallback = categories.find(
+        (c) =>
+          c.id !== catId &&
+          !c.privateOnly &&
+          Boolean(c.workAllowed) === Boolean(target.workAllowed) &&
+          Boolean(c.nsfwOnly) === Boolean(target.nsfwOnly),
+      );
+
+      const confirmMsg =
+        affected.length > 0
+          ? `目录「${target.name}」下还有 ${affected.length} 个站点，删除后它们将自动转移到「${fallback?.name || '其他分类'}」，确认删除吗？`
+          : `确定删除空目录「${target.name}」吗？`;
+      if (!window.confirm(confirmMsg)) return;
+
+      if (affected.length > 0 && fallback) {
+        setSites((prev) =>
+          prev.map((s) => (s.category === catId ? { ...s, category: fallback.id } : s)),
+        );
+        setHasUnsynced(true);
+      }
+      setCategories((prev) => prev.filter((c) => c.id !== catId));
+      setHasUnsyncedCategories(true);
+      if (activeSection === catId) {
+        setActiveSection('all');
+      }
+      showToast(`已删除目录「${target.name}」，请点顶部“同步到 GitHub”发布`);
+    },
+    [activeSection, canManage, categories, showToast, sites],
+  );
 
   const handleSaveSite = useCallback(
     (site: SiteItem) => {
@@ -741,6 +861,7 @@ export default function App() {
   );
 
   const handleExport = useCallback(() => {
+    if (!canManage) return;
     const blob = new Blob([JSON.stringify(sites, null, 2)], {
       type: 'application/json;charset=utf-8',
     });
@@ -751,7 +872,7 @@ export default function App() {
     a.click();
     URL.revokeObjectURL(url);
     showToast('已导出公开站点 JSON 配置（不含私密库）');
-  }, [sites, showToast]);
+  }, [canManage, sites, showToast]);
 
   const handleImport = useCallback(
     async (file: File) => {
@@ -979,7 +1100,7 @@ export default function App() {
 
       <div className="relative z-10">
         <Sidebar
-          categories={CATEGORIES}
+          categories={categories}
           activeSection={activeSection}
           onSelectSection={setActiveSection}
           counts={categoryCounts}
@@ -994,6 +1115,7 @@ export default function App() {
           mobileOpen={mobileMenuOpen}
           onCloseMobile={() => setMobileMenuOpen(false)}
           onOpenAdmin={() => setAdminModalOpen(true)}
+          onManageCategories={() => setCategoryModalOpen(true)}
           onAddSite={() => {
             setEditingSite(null);
             setModalOpen(true);
@@ -1209,7 +1331,7 @@ export default function App() {
               >
                 站长爱看😋 ({pinnedSites.length})
               </button>
-              {CATEGORIES.filter((c) => {
+              {categories.filter((c) => {
                 if (mode === 'work' && !c.workAllowed) return false;
                 if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
                 if (mode === 'nsfw' && c.workAllowed) return false;
@@ -1340,10 +1462,21 @@ export default function App() {
       <SiteModal
         open={modalOpen && canManage}
         editingSite={editingSite}
-        categories={CATEGORIES}
+        categories={categories}
         defaultMode={mode}
         onClose={() => setModalOpen(false)}
         onSave={handleSaveSite}
+      />
+
+      {/* 站长分类目录管理弹窗 */}
+      <CategoryModal
+        open={categoryModalOpen && canManage}
+        categories={categories}
+        siteCounts={allCategoryCounts}
+        defaultMode={mode}
+        onClose={() => setCategoryModalOpen(false)}
+        onSaveCategory={handleSaveCategory}
+        onDeleteCategory={handleDeleteCategory}
       />
 
       {/* 统一 GitHub 登录 / 站长管理 / 好友密钥解锁弹窗 */}
