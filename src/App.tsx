@@ -602,27 +602,30 @@ export default function App() {
         results.push(`公开站 (${pubRes.commitSha})`);
       }
 
-      // 2. 私密库同步：支持同步到独立 Private 仓库，以及用好友暗号 AES-256 加密同步到 public/vault.enc
-      if (hasUnsyncedPrivate) {
-        const hasPrivRepo = Boolean(getPrivateRepoConfig(ghConfig));
-        const hasPassphrase = Boolean(ghConfig.vaultPassphrase?.trim());
+      // 2. 私密库同步：只要私密库有改动，或已配置好友密钥且有私密站点，点击同步即确保更新私有仓与加密 vault.enc
+      const hasPrivRepo = Boolean(getPrivateRepoConfig(ghConfig));
+      const hasPassphrase = Boolean(ghConfig.vaultPassphrase?.trim());
+      const shouldSyncPrivate =
+        hasUnsyncedPrivate || (hasPassphrase && privateSites.length > 0);
+
+      if (shouldSyncPrivate) {
         if (!hasPrivRepo && !hasPassphrase) {
           throw new Error(
-            '请先在“站长登录”弹窗中填写“独立私有仓库名”或“好友共享暗号”，再同步私密站点',
+            '请先在“站长管理”弹窗中填写“独立私有仓库名”或“好友访问明文密钥”，再同步私密站点',
           );
         }
-        if (hasPrivRepo) {
+        if (hasPrivRepo && hasUnsyncedPrivate) {
           const privRes = await savePrivateSitesToGitHub(ghConfig, privateSites);
           results.push(`私有库 (${privRes.commitSha})`);
         }
-        if (hasPassphrase) {
+        if (hasPassphrase && privateSites.length > 0) {
           const encrypted = await encryptVaultSites(
             privateSites,
             ghConfig.vaultPassphrase!,
             ghConfig.vaultAllowedUsers,
           );
           const encRes = await saveEncryptedVaultToGitHub(ghConfig, encrypted);
-          results.push(`加密暗号库 (${encRes.commitSha})`);
+          results.push(`加密库 vault.enc (${encRes.commitSha})`);
         }
         setHasUnsyncedPrivate(false);
       }
@@ -786,14 +789,40 @@ export default function App() {
       if (latest && latest.sites.length > 0) {
         setSites(hydrateSites(latest.sites));
       }
+      const finalPrivateList = privList.length > 0 ? privList : privateSites;
       if (privList.length > 0) {
         setPrivateSites(privList);
       }
-      // 如果站长修改了好友暗号或好友白名单，自动亮起未同步提示，方便一键重加密
+
+      // 若配置了好友密钥且已有私密站点，保存站长配置时直接自动加密并发布 public/vault.enc
+      if (nextPass && finalPrivateList.length > 0) {
+        try {
+          const encrypted = await encryptVaultSites(
+            finalPrivateList,
+            nextPass,
+            nextUsers,
+          );
+          const encRes = await saveEncryptedVaultToGitHub(config, encrypted);
+          setHasUnsyncedPrivate(false);
+          showToast(
+            `已解锁站长（@${username}）并自动发布加密库 vault.enc (${encRes.commitSha})，约 1 分钟后好友即可解锁`,
+          );
+          return;
+        } catch (err) {
+          setHasUnsyncedPrivate(true);
+          showToast(
+            err instanceof Error
+              ? `站长已解锁，但发布加密库失败：${err.message}`
+              : '站长已解锁，请手动点“同步到 GitHub”发布加密库',
+          );
+          return;
+        }
+      }
+
       if (
         nextPass &&
         (nextPass !== prevPass || nextUsers !== prevUsers) &&
-        (privList.length > 0 || privateSites.length > 0)
+        finalPrivateList.length > 0
       ) {
         setHasUnsyncedPrivate(true);
       }
@@ -803,7 +832,7 @@ export default function App() {
         }`,
       );
     },
-    [ghConfig?.vaultPassphrase, ghConfig?.vaultAllowedUsers, privateSites.length, showToast],
+    [ghConfig?.vaultPassphrase, ghConfig?.vaultAllowedUsers, privateSites, showToast],
   );
 
   const handleMemberAuthenticated = useCallback(
