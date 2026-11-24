@@ -1,5 +1,4 @@
 export type CategoryId =
-  | 'posts'
   | 'acg_games'
   | 'acg_resources'
   | 'acg_community'

@@ -33,7 +33,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
   const [name, setName] = useState('');
   const [shortName, setShortName] = useState('');
   const [url, setUrl] = useState('');
-  const [category, setCategory] = useState<CategoryId>('posts');
+  const [category, setCategory] = useState<CategoryId>('acg_games');
   const [description, setDescription] = useState('');
   const [costTier, setCostTier] = useState<CostTier>('free');
   const [costLabel, setCostLabel] = useState('免费');
@@ -66,7 +66,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setName('');
       setShortName('');
       setUrl('https://');
-      setCategory(defaultNsfw ? 'posts' : 'dev_work');
+      setCategory(defaultNsfw ? 'acg_games' : 'dev_work');
       setDescription('');
       setCostTier('free');
       setCostLabel('免费');

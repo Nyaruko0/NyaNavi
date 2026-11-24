@@ -4,7 +4,7 @@
     "name": "南+ (South Plus)",
     "shortName": "南+",
     "url": "https://www.south-plus.net/",
-    "category": "posts",
+    "category": "acg_community",
     "description": "最上游 [自购] 与新汉化总源头，社区氛围活跃，SP 币可日常签到获取。",
     "tags": [
       "自购首发",
@@ -28,7 +28,7 @@
     "name": "维咔 VikACG (V站)",
     "shortName": "V站",
     "url": "https://www.vikacg.com/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "免登录直接可见链接，涵盖 anime / 3D 二创，常用 TeraBox + 夸克 + 迅雷三盘（常见密码 sp@game）。",
     "tags": [
       "免登录",
@@ -52,7 +52,7 @@
     "name": "真紅論壇",
     "shortName": "真紅",
     "url": "https://galgame.dev/",
-    "category": "posts",
+    "category": "acg_games",
     "description": "RPG / SLG / 3D 游戏更新快，帖子公开可读，界面现代并原生支持 PWA。",
     "tags": [
       "RPG/SLG",
@@ -76,7 +76,7 @@
     "name": "芯幻 (neohent)",
     "shortName": "芯幻",
     "url": "https://neohent.ai/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "综合命中率最高（热门前 100 实测命中 83 条），涵盖 AI 动画、MMD、游戏与度盘二维码。",
     "tags": [
       "高命中率",
@@ -99,7 +99,7 @@
     "name": "萌幻之乡 (MHH1)",
     "shortName": "萌幻",
     "url": "https://so.mhh1.com/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "和谐物、AI 分区与（R18）系列资源丰富，so.mhh1 支持免登录检索。",
     "tags": [
       "AI分区",
@@ -121,7 +121,7 @@
     "name": "萌の领域 (moezone)",
     "shortName": "萌域",
     "url": "https://www.moezone.app/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "和谐物、AI 短剧与单机游戏合集，WordPress 架构。",
     "tags": [
       "AI短剧",
@@ -144,7 +144,7 @@
     "name": "宅宅的妙妙屋",
     "shortName": "妙妙屋",
     "url": "https://www.justnainai.com/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "Discourse 社区，主打 AI 短剧与“度雷夸u”四盘分流（UP 主栗苦林務等）。",
     "tags": [
       "AI短剧",
@@ -167,7 +167,7 @@
     "name": "girigiri 爱联萌",
     "shortName": "爱联萌",
     "url": "https://bbs.girigirilove.com/",
-    "category": "posts",
+    "category": "acg_games",
     "description": "同人 RPG / SLG 汉化资源集中地，WordPress 站点。",
     "tags": [
       "同人RPG",
@@ -188,7 +188,7 @@
     "name": "蛛阁 (abti)",
     "shortName": "蛛阁",
     "url": "https://bbs.abti.top/",
-    "category": "posts",
+    "category": "acg_community",
     "description": "个人 AI / 内嵌汉化首发站（如叶酱汉化），看帖免费、下链扣币。",
     "tags": [
       "AI汉化",
@@ -210,7 +210,7 @@
     "name": "米哈社 (mhsacg)",
     "shortName": "米哈社",
     "url": "https://mhsacg.com/",
-    "category": "posts",
+    "category": "acg_games",
     "description": "专注安卓移植游戏与 AI 短剧资源。",
     "tags": [
       "安卓移植",
@@ -231,7 +231,7 @@
     "name": "次元小屋 (51acg)",
     "shortName": "次元小屋",
     "url": "https://51acg.buzz/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "3D / AI 合集整理，传统 Discuz 论坛结构。",
     "tags": [
       "3D合集",
@@ -253,7 +253,7 @@
     "name": "H-Mirror",
     "shortName": "HM",
     "url": "https://h-mirror.com/",
-    "category": "posts",
+    "category": "acg_resources",
     "description": "Iwara / Patreon 3D 与 2.5D 视频免费镜像，支持在线播放与直链下载。",
     "tags": [
       "3D视频",

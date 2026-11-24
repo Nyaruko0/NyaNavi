@@ -47,13 +47,21 @@ const DEFAULT_FALLBACK_ICON_MAP = new Map(
   DEFAULT_SITES.filter((s) => s.fallbackIcon).map((s) => [s.id, s.fallbackIcon!]),
 );
 
-function hydrateFallbackIcons(list: SiteItem[]): SiteItem[] {
+const DEFAULT_CATEGORY_MAP = new Map(DEFAULT_SITES.map((s) => [s.id, s.category]));
+
+function hydrateSites(list: SiteItem[]): SiteItem[] {
   return list.map((item) => {
-    if (!item.fallbackIcon) {
-      const fb = DEFAULT_FALLBACK_ICON_MAP.get(item.id);
-      if (fb) return { ...item, fallbackIcon: fb };
+    let next = item;
+    // 兼容旧版 posts 分类，自动迁移到对应合并分类
+    if ((next.category as string) === 'posts') {
+      const mapped = DEFAULT_CATEGORY_MAP.get(next.id) || 'acg_resources';
+      next = { ...next, category: mapped };
     }
-    return item;
+    if (!next.fallbackIcon) {
+      const fb = DEFAULT_FALLBACK_ICON_MAP.get(next.id);
+      if (fb) next = { ...next, fallbackIcon: fb };
+    }
+    return next;
   });
 }
 
@@ -131,7 +139,7 @@ export default function App() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!cancelled && Array.isArray(data) && data.length > 0) {
-          setSites(hydrateFallbackIcons(data as SiteItem[]));
+          setSites(hydrateSites(data as SiteItem[]));
         }
       })
       .catch(() => {
@@ -158,7 +166,7 @@ export default function App() {
         setAdminUser(res.username);
         const latest = await fetchSitesFromGitHub(ghConfig).catch(() => null);
         if (!cancelled && latest && latest.sites.length > 0) {
-          setSites(hydrateFallbackIcons(latest.sites));
+          setSites(hydrateSites(latest.sites));
         }
       } else {
         setAdminVerified(false);
@@ -285,10 +293,10 @@ export default function App() {
         activeSection === 'pinned'
           ? {
               id: 'pinned',
-              name: '我的收藏 / 置顶',
+              name: '站长推荐😋',
               description: canManage
-                ? '站长设置的默认置顶入口（可同步到 GitHub）'
-                : '你当前浏览器本地标记星标的常用入口',
+                ? '站长精选推荐的置顶入口（可同步到 GitHub）'
+                : '站长精选推荐 + 你本地星标收藏的高频入口',
             }
           : CATEGORIES.find((c) => c.id === activeSection);
 
@@ -326,8 +334,8 @@ export default function App() {
     if (pinnedSites.length > 0) {
       sections.push({
         id: 'pinned-top',
-        title: '常用置顶',
-        description: '星标收藏的高频站点',
+        title: '站长推荐😋',
+        description: '站长精选推荐的高频入口',
         items: pinnedSites,
       });
     }
@@ -483,7 +491,7 @@ export default function App() {
         if (!Array.isArray(parsed) || !parsed.every((i) => i && i.id && i.name && i.url)) {
           throw new Error('格式不正确');
         }
-        setSites(hydrateFallbackIcons(parsed));
+        setSites(hydrateSites(parsed));
         setHasUnsynced(true);
         showToast(`成功导入 ${parsed.length} 个站点，请点顶部“同步到 GitHub”发布`);
       } catch {
@@ -512,7 +520,7 @@ export default function App() {
       showToast(`站长模式已解锁${username ? `（@${username}）` : ''}`);
       const latest = await fetchSitesFromGitHub(config).catch(() => null);
       if (latest && latest.sites.length > 0) {
-        setSites(hydrateFallbackIcons(latest.sites));
+        setSites(hydrateSites(latest.sites));
       }
     },
     [showToast],
