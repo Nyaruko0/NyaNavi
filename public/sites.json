@@ -11967,5 +11967,360 @@
     "costLabel": "免费",
     "nsfw": true,
     "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-arona-icu",
+    "name": "什亭之匣 (蔚蓝档案)",
+    "shortName": "什亭",
+    "url": "https://arona.icu/",
+    "category": "anime_community",
+    "description": "《蔚蓝档案》学生图鉴、总力战攻略与日常工具站。",
+    "tags": [
+      "蔚蓝档案",
+      "攻略工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-dgsm",
+    "name": "月笺",
+    "shortName": "月笺",
+    "url": "https://dgsm.top/",
+    "category": "dev_work",
+    "description": "文字很长，月笺很短 — 清爽的个人博客与笔记站。",
+    "tags": [
+      "个人博客",
+      "随笔"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "chrome-moehub",
+    "name": "MoeHub",
+    "shortName": "MH",
+    "url": "https://m.hotaru.icu/",
+    "category": "acg_resources",
+    "description": "二次元 ACG 资源聚合与分享小站。",
+    "tags": [
+      "二次元",
+      "资源站"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-yuanzkong",
+    "name": "缘之空小站",
+    "shortName": "缘空",
+    "url": "https://yuanzkong2.xyz/",
+    "category": "anime_community",
+    "description": "生活明朗，万物可爱 — 二次元同好个人小站。",
+    "tags": [
+      "二次元",
+      "个人站"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "chrome-zhuoyoux",
+    "name": "爱桌游",
+    "shortName": "桌游",
+    "url": "https://zhuoyoux.com/",
+    "category": "anime_community",
+    "description": "桌游玩家大本营，涵盖桌游评测、规则与社区讨论。",
+    "tags": [
+      "桌游",
+      "社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "chrome-magnet-pics",
+    "name": "磁力印象",
+    "shortName": "磁印",
+    "url": "https://beta.magnet.pics/",
+    "category": "acg_resources",
+    "description": "带预览缩略图的磁力链接视觉搜索引擎。",
+    "tags": [
+      "磁力搜索",
+      "视觉预览"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-v2dao",
+    "name": "v2dao 资源站",
+    "shortName": "v2d",
+    "url": "https://www.v2dao.com/",
+    "category": "acg_resources",
+    "description": "综合 ACG 资源聚合站（注：含 VIP 付费门槛，可用直搜反查上游源站）。",
+    "tags": [
+      "ACG资源",
+      "VIP注意"
+    ],
+    "costTier": "paid",
+    "costLabel": "VIP/付费",
+    "nsfw": true,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "chrome-pimeyes",
+    "name": "PimEyes",
+    "shortName": "PE",
+    "url": "https://pimeyes.com/",
+    "category": "tools",
+    "description": "高精度人脸与照片反向搜索引擎。",
+    "tags": [
+      "以图搜人",
+      "反向识图"
+    ],
+    "costTier": "points",
+    "costLabel": "免费/订阅",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-lenso",
+    "name": "Lenso.ai",
+    "shortName": "LA",
+    "url": "https://lenso.ai/",
+    "category": "tools",
+    "description": "AI 反向图像搜索与相似图片溯源工具。",
+    "tags": [
+      "AI识图",
+      "找出处"
+    ],
+    "costTier": "points",
+    "costLabel": "免费/订阅",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "chrome-link-preview",
+    "name": "Link Preview",
+    "shortName": "LP",
+    "url": "https://tmp.nulla.top/link-preview/",
+    "category": "tools",
+    "description": "快速检测并预览短链与目标网页元信息的小工具。",
+    "tags": [
+      "链接预览",
+      "实用工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "chrome-netlify",
+    "name": "Netlify",
+    "shortName": "NL",
+    "url": "https://app.netlify.com/",
+    "category": "dev_work",
+    "description": "现代静态网站与 Serverless 函数免费托管部署平台。",
+    "tags": [
+      "静态托管",
+      "部署"
+    ],
+    "costTier": "free",
+    "costLabel": "免费额度",
+    "nsfw": false,
+    "accent": "#0d9488"
+  },
+  {
+    "id": "chrome-1point3acres",
+    "name": "一亩三分地",
+    "shortName": "地里",
+    "url": "https://www.1point3acres.com/bbs/",
+    "category": "dev_work",
+    "description": "北美留学申请、求职面经与英语考试高信噪比社区。",
+    "tags": [
+      "留学",
+      "求职面经"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "chrome-howtolivebetter",
+    "name": "高性价比人生指南",
+    "shortName": "指南",
+    "url": "https://eternity4719.github.io/HowToLiveBetter/",
+    "category": "dev_work",
+    "description": "开源生活、健康与效率优化实用指南文档。",
+    "tags": [
+      "开源指南",
+      "生活效率"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": false,
+    "accent": "#22c55e"
+  },
+  {
+    "id": "chrome-tianjg",
+    "name": "天机阁",
+    "shortName": "天机",
+    "url": "https://tianjg.com/",
+    "category": "tools",
+    "description": "知识、技能与实用数字资源聚合分享站。",
+    "tags": [
+      "知识分享",
+      "资源"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#3b82f6"
+  },
+  {
+    "id": "chrome-yunyixi",
+    "name": "云栈",
+    "shortName": "云栈",
+    "url": "https://yunyixi.com/",
+    "category": "tools",
+    "description": "轻量实用资源与网址合集小站。",
+    "tags": [
+      "资源合集"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "chrome-ahhhhfs",
+    "name": "A 姐分享",
+    "shortName": "A姐",
+    "url": "https://www.ahhhhfs.com/",
+    "category": "tools",
+    "description": "热门效率工具、福利资讯与实用软件分享站。",
+    "tags": [
+      "效率资讯",
+      "福利工具"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f97316"
+  },
+  {
+    "id": "chrome-pywonderland",
+    "name": "朝花夕拾 (PyWonderland)",
+    "shortName": "朝花",
+    "url": "https://pywonderland.com/",
+    "category": "dev_work",
+    "description": "高质量数学可视化、Python 与计算机图形学个人技术博客。",
+    "tags": [
+      "数学",
+      "Python",
+      "博客"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "chrome-blackmickeysvp",
+    "name": "黑米奇 SVP",
+    "shortName": "SVP",
+    "url": "https://blackmickeysvp.blogspot.com/",
+    "category": "tools",
+    "description": "SVP 视频补帧与播放器调校教程博客。",
+    "tags": [
+      "SVP补帧",
+      "视频调校"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "chrome-gal-garbro",
+    "name": "GAL 解包教程 (GARbro)",
+    "shortName": "解包",
+    "url": "https://blog.illlights.com/archives/2021/games/gal1.html",
+    "category": "tools",
+    "description": "Galgame 资源解包入门与 GARbro 基本工具使用指南。",
+    "tags": [
+      "Gal解包",
+      "GARbro",
+      "教程"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "chrome-r2-imgbed",
+    "name": "Cloudflare R2 免费图床教程",
+    "shortName": "R2",
+    "url": "https://ichochy.com/posts/blog/20250325.html",
+    "category": "dev_work",
+    "description": "使用 Cloudflare R2 搭建零成本个人图床服务器的实操教程。",
+    "tags": [
+      "Cloudflare R2",
+      "图床教程"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "chrome-ublock-mv2",
+    "name": "Chrome 恢复 uBlock (MV2)",
+    "shortName": "uBO",
+    "url": "https://www.tjsky.net/tutorial/1009",
+    "category": "tools",
+    "description": "Chrome 继续启用 uBlock Origin 等 Manifest V2 扩展的实用教程。",
+    "tags": [
+      "Chrome",
+      "uBlock",
+      "教程"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ef4444"
+  },
+  {
+    "id": "chrome-ai-director",
+    "name": "AI 导演 Skill 博客",
+    "shortName": "导演",
+    "url": "https://memoryoffish.github.io/2026/11/22/film-director/",
+    "category": "dev_work",
+    "description": "如何让 AI 拥有电影级导演审美与分镜控制的方法论分享。",
+    "tags": [
+      "AI创作",
+      "Prompt",
+      "博客"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
   }
 ]
