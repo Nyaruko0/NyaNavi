@@ -1,6 +1,6 @@
 import type { SiteItem } from '../types';
 
-// 自动整理自 https://www.acgbox.link/ 及用户 Infinity 书签精选公开站（已去重）
+// 自动整理自 https://www.acgbox.link/ 及用户书签精选公开站（已去重）
 export const ACGBOX_SITES: SiteItem[] = [
   {
     "id": "acgbox-1",
@@ -10692,5 +10692,603 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costLabel": "免费",
     "nsfw": true,
     "accent": "#8b5cf6"
+  },
+  {
+    "id": "via-motrix",
+    "name": "Motrix",
+    "shortName": "MT",
+    "url": "https://motrix.app/",
+    "category": "tools",
+    "description": "高颜值全能开源下载工具，支持 HTTP、FTP、BT、磁力链等。",
+    "tags": [
+      "开源下载器",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "via-panlegepan",
+    "name": "盘了个盘",
+    "shortName": "盘搜",
+    "url": "https://www.panlegepan.com/",
+    "category": "work_p2p",
+    "description": "高效聚合多网盘资源搜索引擎。",
+    "tags": [
+      "网盘搜索",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "via-download-x",
+    "name": "X 视频下载",
+    "shortName": "XD",
+    "url": "https://download-x-video.com/",
+    "category": "work_toolbox",
+    "description": "免费在线下载 Twitter / X 高清视频工具。",
+    "tags": [
+      "视频解析",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#1e293b"
+  },
+  {
+    "id": "via-x2twitter",
+    "name": "X2Twitter GIF 下载",
+    "shortName": "X2",
+    "url": "https://x2twitter.com/zh-cn/download-twitter-gif",
+    "category": "work_toolbox",
+    "description": "免费将 Twitter (X) 的 GIF 与视频保存到手机或电脑。",
+    "tags": [
+      "视频解析",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "via-snapinsta",
+    "name": "SnapInsta",
+    "shortName": "SI",
+    "url": "https://snapinsta.to/zh-cn",
+    "category": "work_toolbox",
+    "description": "在线保存 Instagram 视频、Reels、照片与故事。",
+    "tags": [
+      "视频解析",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#e11d48"
+  },
+  {
+    "id": "via-savefrom",
+    "name": "SaveFrom",
+    "shortName": "SF",
+    "url": "https://en.savefrom.net/",
+    "category": "work_toolbox",
+    "description": "老牌在线多平台视频与音乐提取下载工具。",
+    "tags": [
+      "视频解析",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#10b981"
+  },
+  {
+    "id": "via-pixelme",
+    "name": "PixelMe 像素画转换",
+    "shortName": "PX",
+    "url": "https://pixel-me.tokyo/en/",
+    "category": "work_toolbox",
+    "description": "一键将照片或头像转换为复古像素艺术画。",
+    "tags": [
+      "图片编辑",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "via-privacy-check",
+    "name": "个人数据泄漏检测",
+    "shortName": "隐私",
+    "url": "https://library.aiuys.com/",
+    "category": "work_toolbox",
+    "description": "快速查询邮箱或账号是否出现在历史公开泄漏数据库中。",
+    "tags": [
+      "安全检测",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#475569"
+  },
+  {
+    "id": "via-slscq",
+    "name": "申论生成器",
+    "shortName": "申论",
+    "url": "https://sojo.im/slscq/",
+    "category": "work_toolbox",
+    "description": "趣味废话与申论风格文本自动生成器。",
+    "tags": [
+      "文本工具",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "via-jjz",
+    "name": "绝绝子生成器",
+    "shortName": "绝绝",
+    "url": "https://kingcos.me/jjz/",
+    "category": "work_toolbox",
+    "description": "小红书风趣味文案一键生成器。",
+    "tags": [
+      "文本工具",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "via-anitabi",
+    "name": "动画巡礼 Anitabi",
+    "shortName": "巡礼",
+    "url": "https://anitabi.cn/",
+    "category": "anime_community",
+    "description": "神奇海螺试验场出品，二次元圣地巡礼地图与取景地对比神器。",
+    "tags": [
+      "圣地巡礼",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "via-theindex",
+    "name": "The Index",
+    "shortName": "IX",
+    "url": "https://theindex.moe/",
+    "category": "anime_community",
+    "description": "海外高质量全品类 ACG 资源、番剧与漫画站点评测索引。",
+    "tags": [
+      "海外导航",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "via-ymgal",
+    "name": "月幕 Galgame",
+    "shortName": "月幕",
+    "url": "https://www.ymgal.games/",
+    "category": "anime_community",
+    "description": "中文 Galgame 档案库、汉化情报、评分与文化讨论社区。",
+    "tags": [
+      "Gal百科",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#fb7185"
+  },
+  {
+    "id": "via-vncharts",
+    "name": "Visual Novel Charts",
+    "shortName": "VN",
+    "url": "http://www.visualnovelcharts.com/",
+    "category": "anime_community",
+    "description": "每月日本视觉小说与 Galgame 新作发售一览表。",
+    "tags": [
+      "新作表",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f472b6"
+  },
+  {
+    "id": "via-animeko",
+    "name": "Animeko 追番客户端",
+    "shortName": "AK",
+    "url": "https://myani.org/downloads",
+    "category": "anime_stream",
+    "description": "开源跨平台一站式弹幕追番神器，支持 Bangumi 同步与 BT 播放。",
+    "tags": [
+      "追番APP",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "开源免费",
+    "clients": [
+      "Win/Mac/Android/iOS"
+    ],
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "via-mifun",
+    "name": "MiFun 动漫",
+    "shortName": "MF",
+    "url": "https://www.mifun.app/",
+    "category": "anime_stream",
+    "description": "移动端免费高清追番动漫 APP 官方下载页。",
+    "tags": [
+      "追番APP",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [
+      "Android APK"
+    ],
+    "nsfw": false,
+    "accent": "#38bdf8"
+  },
+  {
+    "id": "via-iknice",
+    "name": "爱看动漫网",
+    "shortName": "爱看",
+    "url": "https://iknice.com/",
+    "category": "anime_stream",
+    "description": "免费在线追番与动漫流媒体站点。",
+    "tags": [
+      "在线动漫",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "via-southpark",
+    "name": "南方公园 1-25 季合集",
+    "shortName": "SP",
+    "url": "https://sp.tearemix.com/",
+    "category": "anime_stream",
+    "description": "South Park 全季高清收藏与在线播放站。",
+    "tags": [
+      "欧美动画",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f97316"
+  },
+  {
+    "id": "via-itchio",
+    "name": "itch.io",
+    "shortName": "IT",
+    "url": "https://itch.io/",
+    "category": "acg_games",
+    "description": "全球最大的独立游戏、像素小游与创意游戏发布平台。",
+    "tags": [
+      "独立游戏",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费/买断",
+    "nsfw": false,
+    "accent": "#fa5c5c"
+  },
+  {
+    "id": "via-ddrk",
+    "name": "低端影视",
+    "shortName": "低端",
+    "url": "https://ddrk.me/",
+    "category": "media_ent",
+    "description": "口碑极佳的超清美剧、电影与动画免费在线观看站。",
+    "tags": [
+      "在线影视",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#1e293b"
+  },
+  {
+    "id": "via-dsxys",
+    "name": "大师兄影视",
+    "shortName": "师兄",
+    "url": "https://dsxys.com/app/",
+    "category": "media_ent",
+    "description": "热门剧集、院线电影与动漫高清在线播放平台。",
+    "tags": [
+      "在线影视",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "via-ymdy",
+    "name": "玉米电影",
+    "shortName": "玉米",
+    "url": "https://ymdy.app/",
+    "category": "media_ent",
+    "description": "高清影视免费在线看，界面清爽少广告。",
+    "tags": [
+      "在线影视",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "via-imslp",
+    "name": "IMSLP 国际乐谱库",
+    "shortName": "乐谱",
+    "url": "https://imslp.org/",
+    "category": "media_ent",
+    "description": "全球最大的免费公版古典音乐与乐器 PDF 乐谱图书馆。",
+    "tags": [
+      "音乐乐谱",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#059669"
+  },
+  {
+    "id": "via-yibook",
+    "name": "易书论坛",
+    "shortName": "易书",
+    "url": "https://bbs.yibook.org/",
+    "category": "media_ent",
+    "description": "电子书交流、书单推荐与阅读资源分享论坛。",
+    "tags": [
+      "电子书籍",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#14b8a6"
+  },
+  {
+    "id": "via-disboard",
+    "name": "DISBOARD",
+    "shortName": "DB",
+    "url": "https://disboard.org/zh-cn",
+    "category": "acg_community",
+    "description": "全球 Discord 兴趣、游戏与二次元服务器中文索引。",
+    "tags": [
+      "Discord社区",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#5865f2"
+  },
+  {
+    "id": "via-lilywhite",
+    "name": "东方狗下载站 · 莉莉云",
+    "shortName": "莉莉",
+    "url": "https://cloud.lilywhite.cc/s/4ZUW?path=%2F",
+    "category": "acg_games",
+    "description": "东方 Project 同人作品与音乐资源共享网盘库。",
+    "tags": [
+      "东方Project",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "via-kfmax",
+    "name": "绯月 ScarletMoon",
+    "shortName": "绯月",
+    "url": "https://bbs.kfmax.com/index.php",
+    "category": "acg_community",
+    "description": "老牌二次元核心 Galgame 交流论坛，氛围纯粹、攻略与资源丰富。",
+    "tags": [
+      "老牌论坛",
+      "Galgame"
+    ],
+    "costTier": "checkin",
+    "costLabel": "签到免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "via-hitomi",
+    "name": "Hitomi.la",
+    "shortName": "HT",
+    "url": "https://hitomi.la/",
+    "category": "comics",
+    "description": "海量高清同人志、单行本与 Galgame CG 免费图库。",
+    "tags": [
+      "本子",
+      "Gal CG"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "via-hmoegirl",
+    "name": "H萌娘百科",
+    "shortName": "H萌",
+    "url": "https://hmoegirl.info/Mainpage",
+    "category": "acg_community",
+    "description": "中文 R18 二次元作品、社团、声优与术语维基百科。",
+    "tags": [
+      "里百科",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "via-japaneseasmr",
+    "name": "Japanese ASMR",
+    "shortName": "JA",
+    "url": "https://japaneseasmr.com/",
+    "category": "asmr",
+    "description": "日语同人音声与 R18 ASMR 在线收听与下载站。",
+    "tags": [
+      "ASMR",
+      "同人音声"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#e879f9"
+  },
+  {
+    "id": "via-skebetter",
+    "name": "Skebetter (スケベッター)",
+    "shortName": "SK",
+    "url": "https://skebetter.com/",
+    "category": "artworks",
+    "description": "Twitter / X 成人插画与里漫画热度聚合检索站。",
+    "tags": [
+      "推特里图",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f43f5e"
+  },
+  {
+    "id": "via-fanza",
+    "name": "FANZA (DMM)",
+    "shortName": "FZ",
+    "url": "https://www.dmm.co.jp/top/",
+    "category": "acg_games",
+    "description": "日本正版 Galgame、同人游戏、漫画与电子书官方商城。",
+    "tags": [
+      "正版商城",
+      "原名检索"
+    ],
+    "costTier": "paid",
+    "costLabel": "正版付费",
+    "nsfw": true,
+    "accent": "#e11d48"
+  },
+  {
+    "id": "via-amoebi",
+    "name": "新生 · 稻荷 ACG",
+    "shortName": "稻荷",
+    "url": "http://amoebi.com/",
+    "category": "acg_games",
+    "description": "精选 Galgame 与二次元游戏资源整理分享站。",
+    "tags": [
+      "Galgame",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
+  },
+  {
+    "id": "via-zhuoyuspace",
+    "name": "琢玉空间",
+    "shortName": "琢玉",
+    "url": "https://zhuoyuspace.com/",
+    "category": "acg_resources",
+    "description": "单机游戏、动漫、漫画与实用软件免费分享平台。",
+    "tags": [
+      "ACG资源",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "via-hciyuan",
+    "name": "H次元",
+    "shortName": "H次",
+    "url": "https://h-ciyuan.com/",
+    "category": "acg_resources",
+    "description": "二次元里番、本子与绅士资源综合站。",
+    "tags": [
+      "ACG资源",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
+  },
+  {
+    "id": "via-spplan",
+    "name": "SpPlan 色批计划",
+    "shortName": "SP",
+    "url": "https://nav.spplan.xyz/",
+    "category": "acg_resources",
+    "description": "二次元与绅士向备用聚合导航站。",
+    "tags": [
+      "里导航",
+      "Via"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#db2777"
+  },
+  {
+    "id": "via-jm-release",
+    "name": "禁漫天堂发布页",
+    "shortName": "JM发",
+    "url": "https://jmcomicph.org/",
+    "category": "comics",
+    "description": "禁漫天堂最新防失联域名发布页与官方 APP 下载入口。",
+    "tags": [
+      "发布页",
+      "防失联"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#f97316"
   }
 ];

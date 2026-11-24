@@ -893,10 +893,21 @@ export default function App() {
             nsfw: true,
             privateOnly: true,
           }));
-          setPrivateSites(normalized);
+          setPrivateSites((prev) => {
+            const existingUrls = new Set(
+              prev.map((x) => x.url.replace(/\/+$/, '').toLowerCase()),
+            );
+            const existingIds = new Set(prev.map((x) => x.id));
+            const additions = normalized.filter(
+              (x) =>
+                !existingIds.has(x.id) &&
+                !existingUrls.has(x.url.replace(/\/+$/, '').toLowerCase()),
+            );
+            return [...additions, ...prev];
+          });
           setHasUnsyncedPrivate(true);
           showToast(
-            `已导入 ${normalized.length} 个私密库站点，请点顶部“同步到 GitHub”写入私有仓库`,
+            `已增量合并 ${normalized.length} 个私密库站点（保留原有私密数据），请点顶部“同步到 GitHub”写入私有仓库`,
           );
         } else {
           const safePublic = hydrateSites(parsed).filter(
