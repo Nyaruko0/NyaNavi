@@ -1,45 +1,78 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --nya-accent: #ec4899;
+  --nya-accent-2: #38bdf8;
+  --nya-accent-soft: rgba(236, 72, 153, 0.1);
+  --nya-accent-border: rgba(236, 72, 153, 0.35);
+  --nya-font-sans: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --nya-font-round: "Plus Jakarta Sans", "PingFang SC", "Hiragino Maru Gothic ProN", "Yuanti SC", "Noto Sans SC", sans-serif;
+  --nya-font-mono: "JetBrains Mono", "Noto Sans SC", ui-monospace, SFMono-Regular, monospace;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-family: var(--nya-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-[#f7f8fc] text-slate-800 transition-colors duration-300;
+    @apply bg-[#f8f9fc] text-slate-800 transition-colors duration-300;
   }
 
   .dark body {
-    @apply bg-[#0f1320] text-slate-100;
+    @apply bg-[#0c101b] text-slate-100;
   }
 }
 
-/* 清爽明亮的二次元微光背景 */
-.nya-bg-light {
-  background-image:
-    radial-gradient(at 10% 0%, rgba(255, 107, 157, 0.08) 0px, transparent 42%),
-    radial-gradient(at 92% 6%, rgba(56, 189, 248, 0.1) 0px, transparent 40%),
-    radial-gradient(at 50% 100%, rgba(167, 139, 250, 0.06) 0px, transparent 45%);
+/* 字体风格切换 */
+.font-style-sans {
+  font-family: var(--nya-font-sans);
 }
 
-.dark .nya-bg-light {
-  background-image:
-    radial-gradient(at 12% 0%, rgba(236, 72, 153, 0.11) 0px, transparent 42%),
-    radial-gradient(at 90% 8%, rgba(56, 189, 248, 0.1) 0px, transparent 42%);
+.font-style-round {
+  font-family: var(--nya-font-round);
 }
 
-/* 工作模式：更克制沉稳的极简灰蓝底 */
-.nya-bg-work {
-  background-image:
-    radial-gradient(at 85% 0%, rgba(14, 165, 233, 0.06) 0px, transparent 45%);
+.font-style-mono {
+  font-family: var(--nya-font-mono);
 }
 
-/* 自定义细滚动条 */
+/* 背景纹理模式 */
+.nya-bg-glow {
+  background-image:
+    radial-gradient(at 10% 0%, color-mix(in srgb, var(--nya-accent) 9%, transparent) 0px, transparent 42%),
+    radial-gradient(at 92% 4%, color-mix(in srgb, var(--nya-accent-2) 10%, transparent) 0px, transparent 42%);
+}
+
+.dark .nya-bg-glow {
+  background-image:
+    radial-gradient(at 12% 0%, color-mix(in srgb, var(--nya-accent) 13%, transparent) 0px, transparent 45%),
+    radial-gradient(at 90% 8%, color-mix(in srgb, var(--nya-accent-2) 11%, transparent) 0px, transparent 45%);
+}
+
+.nya-bg-dots {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.24) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.dark .nya-bg-dots {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.nya-bg-minimal {
+  background-image: none;
+}
+
+/* 极简细滚动条 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,10 +80,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.3);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.6);
+  background: rgba(148, 163, 184, 0.55);
 }

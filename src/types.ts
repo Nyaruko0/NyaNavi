@@ -43,6 +43,29 @@ export interface SiteItem {
   accent?: string;
   /** 可选自定义图标 URL（留空则自动拉取网站原生 favicon） */
   icon?: string;
+  /** 采集来源自带的备用图标 URL */
+  fallbackIcon?: string;
+}
+
+export type AccentPreset = 'sakura' | 'sky' | 'violet' | 'emerald' | 'amber';
+export type CardDensity = 'comfortable' | 'default' | 'compact';
+export type CardRadius = 'soft' | 'medium' | 'sharp';
+export type FontStyle = 'sans' | 'round' | 'mono';
+export type BackgroundStyle = 'glow' | 'dots' | 'minimal';
+
+export interface AppearanceSettings {
+  accent: AccentPreset;
+  columns: 2 | 3 | 4;
+  density: CardDensity;
+  radius: CardRadius;
+  fontStyle: FontStyle;
+  bgStyle: BackgroundStyle;
+  showDescription: boolean;
+  showDomain: boolean;
+  showBadges: boolean;
+  wallpaperUrl: string;
+  wallpaperBlur: number;
+  wallpaperOpacity: number;
 }
 
 export interface CategoryMeta {

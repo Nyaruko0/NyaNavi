@@ -15,7 +15,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/01/www.pixiv_.net_.png"
   },
   {
     "id": "acgbox-2",
@@ -30,7 +31,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/danbooru.donmai.us.ico"
   },
   {
     "id": "acgbox-3",
@@ -45,7 +47,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766260643-pic.cosine.ren_.png"
   },
   {
     "id": "acgbox-4",
@@ -60,7 +63,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766258927-manyacg.top_.png"
   },
   {
     "id": "acgbox-5",
@@ -75,7 +79,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766261076-www.moely_.link_.png"
   },
   {
     "id": "acgbox-6",
@@ -90,7 +95,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/02/1st.moe_sion-bot_random-lolis.webp"
   },
   {
     "id": "acgbox-7",
@@ -105,7 +111,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766258187-www.someacg.top_.png"
   },
   {
     "id": "acgbox-8",
@@ -120,7 +127,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#f472b6"
+    "accent": "#f472b6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/anime-pictures.net.png"
   },
   {
     "id": "acgbox-9",
@@ -135,7 +143,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/08/1786818055-www.cycani.org_.png"
   },
   {
     "id": "acgbox-10",
@@ -150,7 +159,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/www.mgnacg.com_.png"
   },
   {
     "id": "acgbox-11",
@@ -165,7 +175,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/11/anime.girigirilove.com_.png"
   },
   {
     "id": "acgbox-12",
@@ -180,7 +191,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/08/1786819798-www.moonci.com_.png"
   },
   {
     "id": "acgbox-13",
@@ -195,7 +207,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776701848-www.tvtfun.net_.png"
   },
   {
     "id": "acgbox-14",
@@ -210,7 +223,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/09/1726708507-www.qifun_.cc.png"
   },
   {
     "id": "acgbox-15",
@@ -225,7 +239,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/07/1720825446-www.2rk.cc.png"
   },
   {
     "id": "acgbox-16",
@@ -240,7 +255,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/04/www.fanshudm.com_.png"
   },
   {
     "id": "acgbox-17",
@@ -255,7 +271,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/08/1756564892-acg.pekolove.net_.png"
   },
   {
     "id": "acgbox-18",
@@ -270,7 +287,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/10/catw.moe_.png"
   },
   {
     "id": "acgbox-19",
@@ -285,7 +303,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/04/www.mutedm.com_.png"
   },
   {
     "id": "acgbox-20",
@@ -300,7 +319,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/04/animoe.org_.png"
   },
   {
     "id": "acgbox-21",
@@ -315,7 +335,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/06/1751293917-www.aowu_.tv_.png"
   },
   {
     "id": "acgbox-22",
@@ -330,7 +351,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/12/dick.xfani_.com_.png"
   },
   {
     "id": "acgbox-23",
@@ -345,7 +367,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/bangumi.online.webp"
   },
   {
     "id": "acgbox-24",
@@ -360,7 +383,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/10/1728369950-ani.gamer_.com_.tw_.jpg"
   },
   {
     "id": "acgbox-25",
@@ -375,7 +399,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "points",
     "costLabel": "积分/赞助",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/05/www.acfun_.cn_.jpg"
   },
   {
     "id": "acgbox-26",
@@ -390,7 +415,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#38bdf8"
+    "accent": "#38bdf8",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/www.bilibili.com_.webp"
   },
   {
     "id": "acgbox-27",
@@ -405,7 +431,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/share.dmhy.org.ico"
   },
   {
     "id": "acgbox-28",
@@ -420,7 +447,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/nyaa.si.png"
   },
   {
     "id": "acgbox-29",
@@ -435,7 +463,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPg0KICAgICAgICAgICAgICAgIDxyZWN0IGZpbGw9InJnYigxMzcsMjI5LDE2MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMTcwLDIyOSwxMTQpIiBjeD0iMTMiIGN5PSI2LjUiIHI9IjYwIiAgb3BhY2l0eT0iLjQiPjwvY2lyY2xlPg0KICAgICAgICAgICAgICAgIDxjaXJjbGUgZmlsbD0icmdiKDExNCwyMjcsMjI5KSIgY3g9Ijc2IiBjeT0iMTUyIiByPSI1MCIgIG9wYWNpdHk9Ii42Ij48L2NpcmNsZT4NCiAgICAgICAgICAgICAgICA8dGV4dCB4PSI1MCIgeT0iNTAiIGZvbnQtc2l6ZT0iNTAiIHRleHQtY29weT0iZmFzdCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgdGV4dC1yaWdodHM9ImFkbWluIiBhbGlnbm1lbnQtYmFzZWxpbmU9ImNlbnRyYWwiIGZvbnQtZmFtaWx5PSInUGluZ0ZhbmcgU0MnLCdNaWNyb3NvZnQgWWFoZWknIj7okIw8L3RleHQ+PC9zdmc+"
   },
   {
     "id": "acgbox-30",
@@ -450,7 +479,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/mikanani.me_.png"
   },
   {
     "id": "acgbox-31",
@@ -465,7 +495,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/share.acgnx.se.ico"
   },
   {
     "id": "acgbox-32",
@@ -480,7 +511,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/aniopen.a-ni.workers.dev.png"
   },
   {
     "id": "acgbox-33",
@@ -495,7 +527,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.vcb-s.com.png"
   },
   {
     "id": "acgbox-34",
@@ -510,7 +543,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#0ea5e9"
+    "accent": "#0ea5e9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/assrt.net.png"
   },
   {
     "id": "acgbox-35",
@@ -525,7 +559,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/06/1751287669-manhua.zaimanhua.com_.png"
   },
   {
     "id": "acgbox-36",
@@ -540,7 +575,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "checkin",
     "costLabel": "需登录/签到",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/06/1748924624-vomicmh.com_.png"
   },
   {
     "id": "acgbox-37",
@@ -555,7 +591,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/12/1734556699-mycomic.com_.png"
   },
   {
     "id": "acgbox-38",
@@ -570,7 +607,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/09/1727045098-komiic.com_.png"
   },
   {
     "id": "acgbox-39",
@@ -585,7 +623,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/01/copymanga.png"
   },
   {
     "id": "acgbox-40",
@@ -600,7 +639,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.soman.com.ico"
   },
   {
     "id": "acgbox-41",
@@ -615,7 +655,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#fb923c"
+    "accent": "#fb923c",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.manhuagui.com.ico"
   },
   {
     "id": "acgbox-42",
@@ -630,7 +671,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/masiro.moe.png"
   },
   {
     "id": "acgbox-43",
@@ -645,7 +687,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPg0KICAgICAgICAgICAgICAgIDxyZWN0IGZpbGw9InJnYigyMjksMTQ2LDEzNykiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMCwwLDApIiBjeD0iNjIiIGN5PSIzMSIgcj0iNjAiICBvcGFjaXR5PSIuNCI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMjI5LDIxMiwxMTQpIiBjeD0iNDYiIGN5PSI5MiIgcj0iNTAiICBvcGFjaXR5PSIuNiI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnTWljcm9zb2Z0IFlhaGVpJyI+6L27PC90ZXh0Pjwvc3ZnPg=="
   },
   {
     "id": "acgbox-44",
@@ -660,7 +703,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/11/1763582120-hamster-epub.netlify.app_.png"
   },
   {
     "id": "acgbox-45",
@@ -675,7 +719,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/07/books.fishhawk.top_.png"
   },
   {
     "id": "acgbox-46",
@@ -690,7 +735,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/08/1754821613-www.lightnovel.love_.png"
   },
   {
     "id": "acgbox-47",
@@ -705,7 +751,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/www.esjzone.me_.png"
   },
   {
     "id": "acgbox-48",
@@ -720,7 +767,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#34d399"
+    "accent": "#34d399",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.lightnovel.us.png"
   },
   {
     "id": "acgbox-49",
@@ -735,7 +783,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/10/1727913996-www.eohut_.com_.png"
   },
   {
     "id": "acgbox-50",
@@ -750,7 +799,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/04/aqua-aria.company.jpg"
   },
   {
     "id": "acgbox-51",
@@ -765,7 +815,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/03/1740824265-nekoyo.co_.png"
   },
   {
     "id": "acgbox-52",
@@ -780,7 +831,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/05/www.acgndog.com_.png"
   },
   {
     "id": "acgbox-53",
@@ -795,7 +847,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/panda.chaika.moe.png"
   },
   {
     "id": "acgbox-54",
@@ -810,7 +863,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.liuli.app.png"
   },
   {
     "id": "acgbox-55",
@@ -825,7 +879,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www2.acggw.com.png"
   },
   {
     "id": "acgbox-56",
@@ -840,7 +895,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/iacg.blog.png"
   },
   {
     "id": "acgbox-57",
@@ -855,7 +911,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/07/18mcy.com_.png"
   },
   {
     "id": "acgbox-58",
@@ -870,7 +927,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/02/1740047464-xhcys.com_.png"
   },
   {
     "id": "acgbox-59",
@@ -885,7 +943,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.mikuclub.xyz.ico"
   },
   {
     "id": "acgbox-60",
@@ -900,7 +959,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.liuli.app.png"
   },
   {
     "id": "acgbox-61",
@@ -915,7 +975,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/blog.reimu.net.png"
   },
   {
     "id": "acgbox-62",
@@ -930,7 +991,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "checkin",
     "costLabel": "需登录/签到",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/cangku.one.png"
   },
   {
     "id": "acgbox-63",
@@ -945,7 +1007,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/acg18.moe.png"
   },
   {
     "id": "acgbox-64",
@@ -960,7 +1023,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#a855f7"
+    "accent": "#a855f7",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/08/gmgard.com_.png"
   },
   {
     "id": "acgbox-65",
@@ -975,7 +1039,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/pan.cycg_.xyz_.png"
   },
   {
     "id": "acgbox-66",
@@ -990,7 +1055,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/12/sunshineboy.link_.png"
   },
   {
     "id": "acgbox-67",
@@ -1005,7 +1071,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/12/acgdb.de_.png"
   },
   {
     "id": "acgbox-68",
@@ -1020,7 +1087,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/al.chirmyram.com_.webp"
   },
   {
     "id": "acgbox-69",
@@ -1035,7 +1103,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/09/pan.roxylib.com_.png"
   },
   {
     "id": "acgbox-70",
@@ -1050,7 +1119,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/amemoes.com_.png"
   },
   {
     "id": "acgbox-71",
@@ -1065,7 +1135,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/fx05.herokuapp.com.png"
   },
   {
     "id": "acgbox-72",
@@ -1080,7 +1151,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/nyaa.si.png"
   },
   {
     "id": "acgbox-73",
@@ -1095,7 +1167,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/12/www.anirena.com_.png"
   },
   {
     "id": "acgbox-74",
@@ -1110,7 +1183,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.anix.moe.png"
   },
   {
     "id": "acgbox-75",
@@ -1125,7 +1199,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.ggbases.com.png"
   },
   {
     "id": "acgbox-76",
@@ -1140,7 +1215,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.tokyotosho.info.png"
   },
   {
     "id": "acgbox-77",
@@ -1155,7 +1231,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#6366f1"
+    "accent": "#6366f1",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/03/1741329639-whatslink.info_.png"
   },
   {
     "id": "acgbox-78",
@@ -1170,7 +1247,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/08/1786817708-www.galerror.top_.jpg"
   },
   {
     "id": "acgbox-79",
@@ -1185,7 +1263,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/08/1786817164-acgmomo.com_.jpg"
   },
   {
     "id": "acgbox-80",
@@ -1200,7 +1279,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/05/1778339550-searchbox.club_.png"
   },
   {
     "id": "acgbox-81",
@@ -1215,7 +1295,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776948768-galgame.zone_.png"
   },
   {
     "id": "acgbox-82",
@@ -1230,7 +1311,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776700841-ocebox.fun_.png"
   },
   {
     "id": "acgbox-83",
@@ -1245,7 +1327,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/03/1773564201-www.sharotto.com_.png"
   },
   {
     "id": "acgbox-84",
@@ -1260,7 +1343,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/03/1772837731-jiuliacg.com_.jpg"
   },
   {
     "id": "acgbox-85",
@@ -1275,7 +1359,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766489532-searchgal.homes_.png"
   },
   {
     "id": "acgbox-86",
@@ -1290,7 +1375,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766489148-nn0721.icu_.png"
   },
   {
     "id": "acgbox-87",
@@ -1305,7 +1391,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/04/1776703776-kisuacg.moe_.png"
   },
   {
     "id": "acgbox-88",
@@ -1320,7 +1407,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/12/1766261532-tuanziacg.xyz_.png"
   },
   {
     "id": "acgbox-89",
@@ -1335,7 +1423,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/09/1758225413-www.hikarinagi.org_.jpg"
   },
   {
     "id": "acgbox-90",
@@ -1350,7 +1439,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/09/1757444947-luol.top_.png"
   },
   {
     "id": "acgbox-91",
@@ -1365,7 +1455,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/07/1751311521-www.nekogal.com_.png"
   },
   {
     "id": "acgbox-92",
@@ -1380,7 +1471,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/07/1751311328-res.nyne_.dev_.png"
   },
   {
     "id": "acgbox-93",
@@ -1395,7 +1487,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/07/1751310355-www.lycorisgal.top_.png"
   },
   {
     "id": "acgbox-94",
@@ -1410,7 +1503,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/06/1750331748-cyxw.xyz_.png"
   },
   {
     "id": "acgbox-95",
@@ -1425,7 +1519,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/04/1744072209-gdqs.org_.png"
   },
   {
     "id": "acgbox-96",
@@ -1440,7 +1535,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/03/1742654732-acgyxj.cc.png"
   },
   {
     "id": "acgbox-97",
@@ -1455,7 +1551,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/02/1740441596-aozoracafe.com_.png"
   },
   {
     "id": "acgbox-98",
@@ -1470,7 +1567,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/www.kungal.com_.png"
   },
   {
     "id": "acgbox-99",
@@ -1485,7 +1583,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/12/1734559666-www.nekotaku.me_.png"
   },
   {
     "id": "acgbox-100",
@@ -1500,7 +1599,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/03/1772840663-www.singureo.com_.jpg"
   },
   {
     "id": "acgbox-101",
@@ -1515,7 +1615,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/02/1739807240-galgamex.cc.png"
   },
   {
     "id": "acgbox-102",
@@ -1530,7 +1631,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/09/1758224476-www.shionlib.com_.jpg"
   },
   {
     "id": "acgbox-103",
@@ -1545,7 +1647,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/06/acgs.one_.png"
   },
   {
     "id": "acgbox-104",
@@ -1560,7 +1663,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/03/1741145410-www.sayafx.space_.jpg"
   },
   {
     "id": "acgbox-105",
@@ -1575,7 +1679,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/xxacg.net_.png"
   },
   {
     "id": "acgbox-106",
@@ -1590,7 +1695,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/gal.saop_.cc.jpg"
   },
   {
     "id": "acgbox-107",
@@ -1605,7 +1711,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/11/zi0.cc.png"
   },
   {
     "id": "acgbox-108",
@@ -1620,7 +1727,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/07/www.galxp_.com_.png"
   },
   {
     "id": "acgbox-109",
@@ -1635,7 +1743,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/05/wafuwafu.com_.png"
   },
   {
     "id": "acgbox-110",
@@ -1650,7 +1759,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/04/hexo.acgus_.top_.png"
   },
   {
     "id": "acgbox-111",
@@ -1665,7 +1775,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/01/www.touchgal.net_.webp"
   },
   {
     "id": "acgbox-112",
@@ -1680,7 +1791,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/arcxingye.github.io.png"
   },
   {
     "id": "acgbox-113",
@@ -1695,7 +1807,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/t-satoru.top_.webp"
   },
   {
     "id": "acgbox-114",
@@ -1710,7 +1823,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/galgamer.xyz.png"
   },
   {
     "id": "acgbox-115",
@@ -1725,7 +1839,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/shinnku.com.png"
   },
   {
     "id": "acgbox-116",
@@ -1740,7 +1855,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/06/lzacg.one_.png"
   },
   {
     "id": "acgbox-117",
@@ -1755,7 +1871,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.acggalgame.com.png"
   },
   {
     "id": "acgbox-118",
@@ -1770,7 +1887,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/11/1763488640-acgn.games_.png"
   },
   {
     "id": "acgbox-119",
@@ -1785,7 +1903,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/acgyyg.com.png"
   },
   {
     "id": "acgbox-120",
@@ -1800,7 +1919,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs4.2djgame.net.png"
   },
   {
     "id": "acgbox-121",
@@ -1815,7 +1935,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.kkgal.com.png"
   },
   {
     "id": "acgbox-122",
@@ -1830,7 +1951,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.galgame.pw.png"
   },
   {
     "id": "acgbox-123",
@@ -1845,7 +1967,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.2dfan.com.png"
   },
   {
     "id": "acgbox-124",
@@ -1860,7 +1983,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.sumisora.net.png"
   },
   {
     "id": "acgbox-125",
@@ -1875,7 +1999,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.mikocon.com.png"
   },
   {
     "id": "acgbox-126",
@@ -1890,7 +2015,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.mikugal.com.jpg"
   },
   {
     "id": "acgbox-127",
@@ -1905,7 +2031,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#ec4899"
+    "accent": "#ec4899",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.acggw.com-1.png"
   },
   {
     "id": "acgbox-128",
@@ -1920,7 +2047,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2025/04/1743877162-www.ai2_.moe_.png"
   },
   {
     "id": "acgbox-129",
@@ -1935,7 +2063,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/02/www.neko-plus.net_.png"
   },
   {
     "id": "acgbox-130",
@@ -1950,7 +2079,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/09/www.yep621.com_.png"
   },
   {
     "id": "acgbox-131",
@@ -1965,7 +2095,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/08/acgfdao.com_.png"
   },
   {
     "id": "acgbox-132",
@@ -1980,7 +2111,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/10/www.cycg_.xyz_.webp"
   },
   {
     "id": "acgbox-133",
@@ -1995,7 +2127,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.otomedream.com.png"
   },
   {
     "id": "acgbox-134",
@@ -2010,7 +2143,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/zodgame.xyz.png"
   },
   {
     "id": "acgbox-135",
@@ -2025,7 +2159,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPg0KICAgICAgICAgICAgICAgIDxyZWN0IGZpbGw9InJnYigxNzUsMTM3LDIyOSkiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMTE0LDE1MiwyMjkpIiBjeD0iMzgiIGN5PSIxOSIgcj0iNjAiICBvcGFjaXR5PSIuNCI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMjI5LDExNCwyMTApIiBjeD0iMjUiIGN5PSI1MCIgcj0iNTAiICBvcGFjaXR5PSIuNiI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnTWljcm9zb2Z0IFlhaGVpJyI+54G1PC90ZXh0Pjwvc3ZnPg=="
   },
   {
     "id": "acgbox-136",
@@ -2040,7 +2175,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.tsdm39.net.png"
   },
   {
     "id": "acgbox-137",
@@ -2055,7 +2191,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPg0KICAgICAgICAgICAgICAgIDxyZWN0IGZpbGw9InJnYigyMDksMjI5LDEzNykiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+DQogICAgICAgICAgICAgICAgPGNpcmNsZSBmaWxsPSJyZ2IoMjI5LDE2OCwxMTQpIiBjeD0iMjMiIGN5PSIxMS41IiByPSI2MCIgIG9wYWNpdHk9Ii40Ij48L2NpcmNsZT4NCiAgICAgICAgICAgICAgICA8Y2lyY2xlIGZpbGw9InJnYigxMTgsMjI5LDExNCkiIGN4PSI1MyIgY3k9IjEwNiIgcj0iNTAiICBvcGFjaXR5PSIuNiI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnTWljcm9zb2Z0IFlhaGVpJyI+QTwvdGV4dD48L3N2Zz4="
   },
   {
     "id": "acgbox-138",
@@ -2070,7 +2207,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/gkdworld.xyz.png"
   },
   {
     "id": "acgbox-139",
@@ -2085,7 +2223,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/08/mcyacg.com_.png"
   },
   {
     "id": "acgbox-140",
@@ -2100,7 +2239,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/sstm.moe.png"
   },
   {
     "id": "acgbox-141",
@@ -2115,7 +2255,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.kdays.net.png"
   },
   {
     "id": "acgbox-142",
@@ -2130,7 +2271,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs2.seikuu.com.png"
   },
   {
     "id": "acgbox-143",
@@ -2145,7 +2287,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/bbs.kforz.com.png"
   },
   {
     "id": "acgbox-144",
@@ -2160,7 +2303,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/ts2f.com.png"
   },
   {
     "id": "acgbox-145",
@@ -2175,7 +2319,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/acgn.zone.png"
   },
   {
     "id": "acgbox-146",
@@ -2190,7 +2335,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f43f5e"
+    "accent": "#f43f5e",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.south-plus.net.png"
   },
   {
     "id": "acgbox-147",
@@ -2205,7 +2351,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#e879f9"
+    "accent": "#e879f9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/asmr.one.png"
   },
   {
     "id": "acgbox-148",
@@ -2220,7 +2367,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#e879f9"
+    "accent": "#e879f9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/07/one.asmr_.gay_.png"
   },
   {
     "id": "acgbox-149",
@@ -2235,7 +2383,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#e879f9"
+    "accent": "#e879f9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2026/01/1767709239-music.acgs_.one_.png"
   },
   {
     "id": "acgbox-150",
@@ -2250,7 +2399,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#e879f9"
+    "accent": "#e879f9",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/09/www.rainkmc.com_.png"
   },
   {
     "id": "acgbox-151",
@@ -2265,7 +2415,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/18comic.org.png"
   },
   {
     "id": "acgbox-152",
@@ -2280,7 +2431,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/nhentai.net.ico"
   },
   {
     "id": "acgbox-153",
@@ -2295,7 +2447,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/exhentai.org.ico"
   },
   {
     "id": "acgbox-154",
@@ -2310,7 +2463,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2023/06/web.nicecat.cc.png"
   },
   {
     "id": "acgbox-155",
@@ -2325,7 +2479,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2024/07/1722120237-koharu.to_.png"
   },
   {
     "id": "acgbox-156",
@@ -2340,7 +2495,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "checkin",
     "costLabel": "需登录/签到",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/08/noy.asia_.png"
   },
   {
     "id": "acgbox-157",
@@ -2355,7 +2511,8 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "checkin",
     "costLabel": "需登录/签到",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/2022/08/www.picacomic.com_.png"
   },
   {
     "id": "acgbox-158",
@@ -2370,6 +2527,7 @@ export const ACGBOX_SITES: SiteItem[] = [
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": true,
-    "accent": "#f97316"
+    "accent": "#f97316",
+    "fallbackIcon": "https://www.acgbox.link/wp-content/uploads/favicon/www.wnacg.org.png"
   }
 ];

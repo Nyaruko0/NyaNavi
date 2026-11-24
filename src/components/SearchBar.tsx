@@ -39,21 +39,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="mb-6">
-      <div
-        className={`group relative rounded-2xl border bg-white/90 p-1.5 shadow-sm backdrop-blur-md transition-all focus-within:shadow-md dark:bg-[#171d31]/90 ${
-          mode === 'work'
-            ? 'border-slate-200/90 focus-within:border-sky-400/80 dark:border-slate-700/80 dark:focus-within:border-sky-500/70'
-            : 'border-pink-200/60 focus-within:border-pink-400/80 dark:border-slate-700/80 dark:focus-within:border-pink-500/70'
-        }`}
-      >
+      <div className="group relative rounded-2xl border border-slate-200/80 bg-white/85 p-1.5 shadow-[0_1px_3px_rgba(15,23,42,0.03)] backdrop-blur-md transition-all focus-within:border-[var(--nya-accent-border)] focus-within:bg-white focus-within:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] dark:border-slate-800/90 dark:bg-[#141929]/85 dark:focus-within:bg-[#161c2e]">
         <div className="flex items-center gap-2.5 px-3 py-1.5">
-          <Search
-            className={`h-5 w-5 shrink-0 transition-colors ${
-              mode === 'work'
-                ? 'text-slate-400 group-focus-within:text-sky-500'
-                : 'text-slate-400 group-focus-within:text-pink-500'
-            }`}
-          />
+          <Search className="h-4.5 w-4.5 shrink-0 text-slate-400 transition-colors group-focus-within:text-[var(--nya-accent)]" />
           <input
             type="text"
             value={query}
