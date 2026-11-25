@@ -69,6 +69,7 @@ import {
   DEFAULT_APPEARANCE,
   FONT_SIZE_SCALES,
   SettingsDrawer,
+  SITE_ICON_PRESETS,
 } from './components/SettingsDrawer';
 import {
   pickPortalMessage,
@@ -422,6 +423,17 @@ export default function App() {
       mode === 'work' ? 'rgba(2, 132, 199, 0.35)' : theme.border,
     );
   }, [appearance, mode]);
+
+  // 动态同步网页标签图标、Apple Touch Icon 与对应 PWA manifest（选好图标再点“添加到主屏幕”即可安装该款图标）
+  useEffect(() => {
+    const iconPreset = SITE_ICON_PRESETS[appearance.siteIcon] || SITE_ICON_PRESETS.neko;
+    const fav = document.getElementById('nya-favicon') as HTMLLinkElement | null;
+    if (fav) fav.href = iconPreset.favicon;
+    const apple = document.getElementById('nya-apple-icon') as HTMLLinkElement | null;
+    if (apple) apple.href = iconPreset.apple;
+    const manifest = document.getElementById('nya-manifest') as HTMLLinkElement | null;
+    if (manifest) manifest.href = iconPreset.manifest;
+  }, [appearance.siteIcon]);
 
   // 监听滚动位置以高亮/控制回顶与直达底部按键
   useEffect(() => {
@@ -1218,6 +1230,7 @@ export default function App() {
           pinnedCount={pinnedSites.length}
           totalCount={modeSites.length}
           mode={mode}
+          brandIconSrc={(SITE_ICON_PRESETS[appearance.siteIcon] || SITE_ICON_PRESETS.neko).preview}
           authRole={authRole}
           canManage={canManage}
           canViewPrivate={canViewPrivate}

@@ -63,6 +63,7 @@ export interface SiteItem {
 }
 
 export type AccentPreset = 'sakura' | 'sky' | 'violet' | 'emerald' | 'amber';
+export type SiteIconPreset = 'neko' | 'maid' | 'amber' | 'dragon';
 export type CardDensity = 'comfortable' | 'default' | 'compact';
 export type CardRadius = 'soft' | 'medium' | 'sharp';
 export type FontStyle = 'sans' | 'round' | 'mono';
@@ -71,6 +72,8 @@ export type BackgroundStyle = 'glow' | 'dots' | 'minimal';
 
 export interface AppearanceSettings {
   accent: AccentPreset;
+  /** 站点图标与 PWA 桌面图标预设 */
+  siteIcon: SiteIconPreset;
   columns: 2 | 3 | 4;
   density: CardDensity;
   radius: CardRadius;

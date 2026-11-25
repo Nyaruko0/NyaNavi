@@ -7,4 +7,5 @@ dist-ssr
 .env.*
 HANDOFF.md
 AGENTS.md
+icon/
 

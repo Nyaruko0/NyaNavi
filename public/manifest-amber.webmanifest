@@ -1,0 +1,35 @@
+{
+  "name": "NyaNavi · 二次元与 ACG 精选导航",
+  "short_name": "NyaNavi",
+  "description": "清爽极简的二次元 ACG 导航与智能直搜站",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff4e0",
+  "theme_color": "#f59e0b",
+  "icons": [
+    {
+      "src": "./icons/amber-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/amber-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/amber-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/amber-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

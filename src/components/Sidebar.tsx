@@ -51,6 +51,7 @@ interface SidebarProps {
   pinnedCount: number;
   totalCount: number;
   mode: AppMode;
+  brandIconSrc: string;
   authRole: 'none' | 'member' | 'admin';
   canManage: boolean;
   canViewPrivate: boolean;
@@ -107,6 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   pinnedCount,
   totalCount,
   mode,
+  brandIconSrc,
   authRole,
   canManage,
   canViewPrivate,
@@ -145,19 +147,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* 品牌头部 */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4">
           <div className="flex items-center gap-3">
-            <div
-              className={`flex h-10 w-10 items-center justify-center rounded-2xl shadow-sm transition-all ${
-                mode === 'work'
-                  ? 'bg-gradient-to-br from-sky-500 to-indigo-600'
-                  : 'bg-gradient-to-br from-pink-500 via-rose-400 to-sky-400'
-              }`}
-            >
-              {mode === 'work' ? (
+            {mode === 'work' ? (
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 shadow-sm">
                 <Briefcase className="h-5 w-5 text-white" />
-              ) : (
-                <img src="./favicon.svg" alt="NyaNavi" className="h-8 w-8 rounded-xl" />
-              )}
-            </div>
+              </div>
+            ) : (
+              <img
+                src={brandIconSrc}
+                alt="NyaNavi"
+                className="h-10 w-10 rounded-2xl object-cover shadow-sm ring-1 ring-black/5 dark:ring-white/10"
+              />
+            )}
             <div>
               <div className="flex items-center gap-1.5">
                 <h1 className="text-lg font-bold tracking-tight text-slate-800 dark:text-white">

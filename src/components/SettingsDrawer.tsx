@@ -8,7 +8,53 @@ import type {
   CardRadius,
   FontSizeScale,
   FontStyle,
+  SiteIconPreset,
 } from '../types';
+
+export const SITE_ICON_PRESETS: Record<
+  SiteIconPreset,
+  {
+    name: string;
+    subtitle: string;
+    preview: string;
+    favicon: string;
+    apple: string;
+    manifest: string;
+  }
+> = {
+  neko: {
+    name: '紫喵飞吻',
+    subtitle: '默认',
+    preview: './icons/neko-192.png',
+    favicon: './icons/neko-64.png',
+    apple: './icons/neko-apple.png',
+    manifest: './manifest-neko.webmanifest',
+  },
+  maid: {
+    name: '星海女仆',
+    subtitle: '蓝发虎牙',
+    preview: './icons/maid-192.png',
+    favicon: './icons/maid-64.png',
+    apple: './icons/maid-apple.png',
+    manifest: './manifest-maid.webmanifest',
+  },
+  amber: {
+    name: '暖橘呆萌',
+    subtitle: '蜜桃暖阳',
+    preview: './icons/amber-192.png',
+    favicon: './icons/amber-64.png',
+    apple: './icons/amber-apple.png',
+    manifest: './manifest-amber.webmanifest',
+  },
+  dragon: {
+    name: '冰晶龙角',
+    subtitle: '傲娇龙娘',
+    preview: './icons/dragon-192.png',
+    favicon: './icons/dragon-64.png',
+    apple: './icons/dragon-apple.png',
+    manifest: './manifest-dragon.webmanifest',
+  },
+};
 
 export const FONT_SIZE_SCALES: Record<FontSizeScale, { label: string; rootPx: string }> = {
   sm: { label: '精巧', rootPx: '15px' },
@@ -19,6 +65,7 @@ export const FONT_SIZE_SCALES: Record<FontSizeScale, { label: string; rootPx: st
 
 export const DEFAULT_APPEARANCE: AppearanceSettings = {
   accent: 'sakura',
+  siteIcon: 'neko',
   columns: 3,
   density: 'default',
   radius: 'soft',
@@ -159,6 +206,47 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                 );
               })}
             </div>
+          </section>
+
+          {/* 1.5 站点与 PWA 图标切换 */}
+          <section>
+            <div className="mb-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-1.5 font-semibold text-slate-700 dark:text-slate-200">
+                <Sparkles className="h-3.5 w-3.5 text-slate-400" />
+                站点与 PWA 图标
+              </div>
+              <span className="text-[11px] text-slate-400">支持桌面无白边</span>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {(Object.keys(SITE_ICON_PRESETS) as SiteIconPreset[]).map((key) => {
+                const preset = SITE_ICON_PRESETS[key];
+                const active = (settings.siteIcon || 'neko') === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => update('siteIcon', key)}
+                    className={`group flex flex-col items-center gap-1.5 rounded-xl border p-1.5 transition ${
+                      active
+                        ? 'border-[var(--nya-accent)] bg-[var(--nya-accent-soft)] shadow-xs'
+                        : 'border-slate-200/70 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700'
+                    }`}
+                  >
+                    <img
+                      src={preset.preview}
+                      alt={preset.name}
+                      className="h-12 w-12 rounded-xl object-cover shadow-xs ring-1 ring-black/5 transition group-hover:scale-105"
+                    />
+                    <span className="truncate text-[11px] font-medium text-slate-700 dark:text-slate-200">
+                      {preset.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-slate-400 dark:text-slate-500">
+              实时同步浏览器标签图标、侧边栏头像与 PWA 清单；选好后再点浏览器「添加到主屏幕」，即可将该款满出血图标安装到手机桌面。
+            </p>
           </section>
 
           {/* 2. 版面与网格 */}
