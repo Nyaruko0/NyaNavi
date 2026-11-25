@@ -424,13 +424,13 @@ export default function App() {
         if (!cancelled) {
           setPrivateSites(privList);
         }
-        // 自动从私有仓库恢复好友白名单与密钥配置（仅当本地为空时补齐，避免跨设备丢失）
+        // 以私有仓库 admin-settings.json 为云端真源，自动同步最新好友白名单与密钥（多设备一致不丢失）
         if (!cancelled && remoteAdminSettings) {
           const mergedPass =
-            ghConfig.vaultPassphrase?.trim() || remoteAdminSettings.vaultPassphrase?.trim() || '';
+            remoteAdminSettings.vaultPassphrase?.trim() || ghConfig.vaultPassphrase?.trim() || '';
           const mergedUsers =
-            ghConfig.vaultAllowedUsers?.trim() ||
             remoteAdminSettings.vaultAllowedUsers?.trim() ||
+            ghConfig.vaultAllowedUsers?.trim() ||
             '';
           if (
             mergedPass !== (ghConfig.vaultPassphrase || '') ||
