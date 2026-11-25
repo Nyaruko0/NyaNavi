@@ -9,6 +9,7 @@ import {
   Flame,
   Github,
   Loader2,
+  Lock,
   Menu,
   Moon,
   Plus,
@@ -27,6 +28,7 @@ import type {
   SiteItem,
 } from './types';
 import { cleanSearchQuery } from './utils/cleanQuery';
+import { scoreSiteMatch } from './utils/fuzzyMatch';
 import { checkSiteHealth } from './utils/healthCheck';
 import {
   clearGitHubConfig,
@@ -61,6 +63,7 @@ import { SiteCard } from './components/SiteCard';
 import { SiteModal } from './components/SiteModal';
 import { AdminModal } from './components/AdminModal';
 import { CategoryModal } from './components/CategoryModal';
+import { NsfwUnlockModal } from './components/NsfwUnlockModal';
 import {
   ACCENT_THEMES,
   DEFAULT_APPEARANCE,
@@ -133,6 +136,38 @@ function loadInitialAppearance(): AppearanceSettings {
   }
 }
 
+/** 仅重排 list 中属于 visibleIds 子集的槽位顺序，将 fromId 移至 toId 所在位置，保持其余站点原位不变 */
+function reorderSitesWithinSubset(
+  list: SiteItem[],
+  visibleIds: string[],
+  fromId: string,
+  toId: string,
+): SiteItem[] {
+  if (fromId === toId) return list;
+  const visibleSet = new Set(visibleIds);
+  const slotIndices: number[] = [];
+  const slotItems: SiteItem[] = [];
+  for (let i = 0; i < list.length; i++) {
+    if (visibleSet.has(list[i].id)) {
+      slotIndices.push(i);
+      slotItems.push(list[i]);
+    }
+  }
+  const fromIdx = slotItems.findIndex((s) => s.id === fromId);
+  const toIdx = slotItems.findIndex((s) => s.id === toId);
+  if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return list;
+
+  const reordered = [...slotItems];
+  const [moved] = reordered.splice(fromIdx, 1);
+  reordered.splice(toIdx, 0, moved);
+
+  const next = [...list];
+  for (let i = 0; i < slotIndices.length; i++) {
+    next[slotIndices[i]] = reordered[i];
+  }
+  return next;
+}
+
 export default function App() {
   const [sites, setSites] = useState<SiteItem[]>(DEFAULT_SITES);
   const [categories, setCategories] = useState<CategoryMeta[]>(DEFAULT_CATEGORIES);
@@ -153,11 +188,17 @@ export default function App() {
   const [syncing, setSyncing] = useState<boolean>(false);
 
   const [mode, setMode] = useState<AppMode>(() => {
+    const initApp = loadInitialAppearance();
     const saved = localStorage.getItem(STORAGE_MODE_KEY);
-    if (saved === 'work' || saved === 'moyu' || saved === 'nsfw') return saved;
-    return 'nsfw';
+    if (saved === 'work' || saved === 'moyu') return saved;
+    if (saved === 'nsfw' && initApp.enableNsfwMode) return 'nsfw';
+    return 'moyu';
   });
-  const [lastNonWorkMode, setLastNonWorkMode] = useState<'moyu' | 'nsfw'>('nsfw');
+  const [lastNonWorkMode, setLastNonWorkMode] = useState<'moyu' | 'nsfw'>(() => {
+    const initApp = loadInitialAppearance();
+    const saved = localStorage.getItem(STORAGE_MODE_KEY);
+    return saved === 'nsfw' && initApp.enableNsfwMode ? 'nsfw' : 'moyu';
+  });
   const [dark, setDark] = useState<boolean>(() => {
     const saved = localStorage.getItem(STORAGE_THEME_KEY);
     if (saved) return saved === 'dark';
@@ -168,6 +209,9 @@ export default function App() {
   const [query, setQuery] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [nsfwUnlockOpen, setNsfwUnlockOpen] = useState<boolean>(false);
+  const [draggingSite, setDraggingSite] = useState<{ id: string; sectionId: string } | null>(null);
+  const [dragOverSiteId, setDragOverSiteId] = useState<string | null>(null);
   const [scrollPos, setScrollPos] = useState<{ atTop: boolean; atBottom: boolean }>({
     atTop: true,
     atBottom: false,
@@ -411,6 +455,15 @@ export default function App() {
           : 'NyaNavi · 二次元与 ACG 精选导航';
   }, [mode]);
 
+  // 若用户在外观设置中关闭 NSFW 模式，自动从 NSFW 切回摸鱼模式
+  useEffect(() => {
+    if (!appearance.enableNsfwMode && mode === 'nsfw') {
+      setMode('moyu');
+      setLastNonWorkMode('moyu');
+      showToast('NSFW 模式已关闭锁定，已切回摸鱼模式');
+    }
+  }, [appearance.enableNsfwMode, mode, showToast]);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_THEME_KEY, dark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', dark);
@@ -426,10 +479,12 @@ export default function App() {
             showToast('已秒切工作模式（仅保留开发与效率工具）');
             return 'work';
           }
+          const targetMode: 'moyu' | 'nsfw' =
+            lastNonWorkMode === 'nsfw' && appearance.enableNsfwMode ? 'nsfw' : 'moyu';
           showToast(
-            lastNonWorkMode === 'moyu' ? '已恢复至摸鱼模式' : '已恢复至 NSFW 完整模式',
+            targetMode === 'moyu' ? '已恢复至摸鱼模式' : '已恢复至 NSFW 完整模式',
           );
-          return lastNonWorkMode;
+          return targetMode;
         });
         return;
       }
@@ -447,7 +502,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [lastNonWorkMode, showToast]);
+  }, [appearance.enableNsfwMode, lastNonWorkMode, showToast]);
 
   // 退出站长模式/锁定暗号或切换模式时，若当前停留在不可见分类，自动切回全部
   const workCategoryIds = useMemo(
@@ -523,23 +578,14 @@ export default function App() {
       list = list.filter((s) => s.category === activeSection);
     }
 
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
     if (!q) return list;
 
-    return list.filter((s) => {
-      const haystack = [
-        s.name,
-        s.shortName || '',
-        s.url,
-        s.description,
-        s.costLabel,
-        ...(s.tags || []),
-        ...(s.clients || []),
-      ]
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(q);
-    });
+    return list
+      .map((s) => ({ site: s, score: scoreSiteMatch(s, q) }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((entry) => entry.site);
   }, [modeSites, activeSection, query]);
 
   const groupedSections = useMemo(() => {
@@ -787,6 +833,36 @@ export default function App() {
       setHasUnsyncedCategories(true);
     },
     [canManage],
+  );
+
+  // 站长专属：同一分类内调整站点卡片顺序（支持拖拽与前移/后移按钮，自动区分公开库与私有库）
+  const handleReorderSiteInSection = useCallback(
+    (sectionItems: SiteItem[], fromId: string, toId: string) => {
+      if (!canManage || fromId === toId) return;
+      const visibleIds = sectionItems.map((s) => s.id);
+      if (!visibleIds.includes(fromId) || !visibleIds.includes(toId)) return;
+
+      const isPrivate = privateSites.some((s) => s.id === fromId);
+      if (isPrivate) {
+        setPrivateSites((prev) => reorderSitesWithinSubset(prev, visibleIds, fromId, toId));
+        setHasUnsyncedPrivate(true);
+      } else {
+        setSites((prev) => reorderSitesWithinSubset(prev, visibleIds, fromId, toId));
+        setHasUnsynced(true);
+      }
+    },
+    [canManage, privateSites],
+  );
+
+  const handleMoveSiteInSection = useCallback(
+    (sectionItems: SiteItem[], siteId: string, direction: -1 | 1) => {
+      const idx = sectionItems.findIndex((s) => s.id === siteId);
+      if (idx === -1) return;
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= sectionItems.length) return;
+      handleReorderSiteInSection(sectionItems, siteId, sectionItems[targetIdx].id);
+    },
+    [handleReorderSiteInSection],
   );
 
   // 站长专属：删除分类目录（若目录下有站点则安全迁移到同模式其他目录）
@@ -1293,16 +1369,31 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => {
+                      if (!appearance.enableNsfwMode) {
+                        setNsfwUnlockOpen(true);
+                        return;
+                      }
                       setMode('nsfw');
                       showToast('已切换至 NSFW 完整模式');
                     }}
+                    title={
+                      appearance.enableNsfwMode
+                        ? '切换至 NSFW 里站模式'
+                        : 'NSFW 模式默认锁定，点击解锁或在外观设置中开启'
+                    }
                     className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium transition-all ${
                       mode === 'nsfw'
                         ? 'bg-[var(--nya-accent)] text-white shadow-2xs'
-                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
+                        : !appearance.enableNsfwMode
+                          ? 'text-slate-400/80 hover:bg-white/60 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-700/50 dark:hover:text-slate-300'
+                          : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
                     }`}
                   >
-                    <Flame className="hidden h-3.5 w-3.5 sm:inline" />
+                    {appearance.enableNsfwMode ? (
+                      <Flame className="hidden h-3.5 w-3.5 sm:inline" />
+                    ) : (
+                      <Lock className="h-3 w-3 opacity-80" />
+                    )}
                     NSFW
                   </button>
                 </div>
@@ -1451,24 +1542,79 @@ export default function App() {
                     </div>
 
                     <div className={`grid gap-3 ${gridColsClass}`}>
-                      {section.items.map((site) => (
-                        <SiteCard
-                          key={site.id}
-                          site={site}
-                          health={healthMap[site.id]}
-                          cleanedQuery={cleanedQuery}
-                          canManage={canManage}
-                          appearance={appearance}
-                          onNavigate={handleNavigate}
-                          onTogglePin={handleTogglePin}
-                          onEdit={(s) => {
-                            setEditingSite(s);
-                            setModalOpen(true);
-                          }}
-                          onDelete={handleDeleteSite}
-                          onCheckHealth={handleCheckSingle}
-                        />
-                      ))}
+                      {section.items.map((site, idx) => {
+                        const isReorderable =
+                          canManage &&
+                          !query.trim() &&
+                          section.id !== 'pinned-top' &&
+                          section.id !== 'pinned' &&
+                          section.id !== 'search-results' &&
+                          section.items.length > 1;
+                        return (
+                          <SiteCard
+                            key={site.id}
+                            site={site}
+                            health={healthMap[site.id]}
+                            cleanedQuery={cleanedQuery}
+                            canManage={canManage}
+                            appearance={appearance}
+                            canReorder={isReorderable}
+                            isFirst={idx === 0}
+                            isLast={idx === section.items.length - 1}
+                            isDragging={
+                              draggingSite?.id === site.id &&
+                              draggingSite?.sectionId === section.id
+                            }
+                            isDragOver={
+                              dragOverSiteId === site.id &&
+                              draggingSite?.sectionId === section.id &&
+                              draggingSite?.id !== site.id
+                            }
+                            onMove={(dir) =>
+                              handleMoveSiteInSection(section.items, site.id, dir)
+                            }
+                            onDragStart={() =>
+                              setDraggingSite({ id: site.id, sectionId: section.id })
+                            }
+                            onDragOver={() => {
+                              if (
+                                draggingSite &&
+                                draggingSite.sectionId === section.id &&
+                                draggingSite.id !== site.id
+                              ) {
+                                setDragOverSiteId(site.id);
+                              }
+                            }}
+                            onDrop={() => {
+                              if (
+                                draggingSite &&
+                                draggingSite.sectionId === section.id &&
+                                draggingSite.id !== site.id
+                              ) {
+                                handleReorderSiteInSection(
+                                  section.items,
+                                  draggingSite.id,
+                                  site.id,
+                                );
+                              }
+                              setDraggingSite(null);
+                              setDragOverSiteId(null);
+                            }}
+                            onDragEnd={() => {
+                              setDraggingSite(null);
+                              setDragOverSiteId(null);
+                            }}
+                            onNavigate={handleNavigate}
+                            onTogglePin={handleTogglePin}
+                            onEdit={(s) => {
+                              setEditingSite(s);
+                              setModalOpen(true);
+                            }}
+                            onDelete={handleDeleteSite}
+                            onCheckHealth={handleCheckSingle}
+                          />
+                        );
+                      })}
                     </div>
                   </section>
                 ))}
@@ -1554,6 +1700,22 @@ export default function App() {
         onReroll={() => setPortalMessage((prev) => pickPortalMessage(prev?.id))}
         onConfirm={handleConfirmPortal}
         onClose={() => setPortalTarget(null)}
+      />
+
+      {/* NSFW 默认锁定解锁确认弹窗 */}
+      <NsfwUnlockModal
+        open={nsfwUnlockOpen}
+        onUnlock={() => {
+          setAppearance((prev) => ({ ...prev, enableNsfwMode: true }));
+          setMode('nsfw');
+          setNsfwUnlockOpen(false);
+          showToast('已解锁并进入 NSFW 模式（可在外观设置中随时关闭锁定）');
+        }}
+        onOpenSettings={() => {
+          setNsfwUnlockOpen(false);
+          setSettingsOpen(true);
+        }}
+        onClose={() => setNsfwUnlockOpen(false)}
       />
 
       {/* 快捷回到顶部 / 直达底部悬浮按钮组 */}

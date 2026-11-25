@@ -81,6 +81,8 @@ export interface AppearanceSettings {
   showDomain: boolean;
   showBadges: boolean;
   enablePortalConfirm: boolean;
+  /** 是否解锁显示 NSFW 模式（默认关闭） */
+  enableNsfwMode: boolean;
   wallpaperUrl: string;
   wallpaperBlur: number;
   wallpaperOpacity: number;

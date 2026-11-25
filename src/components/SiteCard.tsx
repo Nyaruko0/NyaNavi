@@ -2,6 +2,9 @@ import React from 'react';
 import {
   AlertTriangle,
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  GripVertical,
   Lock,
   Pencil,
   Search,
@@ -19,6 +22,16 @@ interface SiteCardProps {
   cleanedQuery?: string;
   canManage: boolean;
   appearance: AppearanceSettings;
+  canReorder?: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
+  isDragging?: boolean;
+  isDragOver?: boolean;
+  onMove?: (direction: -1 | 1) => void;
+  onDragStart?: () => void;
+  onDragOver?: (e: React.DragEvent) => void;
+  onDrop?: () => void;
+  onDragEnd?: () => void;
   onNavigate: (url: string, site: SiteItem, keyword?: string) => void;
   onTogglePin: (id: string) => void;
   onEdit: (site: SiteItem) => void;
@@ -59,6 +72,16 @@ export const SiteCard: React.FC<SiteCardProps> = ({
   cleanedQuery,
   canManage,
   appearance,
+  canReorder = false,
+  isFirst = false,
+  isLast = false,
+  isDragging = false,
+  isDragOver = false,
+  onMove,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
   onNavigate,
   onTogglePin,
   onEdit,
@@ -102,7 +125,28 @@ export const SiteCard: React.FC<SiteCardProps> = ({
 
   return (
     <article
-      className={`group relative flex flex-col justify-between border border-slate-200/70 bg-white/85 shadow-[0_1px_2px_rgba(15,23,42,0.03)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:bg-white hover:shadow-[0_8px_24px_-8px_rgba(15,23,42,0.09)] dark:border-slate-800/80 dark:bg-[#141929]/85 dark:hover:bg-[#171d30] ${RADIUS_CLASS[appearance.radius]} ${PADDING_CLASS[appearance.density]}`}
+      draggable={canReorder}
+      onDragStart={() => {
+        if (canReorder) onDragStart?.();
+      }}
+      onDragOver={(e) => {
+        if (!canReorder) return;
+        e.preventDefault();
+        onDragOver?.(e);
+      }}
+      onDrop={(e) => {
+        if (!canReorder) return;
+        e.preventDefault();
+        onDrop?.();
+      }}
+      onDragEnd={() => {
+        if (canReorder) onDragEnd?.();
+      }}
+      className={`group relative flex flex-col justify-between border bg-white/85 shadow-[0_1px_2px_rgba(15,23,42,0.03)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_8px_24px_-8px_rgba(15,23,42,0.09)] dark:bg-[#141929]/85 dark:hover:bg-[#171d30] ${
+        isDragOver
+          ? 'border-[var(--nya-accent)] ring-2 ring-[var(--nya-accent)]/60'
+          : 'border-slate-200/70 hover:border-[var(--nya-accent-border)] dark:border-slate-800/80'
+      } ${isDragging ? 'scale-[0.98] opacity-45' : ''} ${RADIUS_CLASS[appearance.radius]} ${PADDING_CLASS[appearance.density]}`}
     >
       {/* 顶部：图标 + 站名 + 悬浮操作 */}
       <div>
@@ -233,21 +277,54 @@ export const SiteCard: React.FC<SiteCardProps> = ({
           isCompact ? 'mt-2.5 pt-2' : 'mt-3.5 pt-2.5'
         }`}
       >
-        <button
-          type="button"
-          onClick={() => onCheckHealth(site)}
-          title={
-            health?.mode === 'local-proxy'
-              ? `本地精准检测：${health.note || '正常'}`
-              : health?.mode === 'browser-nocors'
-                ? `本机浏览器连通性探测：${health.note || '正常'}`
-                : '点击检测站点连通性与延迟'
-          }
-          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 sm:px-1.5 sm:py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-        >
-          <span className={`h-2 w-2 rounded-full ${statusDot.color}`} />
-          <span>{statusDot.label}</span>
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onCheckHealth(site)}
+            title={
+              health?.mode === 'local-proxy'
+                ? `本地精准检测：${health.note || '正常'}`
+                : health?.mode === 'browser-nocors'
+                  ? `本机浏览器连通性探测：${health.note || '正常'}`
+                  : '点击检测站点连通性与延迟'
+            }
+            className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 sm:px-1.5 sm:py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+          >
+            <span className={`h-2 w-2 rounded-full ${statusDot.color}`} />
+            <span>{statusDot.label}</span>
+          </button>
+
+          {canManage && canReorder && onMove && (
+            <div className="inline-flex items-center gap-0.5 rounded-lg border border-slate-200/70 bg-slate-50/80 px-1 py-0.5 text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70">
+              <span
+                title="可按住卡片拖拽调整同分类内顺序"
+                className="hidden cursor-grab items-center px-0.5 text-slate-300 active:cursor-grabbing sm:inline-flex dark:text-slate-600"
+              >
+                <GripVertical className="h-3.5 w-3.5" />
+              </span>
+              <button
+                type="button"
+                disabled={isFirst}
+                onClick={() => onMove(-1)}
+                title="前移一位"
+                aria-label="前移一位"
+                className="rounded p-1 transition hover:bg-white hover:text-[var(--nya-accent)] disabled:opacity-30 sm:p-0.5 dark:hover:bg-slate-700"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                disabled={isLast}
+                onClick={() => onMove(1)}
+                title="后移一位"
+                aria-label="后移一位"
+                className="rounded p-1 transition hover:bg-white hover:text-[var(--nya-accent)] disabled:opacity-30 sm:p-0.5 dark:hover:bg-slate-700"
+              >
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="flex items-center gap-1.5">
           {cleanedQuery && site.searchUrl && (

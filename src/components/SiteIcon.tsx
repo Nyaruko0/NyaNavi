@@ -112,14 +112,14 @@ export const SiteIcon: React.FC<SiteIconProps> = ({
 
   return (
     <div
-      className={`relative flex shrink-0 items-center justify-center overflow-hidden border border-slate-200/70 bg-white/95 p-1.5 shadow-2xs transition-transform duration-200 group-hover:scale-105 dark:border-slate-700/70 dark:bg-slate-800/90 ${boxClass}`}
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-slate-100/70 p-1 shadow-2xs ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105 dark:bg-slate-800/75 dark:ring-white/10 ${boxClass}`}
     >
       <img
         src={current.src}
         alt={name}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="h-full w-full rounded-[6px] object-contain"
+        className="h-full w-full rounded-[8px] object-contain"
         onLoad={(e) => {
           const img = e.currentTarget;
           if (

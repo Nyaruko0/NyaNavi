@@ -29,6 +29,7 @@ export const DEFAULT_APPEARANCE: AppearanceSettings = {
   showDomain: true,
   showBadges: true,
   enablePortalConfirm: true,
+  enableNsfwMode: false,
   wallpaperUrl: '',
   wallpaperBlur: 8,
   wallpaperOpacity: 18,
@@ -345,6 +346,22 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                   checked={settings.enablePortalConfirm}
                   onChange={(e) => update('enablePortalConfirm', e.target.checked)}
                   className="h-4 w-4 rounded accent-[var(--nya-accent)]"
+                />
+              </label>
+              <label className="flex cursor-pointer items-center justify-between border-t border-slate-200/70 pt-2 dark:border-slate-800">
+                <div>
+                  <span className="font-medium text-rose-600 dark:text-rose-400">
+                    开启 NSFW 里站模式（18+）
+                  </span>
+                  <p className="text-[11px] text-slate-400">
+                    默认关闭锁定，开启后可在顶栏切换进入 NSFW 分类
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={settings.enableNsfwMode}
+                  onChange={(e) => update('enableNsfwMode', e.target.checked)}
+                  className="h-4 w-4 shrink-0 rounded accent-rose-500"
                 />
               </label>
             </div>

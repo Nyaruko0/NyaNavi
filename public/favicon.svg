@@ -1,13 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="nyaGrad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+    <linearGradient id="nyaGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FF6B9D" />
       <stop offset="100%" stop-color="#38BDF8" />
     </linearGradient>
   </defs>
-  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#nyaGrad)" />
-  <path d="M18 25L22 14L30 21C31.3 20.8 32.7 20.8 34 21L42 14L46 25C48.5 28 50 31.8 50 36C50 44.8 41.9 50 32 50C22.1 50 14 44.8 14 36C14 31.8 15.5 28 18 25Z" fill="#FFFFFF" fill-opacity="0.96"/>
-  <circle cx="25" cy="35" r="2.8" fill="#1E293B"/>
-  <circle cx="39" cy="35" r="2.8" fill="#1E293B"/>
-  <path d="M29.5 40.5C30.4 41.8 31.4 42.2 32 41.2C32.6 42.2 33.6 41.8 34.5 40.5" stroke="#FF6B9D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 满幅铺底（无透明留白，防止 Android Adaptive Icon / maskable 裁剪时出现一圈白边） -->
+  <rect x="0" y="0" width="64" height="64" fill="url(#nyaGrad)" />
+  <!-- 主体收缩在中心 66% 安全区内，确保圆形/圆角矩形遮罩完整裁切不切耳 -->
+  <path d="M21 27L24 18.5L30.2 24C31.3 23.8 32.7 23.8 33.8 24L40 18.5L43 27C45 29.4 46.2 32.4 46.2 35.8C46.2 42.6 39.8 46.8 32 46.8C24.2 46.8 17.8 42.6 17.8 35.8C17.8 32.4 19 29.4 21 27Z" fill="#FFFFFF" fill-opacity="0.97"/>
+  <circle cx="26.8" cy="35" r="2.2" fill="#1E293B"/>
+  <circle cx="37.2" cy="35" r="2.2" fill="#1E293B"/>
+  <path d="M29.8 39.4C30.6 40.4 31.4 40.8 32 40C32.6 40.8 33.4 40.4 34.2 39.4" stroke="#FF6B9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
