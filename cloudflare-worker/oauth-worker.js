@@ -1,9 +1,12 @@
 /**
  * NyaNavi GitHub OAuth 中转 Worker（零外部依赖，直接粘贴到 Cloudflare Workers 即可运行）
  *
- * 在 Cloudflare Worker 的 Settings -> Variables and Secrets 中配置以下 2 个 Secret：
- *   - GITHUB_CLIENT_ID     : GitHub OAuth App 的 Client ID
- *   - GITHUB_CLIENT_SECRET : GitHub OAuth App 的 Client Secret
+ * 在 Cloudflare Worker 的 Settings -> Variables and Secrets 中配置以下 Secret：
+ *   - GITHUB_CLIENT_ID     : GitHub OAuth App 的 Client ID（必填）
+ *   - GITHUB_CLIENT_SECRET : GitHub OAuth App 的 Client Secret（必填）
+ *   - ADMIN_GITHUB_PAT     : 站长个人 GitHub PAT（可选；配置后，仅当 OAuth 认证账号为站长本人时自动下发，实现站长一键免输 Token 直进站长模式；其他任何账号绝不下发）
+ *   - ADMIN_GITHUB_LOGIN   : 站长 GitHub 用户名（可选，默认 Nyaruko0）
+ *   - ADMIN_PRIVATE_REPO   : 站长私有扩展库名（可选，默认 NyaNavi-Private）
  *
  * GitHub OAuth App 的 Authorization callback URL 填：
  *   https://<你的Worker子域名>.workers.dev/callback
@@ -155,17 +158,37 @@ export default {
       }
 
       const user = await userRes.json();
-      const sessionPayload = JSON.stringify({
+      const adminLogin = String(env.ADMIN_GITHUB_LOGIN || 'Nyaruko0').trim().toLowerCase();
+      const isSiteAdmin =
+        Boolean(user?.login) && String(user.login).trim().toLowerCase() === adminLogin;
+      const adminPat = typeof env.ADMIN_GITHUB_PAT === 'string' ? env.ADMIN_GITHUB_PAT.trim() : '';
+
+      const sessionObj = {
         login: user.login,
         avatarUrl: user.avatar_url || '',
         exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 天有效
-      });
+      };
+
+      // 仅当 GitHub 官方 OAuth 认证返回的正是站长本人且配置了 ADMIN_GITHUB_PAT 时，
+      // 通过一次性 URL hash 下发站长读写 Token（其他任何好友/访客账号绝不下发）
+      if (isSiteAdmin && adminPat) {
+        sessionObj.adminToken = adminPat;
+        sessionObj.privateRepo = String(env.ADMIN_PRIVATE_REPO || 'NyaNavi-Private').trim();
+      }
+
+      const sessionPayload = JSON.stringify(sessionObj);
       const encodedSession = toBase64Url(sessionPayload);
 
       // 使用 URL hash (#nya_oauth=...) 回传，不留服务器访问日志，前端读取后立即擦除
       const target = new URL(redirect);
       target.hash = `nya_oauth=${encodedSession}`;
-      return Response.redirect(target.toString(), 302);
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: target.toString(),
+          'Cache-Control': 'no-store',
+        },
+      });
     }
 
     return new Response('Not Found', { status: 404 });

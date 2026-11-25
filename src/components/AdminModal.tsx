@@ -56,7 +56,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [owner, setOwner] = useState(currentConfig?.owner || DEFAULT_GITHUB_CONFIG.owner);
   const [repo, setRepo] = useState(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
   const [branch, setBranch] = useState(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
-  const [privateRepo, setPrivateRepo] = useState(currentConfig?.privateRepo || '');
+  const [privateRepo, setPrivateRepo] = useState(
+    currentConfig?.privateRepo || 'NyaNavi-Private',
+  );
   const [vaultPassphrase, setVaultPassphrase] = useState(currentConfig?.vaultPassphrase || '');
   const [vaultAllowedUsers, setVaultAllowedUsers] = useState(
     currentConfig?.vaultAllowedUsers || '',
@@ -64,6 +66,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [token, setToken] = useState(currentConfig?.token || '');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showAdminTokenForm, setShowAdminTokenForm] = useState(false);
+  const [showOwnerFriendUnlock, setShowOwnerFriendUnlock] = useState(false);
 
   // 普通用户（好友）输入明文密钥的状态
   const [friendKeyInput, setFriendKeyInput] = useState('');
@@ -73,19 +76,24 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const oauthLoginUrl = getOAuthLoginUrl();
+  const isOwnerMember =
+    authRole === 'member' &&
+    Boolean(authUser) &&
+    authUser!.toLowerCase() === (currentConfig?.owner || DEFAULT_GITHUB_CONFIG.owner).toLowerCase();
 
   useEffect(() => {
     if (!open) return;
     setOwner(currentConfig?.owner || DEFAULT_GITHUB_CONFIG.owner);
     setRepo(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
     setBranch(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
-    setPrivateRepo(currentConfig?.privateRepo || '');
+    setPrivateRepo(currentConfig?.privateRepo || 'NyaNavi-Private');
     setVaultPassphrase(currentConfig?.vaultPassphrase || '');
     setVaultAllowedUsers(currentConfig?.vaultAllowedUsers || '');
     setToken(currentConfig?.token || '');
-    setShowAdminTokenForm(authRole === 'admin');
+    setShowAdminTokenForm(authRole === 'admin' || isOwnerMember);
+    setShowOwnerFriendUnlock(false);
     setError(null);
-  }, [open, currentConfig, authRole]);
+  }, [open, currentConfig, authRole, isOwnerMember]);
 
   if (!open) return null;
 
@@ -206,16 +214,20 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               <h2 className="text-base font-bold text-slate-800 dark:text-white">
                 {authRole === 'admin'
                   ? '站长管理 · GitHub 同步'
-                  : authRole === 'member'
-                    ? '好友身份 · 私密库解锁'
-                    : 'GitHub 账号登录'}
+                  : isOwnerMember
+                    ? '已识别站长账号 · 升级站长模式'
+                    : authRole === 'member'
+                      ? '好友身份 · 私密库解锁'
+                      : 'GitHub 账号登录'}
               </h2>
               <p className="text-xs text-slate-400">
                 {authRole === 'admin'
                   ? '拥有完整编辑权限与好友访问配置'
-                  : authRole === 'member'
-                    ? '只读身份 · 无法修改任何站点内容'
-                    : '站长自动解锁管理，好友登录可凭密钥查看私密库'}
+                  : isOwnerMember
+                    ? '当前为 OAuth 只读登录，填入 PAT 即可解锁编辑与云端同步'
+                    : authRole === 'member'
+                      ? '只读身份 · 无法修改任何站点内容'
+                      : '站长自动进入管理模式，好友登录可凭密钥查看私密库'}
               </p>
             </div>
           </div>
@@ -228,8 +240,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           </button>
         </div>
 
-        {/* =============== 视图 A：普通用户 / 好友已登录（严格只读，只能输密钥） =============== */}
-        {authRole === 'member' && (
+        {/* =============== 视图 A：普通用户 / 好友已登录（严格只读，只能输密钥；站长账号则直接展示升级站长表单） =============== */}
+        {authRole === 'member' && !isOwnerMember && (
           <div className="space-y-4">
             <div className="flex items-center justify-between rounded-xl border border-sky-200/80 bg-sky-50/70 px-3.5 py-2.5 text-xs text-sky-800 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-300">
               <span className="inline-flex items-center gap-1.5 font-medium">
@@ -344,10 +356,66 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           </div>
         )}
 
-        {/* =============== 视图 B：未登录 或 站长已登录 =============== */}
-        {authRole !== 'member' && (
+        {/* =============== 视图 B：未登录、站长 OAuth 待升级 或 站长已登录 =============== */}
+        {(authRole !== 'member' || isOwnerMember) && (
           <>
-            {/* 未登录时：首屏直接展示“一键 GitHub OAuth 登录”（朋友全程免 Token！） */}
+            {/* 站长用 OAuth 登录后但 Worker 尚未下发 PAT 时的专属提示 */}
+            {isOwnerMember && (
+              <div className="mb-4 space-y-2.5">
+                <div className="flex items-center justify-between rounded-xl border border-amber-200/80 bg-amber-50/70 px-3.5 py-2.5 text-xs text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+                  <span className="inline-flex items-center gap-1.5 font-medium">
+                    <ShieldCheck className="h-4 w-4 shrink-0" />
+                    已识别站长 @{authUser}（缺少写权限 Token）
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onLogout();
+                      onClose();
+                    }}
+                    className="inline-flex items-center gap-1 rounded-lg bg-white/80 px-2 py-1 text-[11px] font-semibold text-rose-600 hover:bg-rose-50 dark:bg-slate-900/70 dark:text-rose-400"
+                  >
+                    <LogOut className="h-3 w-3" />
+                    退出
+                  </button>
+                </div>
+                <p className="rounded-xl border border-slate-200/70 bg-slate-50/80 px-3 py-2 text-[11px] leading-relaxed text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+                  在下方粘贴一次你的 GitHub PAT 即可立即进入完整站长模式；若希望以后任何设备点「GitHub 一键登录」直接免输 Token 秒进站长模式，请更新 Cloudflare Worker 代码并添加 Secret{' '}
+                  <code className="rounded bg-slate-200/70 px-1 py-0.5 font-mono text-[10px] text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                    ADMIN_GITHUB_PAT
+                  </code>
+                  。
+                </p>
+                {showOwnerFriendUnlock && (
+                  <form onSubmit={handleFriendUnlockSubmit} className="space-y-2 rounded-xl border border-violet-200/70 bg-violet-50/40 p-3 dark:border-violet-500/20 dark:bg-violet-500/5">
+                    <input
+                      type="password"
+                      value={friendKeyInput}
+                      onChange={(e) => setFriendKeyInput(e.target.value)}
+                      placeholder="临时以只读明文密钥查看私密库..."
+                      className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                    />
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="inline-flex items-center gap-1 rounded-lg bg-violet-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-600 disabled:opacity-60"
+                    >
+                      <Unlock className="h-3.5 w-3.5" />
+                      只读解锁私密库
+                    </button>
+                  </form>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowOwnerFriendUnlock((v) => !v)}
+                  className="text-[11px] font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                >
+                  {showOwnerFriendUnlock ? '收起只读密钥解锁' : '或临时用明文密钥只读查看私密库'}
+                </button>
+              </div>
+            )}
+
+            {/* 未登录时：首屏直接展示“一键 GitHub OAuth 登录” */}
             {authRole === 'none' && (
               <div className="mb-4 space-y-3">
                 <button
@@ -364,10 +432,10 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-[0.99] dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                 >
                   <Github className="h-4.5 w-4.5" />
-                  使用 GitHub 账号一键登录（好友入口）
+                  使用 GitHub 账号一键登录
                 </button>
                 <p className="text-center text-[11px] leading-relaxed text-slate-400">
-                  无需生成 Token，授权后自动识别你的 GitHub 账号，直接输入站长给的明文密钥即可只读访问私密库。
+                  站长登录自动识别并进入站长管理模式；好友登录仅需最小只读权限，凭明文密钥即可查看私密库。
                 </p>
 
                 <div className="relative py-1">
@@ -571,7 +639,11 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   ) : (
                     <>
                       <ShieldCheck className="h-3.5 w-3.5" />
-                      {authRole === 'admin' ? '保存站长配置' : '登录 GitHub'}
+                      {authRole === 'admin'
+                        ? '保存站长配置'
+                        : isOwnerMember
+                          ? '进入站长模式'
+                          : '登录 GitHub'}
                     </>
                   )}
                 </button>

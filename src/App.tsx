@@ -300,24 +300,59 @@ export default function App() {
       return false;
     };
 
-    // 2a. 若刚从 GitHub OAuth 授权跳回，消费 hash 并自动打开密钥输入框
+    // 2a. 若刚从 GitHub OAuth 授权跳回，消费 hash（站长携带 adminToken 时自动直进站长模式）
     const freshOAuth = consumeOAuthHashCallback();
     if (freshOAuth) {
-      setAuthRole('member');
-      setAuthUser(freshOAuth.login);
-      setPrivateSites([]);
-      tryAutoUnlockForMember(freshOAuth.login, DEFAULT_GITHUB_CONFIG.owner).then((ok) => {
-        if (cancelled) return;
-        if (ok) {
-          showToast(`欢迎回来 @${freshOAuth.login}，已自动解锁私密库（只读）`);
-        } else {
+      const isOwner =
+        freshOAuth.login.toLowerCase() === DEFAULT_GITHUB_CONFIG.owner.toLowerCase();
+
+      // 站长直通：Cloudflare Worker 认证为站长本人并下发了 ADMIN_GITHUB_PAT，直接进入站长模式
+      if (isOwner && freshOAuth.adminToken) {
+        const autoAdminCfg: GitHubConfig = {
+          owner: ghConfig?.owner || DEFAULT_GITHUB_CONFIG.owner,
+          repo: ghConfig?.repo || DEFAULT_GITHUB_CONFIG.repo,
+          branch: ghConfig?.branch || DEFAULT_GITHUB_CONFIG.branch,
+          path: ghConfig?.path || DEFAULT_GITHUB_CONFIG.path,
+          token: freshOAuth.adminToken,
+          privateRepo: freshOAuth.privateRepo || ghConfig?.privateRepo || 'NyaNavi-Private',
+          privateBranch: ghConfig?.privateBranch || 'main',
+          privatePath: ghConfig?.privatePath || 'private-sites.json',
+          vaultPassphrase: ghConfig?.vaultPassphrase || '',
+          vaultAllowedUsers: ghConfig?.vaultAllowedUsers || '',
+        };
+        saveGitHubConfig(autoAdminCfg);
+        setGhConfig(autoAdminCfg);
+        showToast(`欢迎回来站长 @${freshOAuth.login}，正在自动进入站长模式...`);
+        return () => {
+          cancelled = true;
+        };
+      }
+
+      // 若是站长账号且本机已有保存好的 PAT 配置，不降级为只读 member，直接继续下方 2c 站长校验
+      if (!(isOwner && ghConfig)) {
+        setAuthRole('member');
+        setAuthUser(freshOAuth.login);
+        setPrivateSites([]);
+        if (isOwner) {
           setAdminModalOpen(true);
-          showToast(`已登录 @${freshOAuth.login}，请输入站长给你的明文密钥`);
+          showToast(
+            `已识别站长账号 @${freshOAuth.login}，请输入 PAT 解锁管理（或在 Worker 配置 ADMIN_GITHUB_PAT 实现免输直进）`,
+          );
+        } else {
+          tryAutoUnlockForMember(freshOAuth.login, DEFAULT_GITHUB_CONFIG.owner).then((ok) => {
+            if (cancelled) return;
+            if (ok) {
+              showToast(`欢迎回来 @${freshOAuth.login}，已自动解锁私密库（只读）`);
+            } else {
+              setAdminModalOpen(true);
+              showToast(`已登录 @${freshOAuth.login}，请输入站长给你的明文密钥`);
+            }
+          });
         }
-      });
-      return () => {
-        cancelled = true;
-      };
+        return () => {
+          cancelled = true;
+        };
+      }
     }
 
     // 2b. 若没有站长 Token，检查已保存的好友 OAuth 会话

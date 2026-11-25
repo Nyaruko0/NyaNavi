@@ -15,6 +15,12 @@ export interface OAuthMemberSession {
   exp: number;
 }
 
+export interface OAuthCallbackPayload extends OAuthMemberSession {
+  /** 仅当 Cloudflare Worker 认证为站长本人且配置了 ADMIN_GITHUB_PAT 时一次性回传 */
+  adminToken?: string;
+  privateRepo?: string;
+}
+
 const STORAGE_OAUTH_MEMBER_KEY = 'nyanavi_oauth_member_v1';
 
 export function getOAuthLoginUrl(): string | null {
@@ -38,13 +44,13 @@ function decodeBase64UrlUtf8(b64url: string): string {
 /**
  * 读取并消费 URL hash 中的 OAuth 登录回传参数（读取后立即清除 hash 保持地址栏整洁）
  */
-export function consumeOAuthHashCallback(): OAuthMemberSession | null {
+export function consumeOAuthHashCallback(): OAuthCallbackPayload | null {
   const hash = window.location.hash || '';
   const match = hash.match(/nya_oauth=([A-Za-z0-9\-_]+)/);
   if (!match) return null;
 
   try {
-    const parsed = JSON.parse(decodeBase64UrlUtf8(match[1])) as OAuthMemberSession;
+    const parsed = JSON.parse(decodeBase64UrlUtf8(match[1])) as OAuthCallbackPayload;
     // 擦除 URL hash
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
     if (parsed && typeof parsed.login === 'string' && parsed.login.trim()) {
@@ -53,8 +59,13 @@ export function consumeOAuthHashCallback(): OAuthMemberSession | null {
         avatarUrl: parsed.avatarUrl || '',
         exp: typeof parsed.exp === 'number' ? parsed.exp : Date.now() + 7 * 24 * 60 * 60 * 1000,
       };
+      // 普通 OAuth 会话仅保存公开身份，不写入 adminToken
       saveOAuthMemberSession(session);
-      return session;
+      return {
+        ...session,
+        adminToken: typeof parsed.adminToken === 'string' ? parsed.adminToken.trim() : undefined,
+        privateRepo: typeof parsed.privateRepo === 'string' ? parsed.privateRepo.trim() : undefined,
+      };
     }
   } catch {
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
