@@ -35,6 +35,7 @@ import {
   DEFAULT_GITHUB_CONFIG,
   fetchCategoriesFromGitHub,
   fetchEncryptedVaultFromGitHub,
+  fetchPrivateAdminSettingsFromGitHub,
   fetchPrivateSitesFromGitHub,
   fetchSitesFromGitHub,
   getPrivateRepoConfig,
@@ -42,6 +43,7 @@ import {
   saveCategoriesToGitHub,
   saveEncryptedVaultToGitHub,
   saveGitHubConfig,
+  savePrivateAdminSettingsToGitHub,
   savePrivateSitesToGitHub,
   saveSitesToGitHub,
   verifyGitHubToken,
@@ -393,7 +395,7 @@ export default function App() {
 
       if (res.canPush) {
         setAuthRole('admin');
-        const [latest, latestCats, privList] = await Promise.all([
+        const [latest, latestCats, privList, remoteAdminSettings] = await Promise.all([
           fetchSitesFromGitHub(ghConfig).catch(() => null),
           fetchCategoriesFromGitHub(ghConfig).catch(() => null),
           (async () => {
@@ -411,6 +413,7 @@ export default function App() {
             }
             return [];
           })(),
+          fetchPrivateAdminSettingsFromGitHub(ghConfig).catch(() => null),
         ]);
         if (!cancelled && latest && latest.sites.length > 0) {
           setSites(hydrateSites(latest.sites));
@@ -420,6 +423,27 @@ export default function App() {
         }
         if (!cancelled) {
           setPrivateSites(privList);
+        }
+        // 自动从私有仓库恢复好友白名单与密钥配置（仅当本地为空时补齐，避免跨设备丢失）
+        if (!cancelled && remoteAdminSettings) {
+          const mergedPass =
+            ghConfig.vaultPassphrase?.trim() || remoteAdminSettings.vaultPassphrase?.trim() || '';
+          const mergedUsers =
+            ghConfig.vaultAllowedUsers?.trim() ||
+            remoteAdminSettings.vaultAllowedUsers?.trim() ||
+            '';
+          if (
+            mergedPass !== (ghConfig.vaultPassphrase || '') ||
+            mergedUsers !== (ghConfig.vaultAllowedUsers || '')
+          ) {
+            const hydratedCfg: GitHubConfig = {
+              ...ghConfig,
+              vaultPassphrase: mergedPass,
+              vaultAllowedUsers: mergedUsers,
+            };
+            saveGitHubConfig(hydratedCfg);
+            setGhConfig(hydratedCfg);
+          }
         }
       } else {
         setAuthRole('member');
@@ -1084,31 +1108,62 @@ export default function App() {
   const handleAdminAuthenticated = useCallback(
     async (config: GitHubConfig, username?: string) => {
       const prevPass = ghConfig?.vaultPassphrase?.trim() || '';
-      const nextPass = config.vaultPassphrase?.trim() || '';
       const prevUsers = ghConfig?.vaultAllowedUsers?.trim() || '';
-      const nextUsers = config.vaultAllowedUsers?.trim() || '';
-      saveGitHubConfig(config);
-      setGhConfig(config);
+      let effectivePass = config.vaultPassphrase?.trim() || '';
+      let effectiveUsers = config.vaultAllowedUsers?.trim() || '';
+
       setAuthRole('admin');
       setAuthUser(username);
-      const [latest, privList] = await Promise.all([
+
+      const [latest, privList, remoteAdminSettings] = await Promise.all([
         fetchSitesFromGitHub(config).catch(() => null),
         (async () => {
           if (getPrivateRepoConfig(config)) {
             const fromPrivRepo = await fetchPrivateSitesFromGitHub(config).catch(() => []);
             if (fromPrivRepo.length > 0) return fromPrivRepo;
           }
-          if (nextPass) {
+          if (effectivePass) {
             const enc = await fetchEncryptedVaultFromGitHub(config).catch(() => null);
             if (enc) {
-              return decryptVaultSites(enc, nextPass)
+              return decryptVaultSites(enc, effectivePass)
                 .then((d) => d.sites)
                 .catch(() => []);
             }
           }
           return [];
         })(),
+        fetchPrivateAdminSettingsFromGitHub(config).catch(() => null),
       ]);
+
+      // 若本次留空，先自动继承私有仓库已保存的站长白名单/密钥配置
+      if (!effectivePass && remoteAdminSettings?.vaultPassphrase?.trim()) {
+        effectivePass = remoteAdminSettings.vaultPassphrase.trim();
+      }
+      if (!effectiveUsers && remoteAdminSettings?.vaultAllowedUsers?.trim()) {
+        effectiveUsers = remoteAdminSettings.vaultAllowedUsers.trim();
+      }
+
+      // 防误覆盖保护：填了明文密钥但白名单为空时，尝试解密现有 public/vault.enc 无损恢复老白名单
+      let restoredWhitelistCount = 0;
+      if (effectivePass && !effectiveUsers) {
+        const existingEnc = await fetchEncryptedVaultFromGitHub(config).catch(() => null);
+        if (existingEnc) {
+          const decryptedOld = await decryptVaultSites(existingEnc, effectivePass).catch(() => null);
+          if (decryptedOld && decryptedOld.allowedUsers.length > 0) {
+            effectiveUsers = decryptedOld.allowedUsers.join(', ');
+            restoredWhitelistCount = decryptedOld.allowedUsers.length;
+          }
+        }
+      }
+
+      const finalConfig: GitHubConfig = {
+        ...config,
+        vaultPassphrase: effectivePass,
+        vaultAllowedUsers: effectiveUsers,
+      };
+      saveGitHubConfig(finalConfig);
+      setGhConfig(finalConfig);
+
       if (latest && latest.sites.length > 0) {
         setSites(hydrateSites(latest.sites));
       }
@@ -1117,18 +1172,30 @@ export default function App() {
         setPrivateSites(privList);
       }
 
+      // 将好友白名单与好友密钥安全备份到私有仓库 admin-settings.json（跨设备登录永不丢失）
+      if (getPrivateRepoConfig(finalConfig) && (effectivePass || effectiveUsers)) {
+        savePrivateAdminSettingsToGitHub(finalConfig, {
+          vaultPassphrase: effectivePass,
+          vaultAllowedUsers: effectiveUsers,
+        }).catch(() => {
+          // 私有配置备份失败不阻断主流程
+        });
+      }
+
       // 若配置了好友密钥且已有私密站点，保存站长配置时直接自动加密并发布 public/vault.enc
-      if (nextPass && finalPrivateList.length > 0) {
+      if (effectivePass && finalPrivateList.length > 0) {
         try {
           const encrypted = await encryptVaultSites(
             finalPrivateList,
-            nextPass,
-            nextUsers,
+            effectivePass,
+            effectiveUsers,
           );
-          const encRes = await saveEncryptedVaultToGitHub(config, encrypted);
+          const encRes = await saveEncryptedVaultToGitHub(finalConfig, encrypted);
           setHasUnsyncedPrivate(false);
           showToast(
-            `已解锁站长（@${username}）并自动发布加密库 vault.enc (${encRes.commitSha})，约 1 分钟后好友即可解锁`,
+            `站长配置已保存并同步 vault.enc (${encRes.commitSha})${
+              restoredWhitelistCount > 0 ? ` · 已自动恢复原有 ${restoredWhitelistCount} 位好友白名单` : ''
+            }`,
           );
           return;
         } catch (err) {
@@ -1143,8 +1210,8 @@ export default function App() {
       }
 
       if (
-        nextPass &&
-        (nextPass !== prevPass || nextUsers !== prevUsers) &&
+        effectivePass &&
+        (effectivePass !== prevPass || effectiveUsers !== prevUsers) &&
         finalPrivateList.length > 0
       ) {
         setHasUnsyncedPrivate(true);

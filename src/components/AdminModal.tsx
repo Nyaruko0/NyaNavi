@@ -73,6 +73,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [rememberKey, setRememberKey] = useState(true);
 
   const [loading, setLoading] = useState(false);
+  const [restoringWhitelist, setRestoringWhitelist] = useState(false);
+  const [infoMsg, setInfoMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const oauthLoginUrl = getOAuthLoginUrl();
@@ -92,8 +94,41 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     setToken(currentConfig?.token || '');
     setShowAdminTokenForm(authRole === 'admin' || isOwnerMember);
     setShowOwnerFriendUnlock(false);
+    setInfoMsg(null);
     setError(null);
   }, [open, currentConfig, authRole, isOwnerMember]);
+
+  // 站长一键从线上现有 public/vault.enc 恢复原有好友白名单（防止换设备/重登后白名单丢失）
+  const handleRestoreWhitelistFromVault = async () => {
+    const pass = vaultPassphrase.trim();
+    if (!pass) {
+      setError('请先在上方填入你之前设置的「好友访问明文密钥」，再点击恢复白名单');
+      return;
+    }
+    setRestoringWhitelist(true);
+    setError(null);
+    setInfoMsg(null);
+    try {
+      const res = await fetch(`./vault.enc?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error('线上尚未找到 vault.enc 文件');
+      }
+      const payload = (await res.json()) as EncryptedVaultPayload;
+      const decrypted = await decryptVaultSites(payload, pass);
+      if (decrypted.allowedUsers.length === 0) {
+        setInfoMsg('已成功解密 vault.enc，但其中未配置好友白名单');
+      } else {
+        setVaultAllowedUsers(decrypted.allowedUsers.join(', '));
+        setInfoMsg(
+          `已从 vault.enc 恢复 ${decrypted.allowedUsers.length} 位好友白名单，点下方“保存站长配置”将同步备份至私有仓库`,
+        );
+      }
+    } catch {
+      setError('解密失败：请确认上方填写的「好友访问明文密钥」与之前设置的一致');
+    } finally {
+      setRestoringWhitelist(false);
+    }
+  };
 
   if (!open) return null;
 
@@ -319,7 +354,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   在当前浏览器记住密钥（下次免输，退出登录自动清除）
                 </label>
 
-                {error && (
+                {infoMsg && (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+                  {infoMsg}
+                </div>
+              )}
+
+              {error && (
                   <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
                     {error}
                   </div>
@@ -546,10 +587,20 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   </div>
 
                   <div>
-                    <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                      <ShieldCheck className="h-3.5 w-3.5 text-sky-500" />
-                      允许的好友 GitHub 用户名白名单（逗号分隔）
-                    </label>
+                    <div className="mb-1 flex items-center justify-between gap-2">
+                      <label className="flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                        <ShieldCheck className="h-3.5 w-3.5 text-sky-500" />
+                        允许的好友 GitHub 用户名白名单（逗号分隔）
+                      </label>
+                      <button
+                        type="button"
+                        disabled={restoringWhitelist}
+                        onClick={handleRestoreWhitelistFromVault}
+                        className="shrink-0 text-[11px] font-medium text-sky-600 hover:underline disabled:opacity-50 dark:text-sky-400"
+                      >
+                        {restoringWhitelist ? '解密中...' : '从 vault.enc 恢复'}
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={vaultAllowedUsers}
@@ -558,7 +609,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                       className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none focus:border-sky-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
                     />
                     <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
-                      白名单会与网址一并 AES-256 加密，外人看不到。仅名单内好友登录且密钥正确才能只读获取。改完请点顶部“同步到 GitHub”。
+                      保存后白名单与密钥会自动备份到你的私有仓库 <code className="font-mono">admin-settings.json</code>（跨设备登录自动回填，绝不写入公开仓）；外人看到的 <code className="font-mono">vault.enc</code> 全程 AES-256 加密。
                     </p>
                   </div>
 
@@ -610,6 +661,12 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     </div>
                   )}
                 </>
+              )}
+
+              {infoMsg && (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+                  {infoMsg}
+                </div>
               )}
 
               {error && (

@@ -31,6 +31,12 @@ export interface GitHubSaveResult {
   commitUrl: string;
 }
 
+export interface PrivateAdminSettings {
+  vaultPassphrase?: string;
+  vaultAllowedUsers?: string;
+  updatedAt?: string;
+}
+
 export const DEFAULT_GITHUB_CONFIG: Omit<GitHubConfig, 'token'> = {
   owner: 'Nyaruko0',
   repo: 'NyaNavi',
@@ -333,6 +339,105 @@ export async function savePrivateSitesToGitHub(
     normalized,
     `chore(private): update private-sites.json (${normalized.length} sites)`,
   );
+}
+
+const PRIVATE_ADMIN_SETTINGS_PATH = 'admin-settings.json';
+
+/**
+ * 从独立私有仓库拉取站长配置（好友白名单与好友密钥），实现跨设备登录自动回填
+ */
+export async function fetchPrivateAdminSettingsFromGitHub(
+  config: GitHubConfig,
+): Promise<PrivateAdminSettings | null> {
+  const priv = getPrivateRepoConfig(config);
+  if (!priv) return null;
+  const res = await fetch(
+    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}?ref=${encodeURIComponent(priv.branch)}`,
+    {
+      headers: ghHeaders(priv.token),
+      cache: 'no-store',
+    },
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (!data?.content) return null;
+  try {
+    const parsed = JSON.parse(decodeBase64Utf8(data.content)) as PrivateAdminSettings;
+    return {
+      vaultPassphrase:
+        typeof parsed.vaultPassphrase === 'string' ? parsed.vaultPassphrase : '',
+      vaultAllowedUsers:
+        typeof parsed.vaultAllowedUsers === 'string' ? parsed.vaultAllowedUsers : '',
+      updatedAt: parsed.updatedAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 将好友白名单与好友密钥配置备份到独立私有仓库 admin-settings.json（绝不写入公开仓库）
+ */
+export async function savePrivateAdminSettingsToGitHub(
+  config: GitHubConfig,
+  settings: PrivateAdminSettings,
+): Promise<GitHubSaveResult> {
+  const priv = getPrivateRepoConfig(config);
+  if (!priv) {
+    throw new Error('未配置有效的独立私有仓库');
+  }
+  const check = await verifyPrivateRepo(config);
+  if (!check.ok) {
+    throw new Error(check.error || '私有仓库校验未通过');
+  }
+
+  let sha: string | undefined;
+  const getRes = await fetch(
+    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}?ref=${encodeURIComponent(priv.branch)}`,
+    {
+      headers: ghHeaders(priv.token),
+      cache: 'no-store',
+    },
+  );
+  if (getRes.ok) {
+    const existing = await getRes.json();
+    sha = existing?.sha;
+  }
+
+  const payload: PrivateAdminSettings = {
+    vaultPassphrase: settings.vaultPassphrase || '',
+    vaultAllowedUsers: settings.vaultAllowedUsers || '',
+    updatedAt: new Date().toISOString(),
+  };
+  const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
+
+  const putRes = await fetch(
+    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}`,
+    {
+      method: 'PUT',
+      headers: {
+        ...ghHeaders(priv.token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'chore(private): update admin-settings.json via NyaNavi Admin',
+        content,
+        branch: priv.branch,
+        ...(sha ? { sha } : {}),
+      }),
+    },
+  );
+
+  if (!putRes.ok) {
+    const errBody = await putRes.json().catch(() => ({}));
+    throw new Error(errBody?.message || `私有配置同步失败 (HTTP ${putRes.status})`);
+  }
+
+  const result = await putRes.json();
+  return {
+    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
+    commitUrl: result?.commit?.html_url || `https://github.com/${priv.owner}/${priv.repo}`,
+  };
 }
 
 const VAULT_ENC_PATH = 'public/vault.enc';
