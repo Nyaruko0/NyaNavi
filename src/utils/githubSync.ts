@@ -1,4 +1,9 @@
 import type { CategoryMeta, SiteItem } from '../types';
+import {
+  DEFAULT_PRIVATE_BRANCH,
+  DEFAULT_PRIVATE_PATH,
+  normalizePrivateSite,
+} from './siteRules';
 import type { EncryptedVaultPayload } from './vaultCrypto';
 
 export interface GitHubConfig {
@@ -7,17 +12,17 @@ export interface GitHubConfig {
   branch: string;
   path: string;
   token: string;
-  /** 可选：独立私有扩展库仓库名（例如 NyaNavi-Private），仅站长登录后加载 */
+  /** 独立私有扩展库仓库名（例如 NyaNavi-Private），仅站长读写，绝不混入公开仓 */
   privateRepo?: string;
   privateBranch?: string;
   privatePath?: string;
-  /** 可选：好友共享暗号，填写后同步时会额外加密生成 public/vault.enc 供朋友凭暗号只读解锁 */
+  /** 好友访问明文密钥，用于加密生成 public/vault.enc 供白名单好友只读解锁 */
   vaultPassphrase?: string;
-  /** 可选：允许解锁密文库的好友 GitHub 用户名白名单（逗号分隔，留空则不限制 GitHub 身份） */
+  /** 允许解锁密文库的好友 GitHub 用户名白名单（逗号分隔；留空时拒绝非站长账号解锁） */
   vaultAllowedUsers?: string;
 }
 
-export interface GitHubVerifyResult {
+interface GitHubVerifyResult {
   valid: boolean;
   canPush: boolean;
   role: 'admin' | 'member' | 'none';
@@ -26,12 +31,12 @@ export interface GitHubVerifyResult {
   error?: string;
 }
 
-export interface GitHubSaveResult {
+interface GitHubSaveResult {
   commitSha: string;
   commitUrl: string;
 }
 
-export interface PrivateAdminSettings {
+interface PrivateAdminSettings {
   vaultPassphrase?: string;
   vaultAllowedUsers?: string;
   updatedAt?: string;
@@ -45,6 +50,9 @@ export const DEFAULT_GITHUB_CONFIG: Omit<GitHubConfig, 'token'> = {
 };
 
 const STORAGE_GH_KEY = 'nyanavi_gh_admin_v1';
+const PRIVATE_ADMIN_SETTINGS_PATH = 'admin-settings.json';
+const VAULT_ENC_PATH = 'public/vault.enc';
+const CATEGORIES_PATH = 'public/categories.json';
 
 export function loadGitHubConfig(): GitHubConfig | null {
   try {
@@ -59,8 +67,8 @@ export function loadGitHubConfig(): GitHubConfig | null {
         path: parsed.path || DEFAULT_GITHUB_CONFIG.path,
         token: parsed.token.trim(),
         privateRepo: typeof parsed.privateRepo === 'string' ? parsed.privateRepo.trim() : '',
-        privateBranch: parsed.privateBranch || 'main',
-        privatePath: parsed.privatePath || 'private-sites.json',
+        privateBranch: parsed.privateBranch || DEFAULT_PRIVATE_BRANCH,
+        privatePath: parsed.privatePath || DEFAULT_PRIVATE_PATH,
         vaultPassphrase:
           typeof parsed.vaultPassphrase === 'string' ? parsed.vaultPassphrase : '',
         vaultAllowedUsers:
@@ -68,7 +76,7 @@ export function loadGitHubConfig(): GitHubConfig | null {
       };
     }
   } catch {
-    // ignore
+    // ignore malformed storage
   }
   return null;
 }
@@ -109,37 +117,86 @@ function ghHeaders(token: string): Record<string, string> {
   };
 }
 
-/**
- * 验证好友的 GitHub Token 并返回其真实 GitHub 用户名（不需要任何仓库写权限）
- */
-export async function fetchGitHubUsername(token: string): Promise<string> {
-  const clean = token.trim();
-  if (!clean) {
-    throw new Error('请输入你的 GitHub Token 完成登录校验');
+/** 通用 GitHub Contents API JSON 读取 */
+async function fetchGitHubJsonFile<T>(
+  owner: string,
+  repo: string,
+  branch: string,
+  filePath: string,
+  token: string,
+): Promise<{ data: T; sha: string } | null> {
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${encodeURIComponent(branch)}`,
+    {
+      headers: ghHeaders(token),
+      cache: 'no-store',
+    },
+  );
+  if (!res.ok) return null;
+  const body = await res.json();
+  if (!body?.content) return null;
+  return {
+    data: JSON.parse(decodeBase64Utf8(body.content)) as T,
+    sha: String(body.sha || ''),
+  };
+}
+
+/** 通用 GitHub Contents API JSON 写入（自动获取最新 sha 防冲突） */
+async function saveGitHubJsonFile(
+  owner: string,
+  repo: string,
+  branch: string,
+  filePath: string,
+  token: string,
+  payload: unknown,
+  message: string,
+  errorLabel: string,
+): Promise<GitHubSaveResult> {
+  let sha: string | undefined;
+  const getRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${encodeURIComponent(branch)}`,
+    {
+      headers: ghHeaders(token),
+      cache: 'no-store',
+    },
+  );
+  if (getRes.ok) {
+    const existing = await getRes.json();
+    sha = existing?.sha;
   }
-  const res = await fetch('https://api.github.com/user', {
-    headers: ghHeaders(clean),
-    cache: 'no-store',
-  });
-  if (res.status === 401) {
-    throw new Error('GitHub Token 无效或已过期');
+
+  const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
+  const putRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`,
+    {
+      method: 'PUT',
+      headers: {
+        ...ghHeaders(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+        content,
+        branch,
+        ...(sha ? { sha } : {}),
+      }),
+    },
+  );
+
+  if (!putRes.ok) {
+    const errBody = await putRes.json().catch(() => ({}));
+    throw new Error(errBody?.message || `${errorLabel} (HTTP ${putRes.status})`);
   }
-  if (!res.ok) {
-    throw new Error(`GitHub 身份校验失败 (HTTP ${res.status})`);
-  }
-  const data = await res.json();
-  if (!data?.login) {
-    throw new Error('未能读取到 GitHub 用户名');
-  }
-  return String(data.login);
+
+  const result = await putRes.json();
+  return {
+    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
+    commitUrl: result?.commit?.html_url || `https://github.com/${owner}/${repo}`,
+  };
 }
 
 /**
- * 统一 GitHub 身份认证：
- * 1. 先校验 Token 本身是否有效并获取真实 @username（普通零权限 Token 也能通过）；
- * 2. 再检查该 Token 对目标主仓库是否拥有写权限（push/admin）：
- *    - 有写权限 -> role: 'admin'（站长模式，可增删改与同步）
- *    - 无写权限 -> role: 'member'（普通用户/好友只读模式，仅可输入密钥校验解锁私密内容）
+ * 统一 GitHub 身份认证：有主仓 push/admin 权限为站长，否则为只读好友。
  */
 export async function verifyGitHubToken(config: GitHubConfig): Promise<GitHubVerifyResult> {
   try {
@@ -165,15 +222,9 @@ export async function verifyGitHubToken(config: GitHubConfig): Promise<GitHubVer
     const avatarUrl: string | undefined = userData?.avatar_url;
 
     if (!username) {
-      return {
-        valid: false,
-        canPush: false,
-        role: 'none',
-        error: '无法读取 GitHub 用户名',
-      };
+      return { valid: false, canPush: false, role: 'none', error: '无法读取 GitHub 用户名' };
     }
 
-    // 检查是否对主仓库拥有写权限（普通好友的零权限 Token 访问这里会返回无 push 或 404，不影响登录）
     let canPush = false;
     try {
       const repoRes = await fetch(
@@ -208,47 +259,53 @@ export async function verifyGitHubToken(config: GitHubConfig): Promise<GitHubVer
   }
 }
 
-/**
- * 从 GitHub 仓库直接拉取最新 public/sites.json（绕过 Pages 缓存）
- */
 export async function fetchSitesFromGitHub(
   config: GitHubConfig,
 ): Promise<{ sites: SiteItem[]; sha: string } | null> {
-  const res = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${config.path}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
+  const res = await fetchGitHubJsonFile<SiteItem[]>(
+    config.owner,
+    config.repo,
+    config.branch,
+    config.path,
+    config.token,
   );
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (!data?.content) return null;
-  const text = decodeBase64Utf8(data.content);
-  const parsed = JSON.parse(text);
-  if (!Array.isArray(parsed)) return null;
-  return { sites: parsed as SiteItem[], sha: data.sha };
+  if (!res || !Array.isArray(res.data)) return null;
+  return { sites: res.data, sha: res.sha };
 }
 
+export async function saveSitesToGitHub(
+  config: GitHubConfig,
+  sites: SiteItem[],
+  commitMessage?: string,
+): Promise<GitHubSaveResult> {
+  return saveGitHubJsonFile(
+    config.owner,
+    config.repo,
+    config.branch,
+    config.path,
+    config.token,
+    sites,
+    commitMessage || `chore(sites): update sites.json (${sites.length} sites) via NyaNavi Admin`,
+    '提交失败',
+  );
+}
+
+/** 构造私有扩展仓库配置（硬性拦截与主仓同名的情况） */
 export function getPrivateRepoConfig(config: GitHubConfig): GitHubConfig | null {
-  const privateRepo = config.privateRepo?.trim();
-  if (!privateRepo) return null;
-  // 防呆保护：禁止把私密库指向公开主仓库本身
-  if (privateRepo.toLowerCase() === config.repo.trim().toLowerCase()) {
+  const privRepo = config.privateRepo?.trim();
+  if (!privRepo || privRepo.toLowerCase() === config.repo.toLowerCase()) {
     return null;
   }
   return {
     owner: config.owner,
-    repo: privateRepo,
-    branch: config.privateBranch?.trim() || 'main',
-    path: config.privatePath?.trim() || 'private-sites.json',
+    repo: privRepo,
+    branch: config.privateBranch || DEFAULT_PRIVATE_BRANCH,
+    path: config.privatePath || DEFAULT_PRIVATE_PATH,
     token: config.token,
   };
 }
 
-/**
- * 校验私有扩展仓库是否真实存在、具备写权限且确实为 Private 私有仓库
- */
+/** 校验目标私密仓库确为 GitHub Private 仓库且具备写权限 */
 export async function verifyPrivateRepo(
   config: GitHubConfig,
 ): Promise<{ ok: boolean; isPrivate: boolean; error?: string }> {
@@ -279,8 +336,7 @@ export async function verifyPrivateRepo(
         error: `安全拦截：${priv.owner}/${priv.repo} 是公开仓库！请务必将其设为 Private 私有仓库`,
       };
     }
-    const canPush = Boolean(data?.permissions?.push || data?.permissions?.admin);
-    if (!canPush) {
+    if (!data?.permissions?.push && !data?.permissions?.admin) {
       return {
         ok: false,
         isPrivate: true,
@@ -297,43 +353,22 @@ export async function verifyPrivateRepo(
   }
 }
 
-/**
- * 从独立私有仓库拉取 private-sites.json（自动打上 privateOnly: true 标记）
- */
-export async function fetchPrivateSitesFromGitHub(
-  config: GitHubConfig,
-): Promise<SiteItem[]> {
+export async function fetchPrivateSitesFromGitHub(config: GitHubConfig): Promise<SiteItem[]> {
   const priv = getPrivateRepoConfig(config);
   if (!priv) return [];
   const res = await fetchSitesFromGitHub(priv);
-  if (!res) return [];
-  return res.sites.map((s) => ({
-    ...s,
-    nsfw: true,
-    privateOnly: true,
-  }));
+  return res ? res.sites.map(normalizePrivateSite) : [];
 }
 
-/**
- * 将私密站点写入独立私有仓库 private-sites.json
- */
 export async function savePrivateSitesToGitHub(
   config: GitHubConfig,
   privateSites: SiteItem[],
 ): Promise<GitHubSaveResult> {
   const priv = getPrivateRepoConfig(config);
-  if (!priv) {
-    throw new Error('未配置有效的独立私有仓库');
-  }
+  if (!priv) throw new Error('未配置有效的独立私有仓库');
   const check = await verifyPrivateRepo(config);
-  if (!check.ok) {
-    throw new Error(check.error || '私有仓库校验未通过');
-  }
-  const normalized = privateSites.map((s) => ({
-    ...s,
-    nsfw: true,
-    privateOnly: true,
-  }));
+  if (!check.ok) throw new Error(check.error || '私有仓库校验未通过');
+  const normalized = privateSites.map(normalizePrivateSite);
   return saveSitesToGitHub(
     priv,
     normalized,
@@ -341,301 +376,110 @@ export async function savePrivateSitesToGitHub(
   );
 }
 
-const PRIVATE_ADMIN_SETTINGS_PATH = 'admin-settings.json';
-
-/**
- * 从独立私有仓库拉取站长配置（好友白名单与好友密钥），实现跨设备登录自动回填
- */
 export async function fetchPrivateAdminSettingsFromGitHub(
   config: GitHubConfig,
 ): Promise<PrivateAdminSettings | null> {
   const priv = getPrivateRepoConfig(config);
   if (!priv) return null;
-  const res = await fetch(
-    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}?ref=${encodeURIComponent(priv.branch)}`,
-    {
-      headers: ghHeaders(priv.token),
-      cache: 'no-store',
-    },
-  );
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (!data?.content) return null;
   try {
-    const parsed = JSON.parse(decodeBase64Utf8(data.content)) as PrivateAdminSettings;
+    const res = await fetchGitHubJsonFile<PrivateAdminSettings>(
+      priv.owner,
+      priv.repo,
+      priv.branch,
+      PRIVATE_ADMIN_SETTINGS_PATH,
+      priv.token,
+    );
+    if (!res?.data) return null;
     return {
       vaultPassphrase:
-        typeof parsed.vaultPassphrase === 'string' ? parsed.vaultPassphrase : '',
+        typeof res.data.vaultPassphrase === 'string' ? res.data.vaultPassphrase : '',
       vaultAllowedUsers:
-        typeof parsed.vaultAllowedUsers === 'string' ? parsed.vaultAllowedUsers : '',
-      updatedAt: parsed.updatedAt,
+        typeof res.data.vaultAllowedUsers === 'string' ? res.data.vaultAllowedUsers : '',
+      updatedAt: res.data.updatedAt,
     };
   } catch {
     return null;
   }
 }
 
-/**
- * 将好友白名单与好友密钥配置备份到独立私有仓库 admin-settings.json（绝不写入公开仓库）
- */
 export async function savePrivateAdminSettingsToGitHub(
   config: GitHubConfig,
   settings: PrivateAdminSettings,
 ): Promise<GitHubSaveResult> {
   const priv = getPrivateRepoConfig(config);
-  if (!priv) {
-    throw new Error('未配置有效的独立私有仓库');
-  }
+  if (!priv) throw new Error('未配置有效的独立私有仓库');
   const check = await verifyPrivateRepo(config);
-  if (!check.ok) {
-    throw new Error(check.error || '私有仓库校验未通过');
-  }
-
-  let sha: string | undefined;
-  const getRes = await fetch(
-    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}?ref=${encodeURIComponent(priv.branch)}`,
+  if (!check.ok) throw new Error(check.error || '私有仓库校验未通过');
+  return saveGitHubJsonFile(
+    priv.owner,
+    priv.repo,
+    priv.branch,
+    PRIVATE_ADMIN_SETTINGS_PATH,
+    priv.token,
     {
-      headers: ghHeaders(priv.token),
-      cache: 'no-store',
+      vaultPassphrase: settings.vaultPassphrase || '',
+      vaultAllowedUsers: settings.vaultAllowedUsers || '',
+      updatedAt: new Date().toISOString(),
     },
+    'chore(private): update admin-settings.json via NyaNavi Admin',
+    '私有配置同步失败',
   );
-  if (getRes.ok) {
-    const existing = await getRes.json();
-    sha = existing?.sha;
-  }
-
-  const payload: PrivateAdminSettings = {
-    vaultPassphrase: settings.vaultPassphrase || '',
-    vaultAllowedUsers: settings.vaultAllowedUsers || '',
-    updatedAt: new Date().toISOString(),
-  };
-  const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
-
-  const putRes = await fetch(
-    `https://api.github.com/repos/${priv.owner}/${priv.repo}/contents/${PRIVATE_ADMIN_SETTINGS_PATH}`,
-    {
-      method: 'PUT',
-      headers: {
-        ...ghHeaders(priv.token),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: 'chore(private): update admin-settings.json via NyaNavi Admin',
-        content,
-        branch: priv.branch,
-        ...(sha ? { sha } : {}),
-      }),
-    },
-  );
-
-  if (!putRes.ok) {
-    const errBody = await putRes.json().catch(() => ({}));
-    throw new Error(errBody?.message || `私有配置同步失败 (HTTP ${putRes.status})`);
-  }
-
-  const result = await putRes.json();
-  return {
-    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
-    commitUrl: result?.commit?.html_url || `https://github.com/${priv.owner}/${priv.repo}`,
-  };
 }
 
-const VAULT_ENC_PATH = 'public/vault.enc';
-
-/**
- * 从主仓库直接拉取加密密文 public/vault.enc（绕过 Pages CDN 缓存）
- */
 export async function fetchEncryptedVaultFromGitHub(
   config: GitHubConfig,
 ): Promise<EncryptedVaultPayload | null> {
-  const res = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
+  const res = await fetchGitHubJsonFile<EncryptedVaultPayload>(
+    config.owner,
+    config.repo,
+    config.branch,
+    VAULT_ENC_PATH,
+    config.token,
   );
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (!data?.content) return null;
-  const parsed = JSON.parse(decodeBase64Utf8(data.content));
-  return parsed as EncryptedVaultPayload;
+  return res?.data ?? null;
 }
 
-/**
- * 将 AES-256-GCM 加密后的密文写入主仓库 public/vault.enc（文件内不含任何明文网址）
- */
 export async function saveEncryptedVaultToGitHub(
   config: GitHubConfig,
   payload: EncryptedVaultPayload,
 ): Promise<GitHubSaveResult> {
-  let sha: string | undefined;
-  const getRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
+  return saveGitHubJsonFile(
+    config.owner,
+    config.repo,
+    config.branch,
+    VAULT_ENC_PATH,
+    config.token,
+    payload,
+    'chore(vault): update encrypted vault.enc',
+    '密文同步失败',
   );
-  if (getRes.ok) {
-    const existing = await getRes.json();
-    sha = existing?.sha;
-  }
-
-  const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
-  const putRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${VAULT_ENC_PATH}`,
-    {
-      method: 'PUT',
-      headers: {
-        ...ghHeaders(config.token),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: 'chore(vault): update encrypted vault.enc',
-        content,
-        branch: config.branch,
-        ...(sha ? { sha } : {}),
-      }),
-    },
-  );
-
-  if (!putRes.ok) {
-    const errBody = await putRes.json().catch(() => ({}));
-    throw new Error(errBody?.message || `密文同步失败 (HTTP ${putRes.status})`);
-  }
-
-  const result = await putRes.json();
-  return {
-    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
-    commitUrl: result?.commit?.html_url || `https://github.com/${config.owner}/${config.repo}`,
-  };
 }
 
-/**
- * 将最新站点列表提交至 GitHub 仓库 public/sites.json，自动触发 Pages 重新部署
- */
-export async function saveSitesToGitHub(
-  config: GitHubConfig,
-  sites: SiteItem[],
-  commitMessage?: string,
-): Promise<GitHubSaveResult> {
-  // 先拿最新 sha（若文件尚未存在则不传 sha）
-  let sha: string | undefined;
-  const getRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${config.path}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
-  );
-  if (getRes.ok) {
-    const existing = await getRes.json();
-    sha = existing?.sha;
-  }
-
-  const content = encodeBase64Utf8(JSON.stringify(sites, null, 2) + '\n');
-  const message =
-    commitMessage || `chore(sites): update sites.json (${sites.length} sites) via NyaNavi Admin`;
-
-  const putRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${config.path}`,
-    {
-      method: 'PUT',
-      headers: {
-        ...ghHeaders(config.token),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message,
-        content,
-        branch: config.branch,
-        ...(sha ? { sha } : {}),
-      }),
-    },
-  );
-
-  if (!putRes.ok) {
-    const errBody = await putRes.json().catch(() => ({}));
-    throw new Error(errBody?.message || `提交失败 (HTTP ${putRes.status})`);
-  }
-
-  const result = await putRes.json();
-  return {
-    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
-    commitUrl: result?.commit?.html_url || `https://github.com/${config.owner}/${config.repo}`,
-  };
-}
-
-const CATEGORIES_PATH = 'public/categories.json';
-
-/**
- * 从 GitHub 仓库拉取最新 public/categories.json
- */
 export async function fetchCategoriesFromGitHub(
   config: GitHubConfig,
 ): Promise<CategoryMeta[] | null> {
-  const res = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
+  const res = await fetchGitHubJsonFile<CategoryMeta[]>(
+    config.owner,
+    config.repo,
+    config.branch,
+    CATEGORIES_PATH,
+    config.token,
   );
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (!data?.content) return null;
-  const parsed = JSON.parse(decodeBase64Utf8(data.content));
-  if (!Array.isArray(parsed)) return null;
-  return parsed as CategoryMeta[];
+  return res && Array.isArray(res.data) ? res.data : null;
 }
 
-/**
- * 将自定义分类目录提交至 GitHub 仓库 public/categories.json
- */
 export async function saveCategoriesToGitHub(
   config: GitHubConfig,
   categories: CategoryMeta[],
 ): Promise<GitHubSaveResult> {
-  let sha: string | undefined;
-  const getRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}?ref=${encodeURIComponent(config.branch)}`,
-    {
-      headers: ghHeaders(config.token),
-      cache: 'no-store',
-    },
+  return saveGitHubJsonFile(
+    config.owner,
+    config.repo,
+    config.branch,
+    CATEGORIES_PATH,
+    config.token,
+    categories,
+    `chore(categories): update categories.json (${categories.length} categories) via NyaNavi Admin`,
+    '分类同步失败',
   );
-  if (getRes.ok) {
-    const existing = await getRes.json();
-    sha = existing?.sha;
-  }
-
-  const content = encodeBase64Utf8(JSON.stringify(categories, null, 2) + '\n');
-  const putRes = await fetch(
-    `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${CATEGORIES_PATH}`,
-    {
-      method: 'PUT',
-      headers: {
-        ...ghHeaders(config.token),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: `chore(categories): update categories.json (${categories.length} categories) via NyaNavi Admin`,
-        content,
-        branch: config.branch,
-        ...(sha ? { sha } : {}),
-      }),
-    },
-  );
-
-  if (!putRes.ok) {
-    const errBody = await putRes.json().catch(() => ({}));
-    throw new Error(errBody?.message || `分类同步失败 (HTTP ${putRes.status})`);
-  }
-
-  const result = await putRes.json();
-  return {
-    commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
-    commitUrl: result?.commit?.html_url || `https://github.com/${config.owner}/${config.repo}`,
-  };
 }

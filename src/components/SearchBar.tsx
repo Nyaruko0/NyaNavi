@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, CornerDownLeft, ExternalLink, Search, Sparkles, X } from 'lucide-react';
 import type { AppMode, SiteItem } from '../types';
 import { buildSearchUrl, cleanSearchQuery } from '../utils/cleanQuery';
+import { isHighRiskSearch } from '../utils/siteRules';
 
-export interface SearchEngineItem {
+interface SearchEngineItem {
   id: string;
   label: string;
   url: string;
@@ -12,7 +13,7 @@ export interface SearchEngineItem {
   note?: string;
 }
 
-export interface SearchGroup {
+interface SearchGroup {
   id: string;
   label: string;
   modes: AppMode[];
@@ -186,7 +187,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const cleanedInfo = useMemo(() => cleanSearchQuery(query), [query]);
   const effectiveQuery = useRaw ? cleanedInfo.raw : cleanedInfo.cleaned;
 
-  // 站内模式且输入了关键词时，附带展示当前模式可直搜的高频源站胶囊
   const quickSiteEngines = useMemo(() => {
     return [...searchableSites]
       .filter((s) => Boolean(s.searchUrl))
@@ -234,15 +234,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   const placeholderText = isSiteFilter
     ? mode === 'work'
-      ? '站内模糊搜工具/文档（支持拼音首字母，如 tc 图床、fy 翻译）...'
+      ? '搜索工具或文档，支持拼音首字母'
       : mode === 'moyu'
-        ? '站内模糊搜表站（如 dm 动漫、mh 漫画、bgm），或切上方标签外搜...'
-        : '站内模糊搜站点，或粘贴资源标题 / RJ号 一键清洗直搜...'
-    : activeEngine?.placeholder || '输入关键词按回车搜索...';
+        ? '搜索站点，或切换上方标签外搜'
+        : '搜索站点，或粘贴标题 / RJ 号直搜'
+    : activeEngine?.placeholder || '输入关键词回车搜索';
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      {/* 第一层：acgbox.link 风格分组 Tab */}
       <div className="no-scrollbar mb-1.5 flex items-center gap-1 overflow-x-auto px-1">
         {visibleGroups.map((group) => {
           const active = group.id === activeGroup.id;
@@ -251,9 +250,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               key={group.id}
               type="button"
               onClick={() => setGroupId(group.id)}
-              className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+              className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-medium transition-colors ${
                 active
-                  ? 'bg-[var(--nya-accent)] text-white shadow-2xs'
+                  ? 'bg-[var(--nya-accent)] text-white'
                   : 'text-slate-500 hover:bg-slate-200/60 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200'
               }`}
             >
@@ -263,10 +262,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         })}
       </div>
 
-      {/* 主搜索输入条 */}
       <form
         onSubmit={handleExternalSubmit}
-        className="group relative rounded-2xl border border-slate-200/80 bg-white/95 p-1 shadow-[0_1px_3px_rgba(15,23,42,0.04)] backdrop-blur-md transition-all focus-within:border-[var(--nya-accent-border)] focus-within:bg-white focus-within:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] dark:border-slate-800/90 dark:bg-[#141929]/95 dark:focus-within:bg-[#161c2e]"
+        className="group relative rounded-2xl border border-slate-200 bg-white p-1 transition-colors focus-within:border-[var(--nya-accent-border)] dark:border-slate-800 dark:bg-[#141929]"
       >
         <div className="flex items-center gap-2 px-3 py-1">
           <Search className="h-4.5 w-4.5 shrink-0 text-slate-400 transition-colors group-focus-within:text-[var(--nya-accent)]" />
@@ -294,10 +292,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             <button
               type="submit"
               disabled={!query.trim()}
-              style={{
-                background: 'linear-gradient(135deg, var(--nya-accent), var(--nya-accent-2))',
-              }}
-              className="inline-flex shrink-0 items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-semibold text-white shadow-2xs transition hover:opacity-95 disabled:opacity-40"
+              className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-[var(--nya-accent)] px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-90 disabled:opacity-40"
               title={`在 ${activeEngine.label} 中搜索`}
             >
               <span>搜{activeEngine.label.slice(0, 4)}</span>
@@ -306,12 +301,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           )}
         </div>
 
-        {/* 第二层 A：非站内分组时，展示该组子引擎单选条（复刻 acgbox.link 胶囊） */}
         {!isSiteFilter && activeGroup.engines.length > 0 && (
           <div className="no-scrollbar mt-1 flex items-center gap-1.5 overflow-x-auto border-t border-slate-100 px-2.5 pt-2 pb-1 dark:border-slate-800/80">
             {activeGroup.engines.map((eng) => {
               const selected = activeEngine?.id === eng.id;
-              const isRisk = eng.risk === 'cost' || eng.risk === 'cooldown';
+              const isRisk = isHighRiskSearch(eng.risk);
               return (
                 <button
                   key={eng.id}
@@ -336,7 +330,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </div>
         )}
 
-        {/* 第二层 B：站内分组且输入了关键词时，展示标题清洗 + 快捷直搜胶囊 */}
         {isSiteFilter && query.trim() && (
           <div className="mt-1 border-t border-slate-100 px-3 pt-2 pb-1.5 dark:border-slate-800/80">
             <div className="mb-1.5 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
@@ -352,7 +345,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 <button
                   type="button"
                   onClick={() => setUseRaw((v) => !v)}
-                  className="text-[11px] text-sky-600 underline-offset-2 hover:underline dark:text-sky-400"
+                  className="text-xs text-sky-600 underline-offset-2 hover:underline dark:text-sky-400"
                 >
                   {useRaw ? '使用智能清洗词' : '已自动去标签/容量 · 改用原词'}
                 </button>
@@ -362,7 +355,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 <button
                   type="button"
                   onClick={() => onChange(cleanedInfo.codeMatch!)}
-                  className="rounded-full bg-pink-50 px-2 py-0.5 text-[11px] font-semibold text-pink-600 hover:bg-pink-100 dark:bg-pink-500/20 dark:text-pink-300"
+                  className="rounded-full bg-pink-50 px-2 py-0.5 text-xs font-semibold text-pink-600 hover:bg-pink-100 dark:bg-pink-500/20 dark:text-pink-300"
                 >
                   仅搜编号 {cleanedInfo.codeMatch}
                 </button>
@@ -372,7 +365,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             {quickSiteEngines.length > 0 && (
               <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-0.5">
                 {quickSiteEngines.map((site) => {
-                  const isRisk = site.searchRisk === 'cost' || site.searchRisk === 'cooldown';
+                  const isRisk = isHighRiskSearch(site.searchRisk);
                   const targetHref = buildSearchUrl(site.searchUrl!, effectiveQuery);
 
                   return (
@@ -389,16 +382,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                         onNavigate(targetHref, site, effectiveQuery);
                       }}
                       title={site.searchNote || `在 ${site.name} 中搜索「${effectiveQuery}」`}
-                      className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium transition hover:-translate-y-0.5 ${
+                      className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors ${
                         isRisk
                           ? 'border-amber-200 bg-amber-50/80 text-amber-700 hover:bg-amber-100 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300'
-                          : 'border-slate-200 bg-slate-50/90 text-slate-700 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200'
+                          : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
                       }`}
                     >
                       {isRisk && <AlertTriangle className="h-3 w-3 shrink-0" />}
                       <span>{site.shortName || site.name}</span>
-                      {site.searchRisk === 'cost' && <span className="text-[10px] opacity-80">扣币</span>}
-                      {site.searchRisk === 'cooldown' && <span className="text-[10px] opacity-80">10s</span>}
+                      {site.searchRisk === 'cost' && <span className="text-xs opacity-80">扣币</span>}
+                      {site.searchRisk === 'cooldown' && <span className="text-xs opacity-80">10s</span>}
                       <ExternalLink className="h-3 w-3 opacity-60" />
                     </a>
                   );

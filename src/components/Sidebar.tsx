@@ -1,47 +1,22 @@
 import React from 'react';
 import {
-  AppWindow,
-  BookMarked,
-  BookOpen,
-  Bot,
   Briefcase,
-  Clapperboard,
   Compass,
   Download,
-  DownloadCloud,
-  FileText,
-  Film,
-  Flame,
-  Folder,
-  FolderArchive,
   FolderPlus,
-  Gamepad2,
-  Globe,
-  Headphones,
-  Image,
-  ImageUp,
   KeyRound,
-  Languages,
-  Library,
   Lock,
-  Mail,
   Plus,
-  Puzzle,
   RotateCcw,
-  ScanSearch,
-  Send,
-  Share2,
   ShieldCheck,
   Sparkles,
   Star,
-  Terminal,
-  Tv,
   Upload,
-  Users,
-  Wrench,
   X,
 } from 'lucide-react';
+import { CATEGORY_ICON_MAP } from '../config/categoryIcons';
 import type { AppMode, CategoryId, CategoryMeta } from '../types';
+import { getCategoryDisplayName, isCategoryVisibleInMode } from '../utils/siteRules';
 
 interface SidebarProps {
   categories: CategoryMeta[];
@@ -66,39 +41,6 @@ interface SidebarProps {
   onImport: (file: File) => void;
   onReset: () => void;
 }
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  Lock,
-  Flame,
-  Folder,
-  Gamepad2,
-  FolderArchive,
-  Users,
-  BookOpen,
-  Film,
-  Headphones,
-  Library,
-  Send,
-  Tv,
-  DownloadCloud,
-  BookMarked,
-  FileText,
-  Image,
-  Clapperboard,
-  Sparkles,
-  Terminal,
-  Bot,
-  ScanSearch,
-  Wrench,
-  Languages,
-  ImageUp,
-  Mail,
-  Share2,
-  Globe,
-  Puzzle,
-  AppWindow,
-  Briefcase,
-};
 
 export const Sidebar: React.FC<SidebarProps> = ({
   categories,
@@ -126,10 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const visibleCategories = categories.filter((c) => {
-    if (mode === 'work' && !c.workAllowed) return false;
-    if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
-    if (mode === 'nsfw' && c.workAllowed) return false;
-    if (c.privateOnly && !canViewPrivate) return false;
+    if (!isCategoryVisibleInMode(c, mode, canViewPrivate)) return false;
     // 普通访客隐藏 0 站点的空目录；站长保留自定义新目录方便继续往里加站
     if (!canManage && !c.privateOnly && (counts[c.id as CategoryId] ?? 0) === 0) return false;
     return true;
@@ -142,45 +81,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      {/* 顶部固定：品牌头部 */}
       <div className="shrink-0">
-        {/* 品牌头部 */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4">
           <div className="flex items-center gap-3">
             {mode === 'work' ? (
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-600">
                 <Briefcase className="h-5 w-5 text-white" />
               </div>
             ) : (
               <img
                 src={brandIconSrc}
                 alt="NyaNavi"
-                className="h-10 w-10 rounded-2xl object-cover shadow-sm ring-1 ring-black/5 dark:ring-white/10"
+                className="h-10 w-10 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10"
               />
             )}
             <div>
-              <div className="flex items-center gap-1.5">
-                <h1 className="text-lg font-bold tracking-tight text-slate-800 dark:text-white">
-                  {mode === 'work' ? 'NyaDesk' : 'NyaNavi'}
-                </h1>
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                    mode === 'work'
-                      ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                      : mode === 'moyu'
-                        ? 'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-300'
-                        : 'bg-pink-100 text-pink-600 dark:bg-pink-500/20 dark:text-pink-300'
-                  }`}
-                >
-                  {mode === 'work' ? 'WORK' : mode === 'moyu' ? '摸鱼' : 'ACG'}
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500">
+              <h1 className="text-lg font-bold tracking-tight text-slate-800 dark:text-white">
+                {mode === 'work' ? 'NyaDesk' : 'NyaNavi'}
+              </h1>
+              <p className="text-xs text-slate-400 dark:text-slate-500">
                 {mode === 'work'
                   ? '效率与文档工作台'
                   : mode === 'moyu'
-                    ? '全年龄表站摸鱼导航'
-                    : '二次元精选资源导航'}
+                    ? '全年龄二次元导航'
+                    : '二次元资源导航'}
               </p>
             </div>
           </div>
@@ -195,9 +119,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
 
-        {/* 快捷总览 */}
         <div className="px-3 py-1">
-          <div className="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          <div className="mb-1 px-2.5 text-xs font-semibold text-slate-400 dark:text-slate-500">
             总览
           </div>
           <button
@@ -238,10 +161,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* 分类目录（独立可滚动） */}
       <div className="mt-3 flex-1 overflow-y-auto px-3 pb-3">
           <div className="mb-1.5 flex items-center justify-between px-2.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">
               分类目录
             </span>
             {canManage && (
@@ -252,7 +174,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onCloseMobile();
                 }}
                 title="新增、重命名或删除分类目录"
-                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-slate-500 transition hover:bg-slate-100 hover:text-[var(--nya-accent)] dark:text-slate-400 dark:hover:bg-slate-800"
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium text-slate-500 transition hover:bg-slate-100 hover:text-[var(--nya-accent)] dark:text-slate-400 dark:hover:bg-slate-800"
               >
                 <FolderPlus className="h-3.5 w-3.5" />
                 管理
@@ -261,9 +183,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <nav className="space-y-1">
             {visibleCategories.map((cat) => {
-              const Icon = ICON_MAP[cat.icon] ?? Sparkles;
+              const Icon = CATEGORY_ICON_MAP[cat.icon] ?? Sparkles;
               const isActive = activeSection === cat.id;
-              const displayName = mode === 'work' && cat.workName ? cat.workName : cat.name;
+              const displayName = getCategoryDisplayName(cat, mode);
               const count = counts[cat.id as CategoryId] ?? 0;
 
               return (
@@ -271,7 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={cat.id}
                   type="button"
                   onClick={() => handleNavClick(cat.id)}
-                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all ${
+                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-[var(--nya-accent-soft)] text-[var(--nya-accent)]'
                       : 'text-slate-600 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/60'
@@ -281,7 +203,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <Icon className="h-4 w-4 shrink-0" />
                     <span className="truncate">{displayName}</span>
                   </span>
-                  <span className="ml-2 shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                  <span className="ml-2 shrink-0 text-xs text-slate-400 dark:text-slate-500">
                     {count}
                   </span>
                 </button>
@@ -290,7 +212,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
       </div>
 
-      {/* 底部管理操作区 */}
       <div className="shrink-0 border-t border-slate-200/70 p-3 dark:border-slate-800/80">
         {canManage ? (
           <>
@@ -300,10 +221,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onAddSite();
                 onCloseMobile();
               }}
-              className={`mb-2 flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all active:scale-[0.98] ${
-                mode === 'work'
-                  ? 'bg-sky-600 hover:bg-sky-500'
-                  : 'bg-gradient-to-r from-pink-500 to-sky-500 hover:opacity-95'
+              className={`mb-2 flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 ${
+                mode === 'work' ? 'bg-sky-600' : 'bg-[var(--nya-accent)]'
               }`}
             >
               <Plus className="h-4 w-4" />

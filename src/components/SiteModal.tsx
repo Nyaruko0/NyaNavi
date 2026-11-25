@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Briefcase, Fish, Flame, X } from 'lucide-react';
 import type { AppMode, CategoryId, CategoryMeta, CostTier, SiteItem } from '../types';
+import { getCategoriesForMode, inferSiteMode, isPrivateSite } from '../utils/siteRules';
 
 interface SiteModalProps {
   open: boolean;
@@ -22,26 +23,11 @@ const ACCENT_PRESETS = [
   '#1e293b',
 ];
 
-function getCategoriesForMode(categories: CategoryMeta[], targetMode: AppMode): CategoryMeta[] {
-  if (targetMode === 'work') {
-    return categories.filter((c) => Boolean(c.workAllowed));
-  }
-  if (targetMode === 'moyu') {
-    return categories.filter((c) => !c.workAllowed && !c.nsfwOnly && !c.privateOnly);
-  }
-  return categories.filter((c) => !c.workAllowed);
-}
-
-function inferSiteMode(site: SiteItem, categories: CategoryMeta[]): AppMode {
-  const cat = categories.find((c) => c.id === site.category);
-  if (site.privateOnly || site.category === 'private_vault' || site.nsfw || cat?.nsfwOnly) {
-    return 'nsfw';
-  }
-  if (cat?.workAllowed) {
-    return 'work';
-  }
-  return 'moyu';
-}
+const PREFERRED_CATEGORY_BY_MODE: Record<AppMode, CategoryId> = {
+  work: 'dev_work',
+  moyu: 'anime_stream',
+  nsfw: 'acg_games',
+};
 
 export const SiteModal: React.FC<SiteModalProps> = ({
   open,
@@ -79,12 +65,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
     }
     const allowed = getCategoriesForMode(categories, nextMode);
     if (!allowed.some((c) => c.id === category)) {
-      const preferred: Record<AppMode, CategoryId> = {
-        work: 'dev_work',
-        moyu: 'anime_stream',
-        nsfw: 'acg_games',
-      };
-      const fallback = allowed.find((c) => c.id === preferred[nextMode]) || allowed[0];
+      const fallback = allowed.find((c) => c.id === PREFERRED_CATEGORY_BY_MODE[nextMode]) || allowed[0];
       if (fallback) setCategory(fallback.id);
     }
   };
@@ -105,17 +86,12 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setSearchNote(editingSite.searchNote || '');
       setClientsText((editingSite.clients || []).join(', '));
       setTagsText((editingSite.tags || []).join(', '));
-      setPrivateOnly(Boolean(editingSite.privateOnly || editingSite.category === 'private_vault'));
+      setPrivateOnly(isPrivateSite(editingSite));
       setAccent(editingSite.accent || ACCENT_PRESETS[0]);
       setIcon(editingSite.icon || '');
     } else {
       const allowed = getCategoriesForMode(categories, defaultMode);
-      const preferred: Record<AppMode, CategoryId> = {
-        work: 'dev_work',
-        moyu: 'anime_stream',
-        nsfw: 'acg_games',
-      };
-      const initCat = allowed.find((c) => c.id === preferred[defaultMode]) || allowed[0];
+      const initCat = allowed.find((c) => c.id === PREFERRED_CATEGORY_BY_MODE[defaultMode]) || allowed[0];
       setName('');
       setShortName('');
       setUrl('https://');

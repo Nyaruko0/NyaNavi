@@ -1,4 +1,5 @@
 import type { SiteItem } from '../types';
+import { normalizePrivateSite } from './siteRules';
 
 export interface EncryptedVaultPayload {
   v: 1;
@@ -13,7 +14,7 @@ export interface EncryptedVaultPayload {
   updatedAt: string;
 }
 
-export interface DecryptedVaultData {
+interface DecryptedVaultData {
   sites: SiteItem[];
   allowedUsers: string[];
 }
@@ -66,7 +67,7 @@ async function deriveAesKey(
   );
 }
 
-export function parseAllowedUsers(raw?: string): string[] {
+function parseAllowedUsers(raw?: string): string[] {
   if (!raw) return [];
   return Array.from(
     new Set(
@@ -79,7 +80,7 @@ export function parseAllowedUsers(raw?: string): string[] {
 }
 
 /**
- * 使用浏览器原生 Web Crypto API (PBKDF2 + AES-256-GCM) 将私密站点与可选好友 GitHub 白名单一并加密
+ * 使用浏览器原生 Web Crypto API (PBKDF2 + AES-256-GCM) 将私密站点与好友 GitHub 白名单一并加密
  */
 export async function encryptVaultSites(
   sites: SiteItem[],
@@ -88,18 +89,14 @@ export async function encryptVaultSites(
 ): Promise<EncryptedVaultPayload> {
   const cleanPass = passphrase.trim();
   if (!cleanPass) {
-    throw new Error('暗号不能为空');
+    throw new Error('明文密钥不能为空');
   }
 
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const key = await deriveAesKey(cleanPass, salt, PBKDF2_ITERATIONS);
 
-  const normalized = sites.map((s) => ({
-    ...s,
-    nsfw: true,
-    privateOnly: true,
-  }));
+  const normalized = sites.map(normalizePrivateSite);
   const allowedUsers = parseAllowedUsers(allowedUsersInput);
 
   const inner = {
@@ -163,11 +160,7 @@ export async function decryptVaultSites(
       : [];
 
     return {
-      sites: rawSites.map((s) => ({
-        ...s,
-        nsfw: true,
-        privateOnly: true,
-      })),
+      sites: rawSites.map(normalizePrivateSite),
       allowedUsers,
     };
   } catch {

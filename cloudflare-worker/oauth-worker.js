@@ -106,7 +106,7 @@ export default {
       return Response.redirect(ghAuthUrl.toString(), 302);
     }
 
-    // 2. GitHub 回调：服务端换取用户信息后立即丢弃 access_token，仅回传只读身份信息
+    // 2. GitHub 回调：服务端换取用户信息后立即丢弃 OAuth access_token；仅对站长本人下发 ADMIN_GITHUB_PAT
     if (url.pathname === '/callback') {
       const code = url.searchParams.get('code');
       const state = url.searchParams.get('state');

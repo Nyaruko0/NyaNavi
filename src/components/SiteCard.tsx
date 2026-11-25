@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { AppearanceSettings, CostTier, HealthResult, SiteItem } from '../types';
 import { buildSearchUrl } from '../utils/cleanQuery';
+import { getDisplayHostname, isRedundantDescription } from '../utils/siteRules';
 import { SiteIcon } from './SiteIcon';
 
 interface SiteCardProps {
@@ -58,14 +59,6 @@ const PADDING_CLASS = {
   compact: 'p-3.5',
 };
 
-function getHostname(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return url;
-  }
-}
-
 export const SiteCard: React.FC<SiteCardProps> = ({
   site,
   health,
@@ -88,8 +81,19 @@ export const SiteCard: React.FC<SiteCardProps> = ({
   onDelete,
   onCheckHealth,
 }) => {
-  const host = getHostname(site.url);
+  const host = getDisplayHostname(site.url);
   const isCompact = appearance.density === 'compact';
+  const showDesc =
+    appearance.showDescription && !isCompact && !isRedundantDescription(site, host);
+  const hasNonDefaultClients = Boolean(
+    site.clients && site.clients.length > 0 && site.clients[0] !== '网页端',
+  );
+  const hasMeaningfulBadge =
+    Boolean(site.privateOnly) ||
+    site.costTier !== 'free' ||
+    hasNonDefaultClients ||
+    site.searchRisk === 'cost' ||
+    site.searchRisk === 'cooldown';
 
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -142,11 +146,11 @@ export const SiteCard: React.FC<SiteCardProps> = ({
       onDragEnd={() => {
         if (canReorder) onDragEnd?.();
       }}
-      className={`group relative flex flex-col justify-between border bg-white/85 shadow-[0_1px_2px_rgba(15,23,42,0.03)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_8px_24px_-8px_rgba(15,23,42,0.09)] dark:bg-[#141929]/85 dark:hover:bg-[#171d30] ${
+      className={`group relative flex flex-col justify-between border bg-white transition-colors duration-150 dark:bg-[#141929] ${
         isDragOver
           ? 'border-[var(--nya-accent)] ring-2 ring-[var(--nya-accent)]/60'
-          : 'border-slate-200/70 hover:border-[var(--nya-accent-border)] dark:border-slate-800/80'
-      } ${isDragging ? 'scale-[0.98] opacity-45' : ''} ${RADIUS_CLASS[appearance.radius]} ${PADDING_CLASS[appearance.density]}`}
+          : 'border-slate-200/80 hover:border-[var(--nya-accent-border)] dark:border-slate-800'
+      } ${isDragging ? 'opacity-45' : ''} ${RADIUS_CLASS[appearance.radius]} ${PADDING_CLASS[appearance.density]}`}
     >
       {/* 顶部：图标 + 站名 + 悬浮操作 */}
       <div>
@@ -216,16 +220,14 @@ export const SiteCard: React.FC<SiteCardProps> = ({
           </div>
         </div>
 
-        {/* 简介 */}
-        {appearance.showDescription && !isCompact && (
+        {showDesc && (
           <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
             {site.description}
           </p>
         )}
 
-        {/* 精简徽标行 */}
-        {appearance.showBadges && !isCompact && (
-          <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {appearance.showBadges && !isCompact && hasMeaningfulBadge && (
+          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
             {site.privateOnly && (
               <span
                 title="仅保存在你的私有扩展仓库，访客与公开仓库均不可见"
@@ -235,16 +237,18 @@ export const SiteCard: React.FC<SiteCardProps> = ({
                 私密
               </span>
             )}
-            <span
-              className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${COST_BADGE_STYLE[site.costTier]}`}
-            >
-              {site.costLabel}
-            </span>
+            {site.costTier !== 'free' && (
+              <span
+                className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${COST_BADGE_STYLE[site.costTier]}`}
+              >
+                {site.costLabel}
+              </span>
+            )}
 
-            {site.clients && site.clients.length > 0 && site.clients[0] !== '网页端' && (
+            {hasNonDefaultClients && (
               <span className="inline-flex items-center gap-1 rounded-md bg-indigo-500/8 px-2 py-0.5 text-xs font-medium text-indigo-600 dark:bg-indigo-400/12 dark:text-indigo-300">
                 <Smartphone className="h-3.5 w-3.5" />
-                {site.clients.slice(0, 2).join(' / ')}
+                {site.clients!.slice(0, 2).join(' / ')}
               </span>
             )}
 
@@ -271,10 +275,9 @@ export const SiteCard: React.FC<SiteCardProps> = ({
         )}
       </div>
 
-      {/* 底部极简状态与入口 */}
       <div
-        className={`flex items-center justify-between gap-2 border-t border-slate-100/90 dark:border-slate-800/70 ${
-          isCompact ? 'mt-2.5 pt-2' : 'mt-3.5 pt-2.5'
+        className={`flex items-center justify-between gap-2 ${
+          isCompact ? 'mt-2.5' : 'mt-3.5'
         }`}
       >
         <div className="flex items-center gap-1">

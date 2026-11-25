@@ -22,6 +22,11 @@ import {
   type GitHubConfig,
 } from '../utils/githubSync';
 import { getOAuthLoginUrl } from '../utils/oauthConfig';
+import {
+  DEFAULT_PRIVATE_BRANCH,
+  DEFAULT_PRIVATE_PATH,
+  DEFAULT_PRIVATE_REPO,
+} from '../utils/siteRules';
 import { decryptVaultSites, type EncryptedVaultPayload } from '../utils/vaultCrypto';
 
 interface AdminModalProps {
@@ -57,7 +62,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [repo, setRepo] = useState(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
   const [branch, setBranch] = useState(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
   const [privateRepo, setPrivateRepo] = useState(
-    currentConfig?.privateRepo || 'NyaNavi-Private',
+    currentConfig?.privateRepo || DEFAULT_PRIVATE_REPO,
   );
   const [vaultPassphrase, setVaultPassphrase] = useState(currentConfig?.vaultPassphrase || '');
   const [vaultAllowedUsers, setVaultAllowedUsers] = useState(
@@ -88,7 +93,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     setOwner(currentConfig?.owner || DEFAULT_GITHUB_CONFIG.owner);
     setRepo(currentConfig?.repo || DEFAULT_GITHUB_CONFIG.repo);
     setBranch(currentConfig?.branch || DEFAULT_GITHUB_CONFIG.branch);
-    setPrivateRepo(currentConfig?.privateRepo || 'NyaNavi-Private');
+    setPrivateRepo(currentConfig?.privateRepo || DEFAULT_PRIVATE_REPO);
     setVaultPassphrase(currentConfig?.vaultPassphrase || '');
     setVaultAllowedUsers(currentConfig?.vaultAllowedUsers || '');
     setToken(currentConfig?.token || '');
@@ -150,8 +155,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       path: DEFAULT_GITHUB_CONFIG.path,
       token: token.trim(),
       privateRepo: privateRepo.trim(),
-      privateBranch: 'main',
-      privatePath: 'private-sites.json',
+      privateBranch: DEFAULT_PRIVATE_BRANCH,
+      privatePath: DEFAULT_PRIVATE_PATH,
       vaultPassphrase: vaultPassphrase.trim(),
       vaultAllowedUsers: vaultAllowedUsers.trim(),
     };
@@ -523,7 +528,6 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
             {(authRole === 'admin' || showAdminTokenForm) ? (
             <form onSubmit={handleLoginOrSaveAdmin} className="space-y-3.5 text-sm">
-              {/* Token 输入框（所有人都填这里） */}
               <div>
                 <div className="mb-1 flex items-center justify-between">
                   <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">

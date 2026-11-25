@@ -1,21 +1,17 @@
 /// <reference types="vite/client" />
 
-/**
- * Cloudflare Worker OAuth 中转地址：
- * 部署好 cloudflare-worker/oauth-worker.js 后，将你的 Worker 域名填入此处（例如：
- * 'https://nyanavi-auth.你的子域名.workers.dev'），或通过环境变量 VITE_OAUTH_WORKER_URL 注入。
- */
-export const OAUTH_WORKER_URL: string =
+/** Cloudflare Worker OAuth 中转地址（可通过 VITE_OAUTH_WORKER_URL 覆盖） */
+const OAUTH_WORKER_URL: string =
   (import.meta.env.VITE_OAUTH_WORKER_URL as string | undefined)?.trim() ||
   'https://nyanavi-auth.nyaruko0.workers.dev';
 
-export interface OAuthMemberSession {
+interface OAuthMemberSession {
   login: string;
   avatarUrl?: string;
   exp: number;
 }
 
-export interface OAuthCallbackPayload extends OAuthMemberSession {
+interface OAuthCallbackPayload extends OAuthMemberSession {
   /** 仅当 Cloudflare Worker 认证为站长本人且配置了 ADMIN_GITHUB_PAT 时一次性回传 */
   adminToken?: string;
   privateRepo?: string;
@@ -51,7 +47,6 @@ export function consumeOAuthHashCallback(): OAuthCallbackPayload | null {
 
   try {
     const parsed = JSON.parse(decodeBase64UrlUtf8(match[1])) as OAuthCallbackPayload;
-    // 擦除 URL hash
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
     if (parsed && typeof parsed.login === 'string' && parsed.login.trim()) {
       const session: OAuthMemberSession = {
@@ -88,7 +83,7 @@ export function loadOAuthMemberSession(): OAuthMemberSession | null {
   }
 }
 
-export function saveOAuthMemberSession(session: OAuthMemberSession): void {
+function saveOAuthMemberSession(session: OAuthMemberSession): void {
   localStorage.setItem(STORAGE_OAUTH_MEMBER_KEY, JSON.stringify(session));
 }
 

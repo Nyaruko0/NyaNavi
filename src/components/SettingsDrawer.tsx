@@ -71,7 +71,7 @@ export const DEFAULT_APPEARANCE: AppearanceSettings = {
   radius: 'soft',
   fontStyle: 'sans',
   fontSize: 'md',
-  bgStyle: 'glow',
+  bgStyle: 'minimal',
   showDescription: true,
   showDomain: true,
   showBadges: true,

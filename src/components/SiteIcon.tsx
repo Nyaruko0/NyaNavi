@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { getRawHostname } from '../utils/siteRules';
 
 interface SiteIconProps {
   url: string;
@@ -8,14 +9,6 @@ interface SiteIconProps {
   customIcon?: string;
   fallbackIcon?: string;
   size?: 'sm' | 'md';
-}
-
-function getHostname(url: string): string {
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return '';
-  }
 }
 
 /**
@@ -62,7 +55,7 @@ export const SiteIcon: React.FC<SiteIconProps> = ({
     if (customIcon?.trim()) {
       list.push({ src: customIcon.trim(), rejectTiny: false });
     }
-    const host = getHostname(url);
+    const host = getRawHostname(url);
     if (host) {
       // Google S2 找不到真实图标时会返回 16x16 灰色默认小地球，rejectTiny=true 自动跳过
       list.push({
@@ -95,15 +88,13 @@ export const SiteIcon: React.FC<SiteIconProps> = ({
 
   const current = candidates[index];
   const monogram = useMemo(() => getMonogram(name, shortName), [name, shortName]);
-  const boxClass = size === 'sm' ? 'h-9 w-9 rounded-xl text-xs' : 'h-10 w-10 rounded-xl text-[13px]';
+  const boxClass = size === 'sm' ? 'h-9 w-9 rounded-lg text-xs' : 'h-10 w-10 rounded-xl text-xs';
 
   if (!current) {
     return (
       <div
-        className={`flex shrink-0 items-center justify-center font-semibold tracking-tight text-white shadow-2xs ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105 dark:ring-white/10 ${boxClass}`}
-        style={{
-          background: `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 72%, #1e293b))`,
-        }}
+        className={`flex shrink-0 items-center justify-center font-semibold tracking-tight text-white ${boxClass}`}
+        style={{ backgroundColor: accent }}
       >
         {monogram}
       </div>
@@ -112,7 +103,7 @@ export const SiteIcon: React.FC<SiteIconProps> = ({
 
   return (
     <div
-      className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-slate-100/70 p-1 shadow-2xs ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105 dark:bg-slate-800/75 dark:ring-white/10 ${boxClass}`}
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-slate-100 p-1 dark:bg-slate-800 ${boxClass}`}
     >
       <img
         src={current.src}

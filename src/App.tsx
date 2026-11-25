@@ -14,7 +14,6 @@ import {
   Moon,
   Plus,
   RefreshCw,
-  ShieldCheck,
   SlidersHorizontal,
   Sun,
 } from 'lucide-react';
@@ -30,6 +29,19 @@ import type {
 import { cleanSearchQuery } from './utils/cleanQuery';
 import { scoreSiteMatch } from './utils/fuzzyMatch';
 import { checkSiteHealth } from './utils/healthCheck';
+import {
+  DEFAULT_PRIVATE_BRANCH,
+  DEFAULT_PRIVATE_PATH,
+  DEFAULT_PRIVATE_REPO,
+  getCategoryDisplayName,
+  inferCategoryMode,
+  isCategoryVisibleInMode,
+  isPrivateSite,
+  isPublicSite,
+  isSiteVisibleInMode,
+  normalizePrivateSite,
+  normalizeUrlKey,
+} from './utils/siteRules';
 import {
   clearGitHubConfig,
   DEFAULT_GITHUB_CONFIG,
@@ -169,6 +181,27 @@ function reorderSitesWithinSubset(
     next[slotIndices[i]] = reordered[i];
   }
   return next;
+}
+
+/** 站长私密站点读取回退链：优先私有仓库，失败/为空时再尝试用明文密钥解密 vault.enc */
+async function loadAdminPrivateSites(
+  config: GitHubConfig,
+  passphrase?: string,
+): Promise<SiteItem[]> {
+  if (getPrivateRepoConfig(config)) {
+    const fromPrivRepo = await fetchPrivateSitesFromGitHub(config).catch(() => []);
+    if (fromPrivRepo.length > 0) return fromPrivRepo;
+  }
+  const cleanPass = passphrase?.trim();
+  if (cleanPass) {
+    const enc = await fetchEncryptedVaultFromGitHub(config).catch(() => null);
+    if (enc) {
+      return decryptVaultSites(enc, cleanPass)
+        .then((d) => d.sites)
+        .catch(() => []);
+    }
+  }
+  return [];
 }
 
 export default function App() {
@@ -316,9 +349,9 @@ export default function App() {
           branch: ghConfig?.branch || DEFAULT_GITHUB_CONFIG.branch,
           path: ghConfig?.path || DEFAULT_GITHUB_CONFIG.path,
           token: freshOAuth.adminToken,
-          privateRepo: freshOAuth.privateRepo || ghConfig?.privateRepo || 'NyaNavi-Private',
-          privateBranch: ghConfig?.privateBranch || 'main',
-          privatePath: ghConfig?.privatePath || 'private-sites.json',
+          privateRepo: freshOAuth.privateRepo || ghConfig?.privateRepo || DEFAULT_PRIVATE_REPO,
+          privateBranch: ghConfig?.privateBranch || DEFAULT_PRIVATE_BRANCH,
+          privatePath: ghConfig?.privatePath || DEFAULT_PRIVATE_PATH,
           vaultPassphrase: ghConfig?.vaultPassphrase || '',
           vaultAllowedUsers: ghConfig?.vaultAllowedUsers || '',
         };
@@ -398,21 +431,7 @@ export default function App() {
         const [latest, latestCats, privList, remoteAdminSettings] = await Promise.all([
           fetchSitesFromGitHub(ghConfig).catch(() => null),
           fetchCategoriesFromGitHub(ghConfig).catch(() => null),
-          (async () => {
-            if (getPrivateRepoConfig(ghConfig)) {
-              const fromPrivRepo = await fetchPrivateSitesFromGitHub(ghConfig).catch(() => []);
-              if (fromPrivRepo.length > 0) return fromPrivRepo;
-            }
-            if (ghConfig.vaultPassphrase?.trim()) {
-              const enc = await fetchEncryptedVaultFromGitHub(ghConfig).catch(() => null);
-              if (enc) {
-                return decryptVaultSites(enc, ghConfig.vaultPassphrase)
-                  .then((d) => d.sites)
-                  .catch(() => []);
-              }
-            }
-            return [];
-          })(),
+          loadAdminPrivateSites(ghConfig, ghConfig.vaultPassphrase),
           fetchPrivateAdminSettingsFromGitHub(ghConfig).catch(() => null),
         ]);
         if (!cancelled && latest && latest.sites.length > 0) {
@@ -575,7 +594,6 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [appearance.enableNsfwMode, lastNonWorkMode, showToast]);
 
-  // 退出站长模式/锁定暗号或切换模式时，若当前停留在不可见分类，自动切回全部
   const workCategoryIds = useMemo(
     () => new Set(categories.filter((c) => c.workAllowed).map((c) => c.id)),
     [categories],
@@ -586,41 +604,29 @@ export default function App() {
     [categories],
   );
 
-  // 退出站长模式/锁定暗号或切换模式时，若当前停留在非当前模式的分类，自动切回全部
+  // 退出站长模式/锁定私密库或切换模式时，若当前停留在非当前模式的分类，自动切回全部
   useEffect(() => {
     const cat = categories.find((c) => c.id === activeSection);
     if (!cat) return;
-    if (
-      (mode === 'work' && !cat.workAllowed) ||
-      (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) ||
-      (mode === 'nsfw' && cat.workAllowed) ||
-      (cat.privateOnly && !canViewPrivate)
-    ) {
+    if (!isCategoryVisibleInMode(cat, mode, canViewPrivate)) {
       setActiveSection('all');
     }
   }, [mode, canViewPrivate, activeSection, categories]);
 
-  // 合并展示列表：站长登录合并 privateSites，好友暗号解锁合并只读 friendVaultSites
+  // 合并展示列表：站长登录合并 privateSites，好友解密合并只读 friendVaultSites
   const displaySites = useMemo(() => {
     if (canManage) return [...privateSites, ...sites];
     const base = friendUnlocked ? [...friendVaultSites, ...sites] : sites;
     return base.map((s) => (s.id in localPins ? { ...s, pinned: localPins[s.id] } : s));
   }, [sites, privateSites, friendVaultSites, friendUnlocked, localPins, canManage]);
 
-  // 三模式严格独立：工作（纯工具/技术）、摸鱼（纯全年龄娱乐）、NSFW（纯里站+私密库）
-  const modeSites = useMemo(() => {
-    if (mode === 'work') {
-      return displaySites.filter((s) => !s.nsfw && workCategoryIds.has(s.category));
-    }
-    if (mode === 'moyu') {
-      return displaySites.filter(
-        (s) => !s.nsfw && !moyuHiddenCategoryIds.has(s.category),
-      );
-    }
-    return displaySites.filter(
-      (s) => (s.nsfw || s.category === 'private_vault') && !workCategoryIds.has(s.category),
-    );
-  }, [displaySites, mode, workCategoryIds, moyuHiddenCategoryIds]);
+  const modeSites = useMemo(
+    () =>
+      displaySites.filter((s) =>
+        isSiteVisibleInMode(s, mode, workCategoryIds, moyuHiddenCategoryIds),
+      ),
+    [displaySites, mode, workCategoryIds, moyuHiddenCategoryIds],
+  );
 
   const allCategoryCounts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -675,10 +681,7 @@ export default function App() {
       return [
         {
           id: activeSection,
-          title:
-            meta && 'workName' in meta && mode === 'work' && meta.workName
-              ? meta.workName
-              : meta?.name || '站点列表',
+          title: meta ? getCategoryDisplayName(meta, mode) : '站点列表',
           description: meta?.description || '',
           items: filteredSites,
         },
@@ -690,7 +693,7 @@ export default function App() {
         {
           id: 'search-results',
           title: `站内匹配结果（${filteredSites.length}）`,
-          description: '也可直接点击上方搜索栏中的站点胶囊，带清洗关键词站外直搜',
+          description: '',
           items: filteredSites,
         },
       ];
@@ -707,21 +710,18 @@ export default function App() {
       sections.push({
         id: 'pinned-top',
         title: '站长爱看😋',
-        description: '站长精选推荐的高频入口',
+        description: '',
         items: pinnedSites,
       });
     }
 
     for (const cat of categories) {
-      if (mode === 'work' && !cat.workAllowed) continue;
-      if (mode === 'moyu' && (cat.nsfwOnly || cat.hideInMoyu)) continue;
-      if (mode === 'nsfw' && cat.workAllowed) continue;
-      if (cat.privateOnly && !canViewPrivate) continue;
+      if (!isCategoryVisibleInMode(cat, mode, canViewPrivate)) continue;
       const items = modeSites.filter((s) => s.category === cat.id);
       if (items.length === 0) continue;
       sections.push({
         id: cat.id,
-        title: mode === 'work' && cat.workName ? cat.workName : cat.name,
+        title: getCategoryDisplayName(cat, mode),
         description: cat.description,
         items,
       });
@@ -814,9 +814,7 @@ export default function App() {
 
       // 1. 公开仓库站点：强制二次过滤，绝对禁止写入任何 privateOnly / private_vault 站点
       if (hasUnsynced || (!hasUnsyncedPrivate && !hasUnsyncedCategories)) {
-        const safePublicSites = sites.filter(
-          (s) => !s.privateOnly && s.category !== 'private_vault',
-        );
+        const safePublicSites = sites.filter(isPublicSite);
         const pubRes = await saveSitesToGitHub(ghConfig, safePublicSites);
         setHasUnsynced(false);
         results.push(`公开站 (${pubRes.commitSha})`);
@@ -943,12 +941,9 @@ export default function App() {
       const target = categories.find((c) => c.id === catId);
       if (!target) return;
       const affected = sites.filter((s) => s.category === catId);
+      const targetMode = inferCategoryMode(target);
       const fallback = categories.find(
-        (c) =>
-          c.id !== catId &&
-          !c.privateOnly &&
-          Boolean(c.workAllowed) === Boolean(target.workAllowed) &&
-          Boolean(c.nsfwOnly) === Boolean(target.nsfwOnly),
+        (c) => c.id !== catId && !c.privateOnly && inferCategoryMode(c) === targetMode,
       );
 
       const confirmMsg =
@@ -976,9 +971,9 @@ export default function App() {
   const handleSaveSite = useCallback(
     (site: SiteItem) => {
       if (!canManage) return;
-      const isPrivate = Boolean(site.privateOnly || site.category === 'private_vault');
+      const isPrivate = isPrivateSite(site);
       const normalized: SiteItem = isPrivate
-        ? { ...site, nsfw: true, privateOnly: true }
+        ? normalizePrivateSite(site)
         : { ...site, privateOnly: undefined };
 
       if (isPrivate) {
@@ -1054,25 +1049,16 @@ export default function App() {
         if (!Array.isArray(parsed) || !parsed.every((i) => i && i.id && i.name && i.url)) {
           throw new Error('格式不正确');
         }
-        // 智能识别：若导入的 JSON 全部标记为私密站点，自动归入私有扩展库，不污染公开库！
+        // 若导入的 JSON 全部标记为私密站点，自动归入私有扩展库，不污染公开库
         const isPrivateBundle =
-          parsed.length > 0 &&
-          parsed.every((i: SiteItem) => i.privateOnly || i.category === 'private_vault');
+          parsed.length > 0 && parsed.every((i: SiteItem) => isPrivateSite(i));
         if (isPrivateBundle) {
-          const normalized = parsed.map((i: SiteItem) => ({
-            ...i,
-            nsfw: true,
-            privateOnly: true,
-          }));
+          const normalized = parsed.map((i: SiteItem) => normalizePrivateSite(i));
           setPrivateSites((prev) => {
-            const existingUrls = new Set(
-              prev.map((x) => x.url.replace(/\/+$/, '').toLowerCase()),
-            );
+            const existingUrls = new Set(prev.map((x) => normalizeUrlKey(x.url)));
             const existingIds = new Set(prev.map((x) => x.id));
             const additions = normalized.filter(
-              (x) =>
-                !existingIds.has(x.id) &&
-                !existingUrls.has(x.url.replace(/\/+$/, '').toLowerCase()),
+              (x) => !existingIds.has(x.id) && !existingUrls.has(normalizeUrlKey(x.url)),
             );
             return [...additions, ...prev];
           });
@@ -1081,9 +1067,7 @@ export default function App() {
             `已增量合并 ${normalized.length} 个私密库站点（保留原有私密数据），请点顶部“同步到 GitHub”写入私有仓库`,
           );
         } else {
-          const safePublic = hydrateSites(parsed).filter(
-            (i) => !i.privateOnly && i.category !== 'private_vault',
-          );
+          const safePublic = hydrateSites(parsed).filter(isPublicSite);
           setSites(safePublic);
           setHasUnsynced(true);
           showToast(`成功导入 ${safePublic.length} 个公开站点，请点顶部“同步到 GitHub”发布`);
@@ -1107,8 +1091,6 @@ export default function App() {
 
   const handleAdminAuthenticated = useCallback(
     async (config: GitHubConfig, username?: string) => {
-      const prevPass = ghConfig?.vaultPassphrase?.trim() || '';
-      const prevUsers = ghConfig?.vaultAllowedUsers?.trim() || '';
       let effectivePass = config.vaultPassphrase?.trim() || '';
       let effectiveUsers = config.vaultAllowedUsers?.trim() || '';
 
@@ -1117,21 +1099,7 @@ export default function App() {
 
       const [latest, privList, remoteAdminSettings] = await Promise.all([
         fetchSitesFromGitHub(config).catch(() => null),
-        (async () => {
-          if (getPrivateRepoConfig(config)) {
-            const fromPrivRepo = await fetchPrivateSitesFromGitHub(config).catch(() => []);
-            if (fromPrivRepo.length > 0) return fromPrivRepo;
-          }
-          if (effectivePass) {
-            const enc = await fetchEncryptedVaultFromGitHub(config).catch(() => null);
-            if (enc) {
-              return decryptVaultSites(enc, effectivePass)
-                .then((d) => d.sites)
-                .catch(() => []);
-            }
-          }
-          return [];
-        })(),
+        loadAdminPrivateSites(config, effectivePass),
         fetchPrivateAdminSettingsFromGitHub(config).catch(() => null),
       ]);
 
@@ -1209,20 +1177,13 @@ export default function App() {
         }
       }
 
-      if (
-        effectivePass &&
-        (effectivePass !== prevPass || effectiveUsers !== prevUsers) &&
-        finalPrivateList.length > 0
-      ) {
-        setHasUnsyncedPrivate(true);
-      }
       showToast(
         `站长模式已解锁${username ? `（@${username}）` : ''}${
           privList.length > 0 ? ` · 已加载 ${privList.length} 个私密站点` : ''
         }`,
       );
     },
-    [ghConfig?.vaultPassphrase, ghConfig?.vaultAllowedUsers, privateSites, showToast],
+    [privateSites, showToast],
   );
 
   const handleMemberAuthenticated = useCallback(
@@ -1351,68 +1312,44 @@ export default function App() {
           onReset={handleReset}
         />
 
-        {/* 右侧主内容区 */}
         <div className="lg:pl-64">
-          {/* 极简顶部工具栏（Android 窄屏 & PC 宽屏自适应） */}
-          <header className="sticky top-0 z-20 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl dark:border-slate-800/70 dark:bg-[#0c101b]/80">
+          <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/95 backdrop-blur-md dark:border-slate-800/80 dark:bg-[#0c101b]/95">
             <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-3 py-2.5 sm:px-6">
-              <div className="flex min-w-0 items-center gap-2">
+              <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(true)}
-                  className="rounded-xl p-2 text-slate-600 hover:bg-slate-100 lg:hidden dark:text-slate-300 dark:hover:bg-slate-800"
+                  className="shrink-0 rounded-xl p-1.5 text-slate-600 hover:bg-slate-100 lg:hidden dark:text-slate-300 dark:hover:bg-slate-800"
                   aria-label="打开菜单"
                 >
                   <Menu className="h-5 w-5" />
                 </button>
 
-                {/* 移动端精简品牌名（不截断） */}
-                <span className="shrink-0 text-sm font-bold tracking-tight text-slate-800 sm:hidden dark:text-white">
+                <span className="truncate text-sm font-bold tracking-tight text-slate-800 lg:hidden dark:text-white">
                   {mode === 'work' ? 'NyaDesk' : 'NyaNavi'}
                 </span>
 
-                <div className="hidden items-center gap-2 sm:flex">
-                  {mode === 'work' ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 dark:text-sky-300">
-                      <ShieldCheck className="h-3.5 w-3.5" />
-                      工作模式 · {modeSites.length} 站
+                {healthSummary.total > 0 && (
+                  <span className="hidden items-center gap-2 rounded-full border border-slate-200/80 bg-white px-2.5 py-1 text-xs text-slate-500 md:inline-flex dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
+                    <span className="text-emerald-600 dark:text-emerald-400">
+                      ● {healthSummary.online}
                     </span>
-                  ) : mode === 'moyu' ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-700 dark:text-teal-300">
-                      <Fish className="h-3.5 w-3.5" />
-                      摸鱼模式 · {modeSites.length} 表站
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--nya-accent-soft)] px-3 py-1 text-xs font-medium text-[var(--nya-accent)]">
-                      <Flame className="h-3.5 w-3.5" />
-                      NSFW 模式 · {modeSites.length} 站
-                    </span>
-                  )}
-
-                  {healthSummary.total > 0 && (
-                    <span className="hidden items-center gap-2 rounded-full border border-slate-200/70 bg-white/70 px-2.5 py-1 text-xs text-slate-500 md:inline-flex dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
-                      <span className="text-emerald-600 dark:text-emerald-400">
-                        ● {healthSummary.online}
-                      </span>
-                      <span className="text-amber-500">● {healthSummary.warn}</span>
-                      <span className="text-rose-500">● {healthSummary.offline}</span>
-                    </span>
-                  )}
-                </div>
+                    <span className="text-amber-500">● {healthSummary.warn}</span>
+                    <span className="text-rose-500">● {healthSummary.offline}</span>
+                  </span>
+                )}
               </div>
 
-              {/* 右侧功能切换区 */}
               <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-                {/* 站长专属：同步到 GitHub 按钮 */}
                 {canManage && (
                   <button
                     type="button"
                     disabled={syncing}
                     onClick={handleSyncToGitHub}
-                    className={`relative inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-medium shadow-2xs transition disabled:opacity-60 ${
+                    className={`relative inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-medium transition disabled:opacity-60 ${
                       anyUnsynced
                         ? 'bg-[var(--nya-accent)] text-white hover:opacity-90'
-                        : 'border border-emerald-200/80 bg-emerald-50/90 text-emerald-700 hover:bg-emerald-100/80 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
+                        : 'border border-emerald-200/80 bg-emerald-50 text-emerald-700 hover:bg-emerald-100/80 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
                     }`}
                     title="公开站点同步至公开仓库，私密站点仅同步至独立 Private 私有仓库"
                   >
@@ -1430,12 +1367,11 @@ export default function App() {
                   </button>
                 )}
 
-                {/* 批量存活检测 */}
                 <button
                   type="button"
                   disabled={batchChecking}
                   onClick={handleBatchCheck}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 disabled:opacity-60 dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-slate-600"
+                  className="hidden items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 disabled:opacity-60 sm:inline-flex dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-slate-600"
                   title="批量检测当前可见站点的连通性与延迟"
                 >
                   {batchChecking ? (
@@ -1443,7 +1379,7 @@ export default function App() {
                   ) : (
                     <Activity className="h-3.5 w-3.5 text-emerald-500" />
                   )}
-                  <span className="hidden sm:inline">{batchChecking ? '检测中' : '测速'}</span>
+                  <span>{batchChecking ? '检测中' : '测速'}</span>
                 </button>
 
                 {/* 工作 / 摸鱼 / NSFW 三段切换开关 */}
@@ -1576,41 +1512,37 @@ export default function App() {
               >
                 站长爱看😋 ({pinnedSites.length})
               </button>
-              {categories.filter((c) => {
-                if (mode === 'work' && !c.workAllowed) return false;
-                if (mode === 'moyu' && (c.nsfwOnly || c.hideInMoyu)) return false;
-                if (mode === 'nsfw' && c.workAllowed) return false;
-                if (c.privateOnly && !canViewPrivate) return false;
-                return true;
-              }).map((cat) => {
-                const count = categoryCounts[cat.id] ?? 0;
-                if (count === 0) return null;
-                const active = activeSection === cat.id;
-                const label = mode === 'work' && cat.workName ? cat.workName : cat.name;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setActiveSection(cat.id)}
-                    className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
-                      active
-                        ? 'border-transparent bg-[var(--nya-accent)] text-white shadow-xs'
-                        : 'border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300'
-                    }`}
-                  >
-                    {label} ({count})
-                  </button>
-                );
-              })}
+              {categories
+                .filter((c) => isCategoryVisibleInMode(c, mode, canViewPrivate))
+                .map((cat) => {
+                  const count = categoryCounts[cat.id] ?? 0;
+                  if (count === 0) return null;
+                  const active = activeSection === cat.id;
+                  const label = getCategoryDisplayName(cat, mode);
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setActiveSection(cat.id)}
+                      className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                        active
+                          ? 'border-transparent bg-[var(--nya-accent)] text-white'
+                          : 'border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                      }`}
+                    >
+                      {label} ({count})
+                    </button>
+                  );
+                })}
             </div>
 
             {groupedSections.length === 0 || groupedSections.every((g) => g.items.length === 0) ? (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white/70 py-16 text-center dark:border-slate-800 dark:bg-slate-900/40">
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white py-16 text-center dark:border-slate-800 dark:bg-slate-900/40">
                 <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                   当前筛选下没有匹配的站点
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
-                  你可以直接点击上方搜索框内的站点胶囊进行站外直搜
+                  可直接点击上方搜索框内的站点胶囊进行站外直搜
                   {canManage ? '，或添加一个新站点' : ''}
                 </p>
                 {canManage && (
@@ -1633,23 +1565,14 @@ export default function App() {
                   <section key={section.id}>
                     <div className="mb-3.5 flex items-baseline justify-between gap-2">
                       <div>
-                        <h2 className="flex items-center gap-2 text-base font-semibold tracking-tight text-slate-800 sm:text-lg dark:text-white">
-                          <span
-                            className="h-4 w-1 rounded-full"
-                            style={{
-                              background:
-                                mode === 'work'
-                                  ? '#0284c7'
-                                  : 'linear-gradient(to bottom, var(--nya-accent), var(--nya-accent-2))',
-                            }}
-                          />
+                        <h2 className="flex items-baseline gap-2 text-base font-semibold tracking-tight text-slate-800 sm:text-lg dark:text-white">
                           {section.title}
                           <span className="text-xs font-normal text-slate-400">
                             {section.items.length}
                           </span>
                         </h2>
                         {section.description && (
-                          <p className="mt-1 pl-3 text-xs text-slate-400 dark:text-slate-500">
+                          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
                             {section.description}
                           </p>
                         )}
@@ -1758,7 +1681,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* 新增/编辑站点弹窗（站长专属） */}
       <SiteModal
         open={modalOpen && canManage}
         editingSite={editingSite}
@@ -1768,7 +1690,6 @@ export default function App() {
         onSave={handleSaveSite}
       />
 
-      {/* 站长分类目录管理弹窗 */}
       <CategoryModal
         open={categoryModalOpen && canManage}
         categories={categories}
@@ -1780,7 +1701,6 @@ export default function App() {
         onReorderCategories={handleReorderCategories}
       />
 
-      {/* 统一 GitHub 登录 / 站长管理 / 好友密钥解锁弹窗 */}
       <AdminModal
         open={adminModalOpen}
         currentConfig={ghConfig}
@@ -1796,7 +1716,6 @@ export default function App() {
         onLogout={handleAdminLogout}
       />
 
-      {/* 外观与版面美化抽屉 */}
       <SettingsDrawer
         open={settingsOpen}
         settings={appearance}
@@ -1808,7 +1727,6 @@ export default function App() {
         onClose={() => setSettingsOpen(false)}
       />
 
-      {/* 二次元地名传送门跳转确认弹窗 */}
       <PortalModal
         target={portalTarget}
         message={portalMessage}
@@ -1817,7 +1735,6 @@ export default function App() {
         onClose={() => setPortalTarget(null)}
       />
 
-      {/* NSFW 默认锁定解锁确认弹窗 */}
       <NsfwUnlockModal
         open={nsfwUnlockOpen}
         onUnlock={() => {
@@ -1833,38 +1750,39 @@ export default function App() {
         onClose={() => setNsfwUnlockOpen(false)}
       />
 
-      {/* 快捷回到顶部 / 直达底部悬浮按钮组 */}
-      <div className="fixed right-3.5 bottom-6 z-30 flex flex-col gap-2 sm:right-6">
-        <button
-          type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          disabled={scrollPos.atTop}
-          aria-label="回到顶部"
-          title="回到顶部"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 disabled:pointer-events-none disabled:opacity-35 sm:h-11 sm:w-11 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
-        >
-          <ArrowUp className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            window.scrollTo({
-              top: document.documentElement.scrollHeight,
-              behavior: 'smooth',
-            })
-          }
-          disabled={scrollPos.atBottom}
-          aria-label="直达底部"
-          title="直达底部"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-600 shadow-lg backdrop-blur-md transition hover:translate-y-0.5 hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] active:scale-95 disabled:pointer-events-none disabled:opacity-35 sm:h-11 sm:w-11 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-200"
-        >
-          <ArrowDown className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-        </button>
-      </div>
+      {/* 离开顶部后再显示回顶/到底按钮，避免遮挡移动端首屏卡片 */}
+      {!scrollPos.atTop && (
+        <div className="fixed right-2.5 bottom-4 z-30 flex flex-col gap-1.5 sm:right-5 sm:bottom-6">
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="回到顶部"
+            title="回到顶部"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-600 shadow-sm transition-colors hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] sm:h-10 sm:w-10 dark:border-slate-700 dark:bg-slate-800/95 dark:text-slate-200"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
+          {!scrollPos.atBottom && (
+            <button
+              type="button"
+              onClick={() =>
+                window.scrollTo({
+                  top: document.documentElement.scrollHeight,
+                  behavior: 'smooth',
+                })
+              }
+              aria-label="直达底部"
+              title="直达底部"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-600 shadow-sm transition-colors hover:border-[var(--nya-accent-border)] hover:text-[var(--nya-accent)] sm:h-10 sm:w-10 dark:border-slate-700 dark:bg-slate-800/95 dark:text-slate-200"
+            >
+              <ArrowDown className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+      )}
 
-      {/* 轻量 Toast 提示 */}
       {toast && (
-        <div className="fixed right-4 bottom-20 z-50 rounded-xl bg-slate-900/90 px-4 py-2.5 text-xs font-medium text-white shadow-lg backdrop-blur-md sm:right-5 sm:bottom-6 dark:bg-white/95 dark:text-slate-900">
+        <div className="fixed right-4 bottom-20 z-50 rounded-xl bg-slate-900/95 px-4 py-2.5 text-xs font-medium text-white shadow-md sm:right-5 sm:bottom-6 dark:bg-white dark:text-slate-900">
           {toast}
         </div>
       )}

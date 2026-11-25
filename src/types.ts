@@ -48,9 +48,9 @@ export interface SiteItem {
   searchRisk?: 'cost' | 'cooldown' | 'login' | 'spa';
   /** 客户端 / PWA / 阅读器支持标签 */
   clients?: string[];
-  /** 是否属于 NSFW 内容；工作模式下自动隐藏 */
+  /** 是否属于 NSFW 内容；工作与摸鱼模式下均隐藏 */
   nsfw: boolean;
-  /** 是否仅存在于站长私有仓库（严禁同步至公开 sites.json，仅站长登录后可见） */
+  /** 是否属于私有库站点（严禁同步至公开 sites.json，仅站长或通过校验的好友可见） */
   privateOnly?: boolean;
   /** 是否用户收藏/置顶 */
   pinned?: boolean;
@@ -105,7 +105,7 @@ export interface CategoryMeta {
   hideInMoyu?: boolean;
 }
 
-export type HealthState = 'idle' | 'checking' | 'online' | 'warn' | 'offline';
+type HealthState = 'idle' | 'checking' | 'online' | 'warn' | 'offline';
 
 export interface HealthResult {
   state: HealthState;
@@ -117,4 +117,3 @@ export interface HealthResult {
 }
 
 export type AppMode = 'work' | 'moyu' | 'nsfw';
-export type SearchMode = 'filter' | 'direct';

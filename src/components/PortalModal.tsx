@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AlertTriangle, ArrowUpRight, Copy, Check, Dices, Sparkles, X } from 'lucide-react';
 import type { SiteItem } from '../types';
 import { pickPortalMessage, type PortalMessage } from '../data/portalMessages';
+import { isHighRiskSearch } from '../utils/siteRules';
 import { SiteIcon } from './SiteIcon';
 
 export interface PortalTarget {
@@ -49,7 +50,7 @@ export const PortalModal: React.FC<PortalModalProps> = ({
   if (!target || !message) return null;
 
   const { site, url, keyword } = target;
-  const isRisk = site.searchRisk === 'cost' || site.searchRisk === 'cooldown';
+  const isRisk = isHighRiskSearch(site.searchRisk);
 
   const handleCopy = async () => {
     try {
@@ -68,15 +69,7 @@ export const PortalModal: React.FC<PortalModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 shadow-2xl backdrop-blur-2xl dark:border-slate-800 dark:bg-[#131829]/95">
-        {/* 顶部柔光装饰条 */}
-        <div
-          className="h-1 w-full"
-          style={{
-            background: 'linear-gradient(90deg, var(--nya-accent), var(--nya-accent-2))',
-          }}
-        />
-
+      <div className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-[#131829]">
         <div className="p-5">
           {/* 头部：二次元地名标签 + 换一句 + 关闭 */}
           <div className="flex items-center justify-between gap-2">

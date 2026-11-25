@@ -7,7 +7,7 @@ export interface PortalMessage {
   cancelText: string;
 }
 
-export const PORTAL_MESSAGES: PortalMessage[] = [
+const PORTAL_MESSAGES: PortalMessage[] = [
   // === Galgame 经典地标 ===
   {
     id: 'hoori',

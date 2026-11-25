@@ -1,44 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  AppWindow,
   ArrowDown,
   ArrowUp,
-  BookMarked,
-  BookOpen,
-  Bot,
   Briefcase,
-  Clapperboard,
-  DownloadCloud,
-  FileText,
-  Film,
   Fish,
   Flame,
-  Folder,
-  FolderArchive,
-  Gamepad2,
-  Globe,
   GripVertical,
-  Headphones,
-  Image,
-  ImageUp,
-  Languages,
-  Library,
-  Mail,
   Pencil,
   Plus,
-  Puzzle,
-  ScanSearch,
-  Send,
-  Share2,
-  Sparkles,
-  Terminal,
   Trash2,
-  Tv,
-  Users,
-  Wrench,
   X,
 } from 'lucide-react';
+import { CATEGORY_ICON_OPTIONS } from '../config/categoryIcons';
 import type { AppMode, CategoryId, CategoryMeta } from '../types';
+import { inferCategoryMode } from '../utils/siteRules';
 
 interface CategoryModalProps {
   open: boolean;
@@ -49,42 +24,6 @@ interface CategoryModalProps {
   onSaveCategory: (cat: CategoryMeta, isEdit: boolean) => void;
   onDeleteCategory: (catId: CategoryId) => void;
   onReorderCategories: (nextCategories: CategoryMeta[]) => void;
-}
-
-const ICON_OPTIONS: Array<{ name: string; label: string; Icon: React.ComponentType<{ className?: string }> }> = [
-  { name: 'Folder', label: '文件夹', Icon: Folder },
-  { name: 'Sparkles', label: '星光', Icon: Sparkles },
-  { name: 'Gamepad2', label: '游戏', Icon: Gamepad2 },
-  { name: 'Tv', label: '动漫', Icon: Tv },
-  { name: 'BookOpen', label: '阅读', Icon: BookOpen },
-  { name: 'Image', label: '图片', Icon: Image },
-  { name: 'Film', label: '视频', Icon: Film },
-  { name: 'Headphones', label: '音频', Icon: Headphones },
-  { name: 'Clapperboard', label: '影音', Icon: Clapperboard },
-  { name: 'Users', label: '社区', Icon: Users },
-  { name: 'Send', label: '频道', Icon: Send },
-  { name: 'Terminal', label: '开发', Icon: Terminal },
-  { name: 'Bot', label: 'AI', Icon: Bot },
-  { name: 'ScanSearch', label: '搜图', Icon: ScanSearch },
-  { name: 'Wrench', label: '工具', Icon: Wrench },
-  { name: 'Languages', label: '翻译', Icon: Languages },
-  { name: 'ImageUp', label: '图床', Icon: ImageUp },
-  { name: 'Mail', label: '邮箱', Icon: Mail },
-  { name: 'Share2', label: '传输', Icon: Share2 },
-  { name: 'Globe', label: '网络', Icon: Globe },
-  { name: 'Puzzle', label: '扩展', Icon: Puzzle },
-  { name: 'AppWindow', label: '软件', Icon: AppWindow },
-  { name: 'FolderArchive', label: '资源', Icon: FolderArchive },
-  { name: 'Library', label: '书库', Icon: Library },
-  { name: 'DownloadCloud', label: '下载', Icon: DownloadCloud },
-  { name: 'BookMarked', label: '漫画', Icon: BookMarked },
-  { name: 'FileText', label: '小说', Icon: FileText },
-];
-
-function inferCategoryMode(cat: CategoryMeta): AppMode {
-  if (cat.workAllowed) return 'work';
-  if (cat.nsfwOnly || cat.privateOnly) return 'nsfw';
-  return 'moyu';
 }
 
 export const CategoryModal: React.FC<CategoryModalProps> = ({
@@ -314,7 +253,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
                 选择图标
               </label>
               <div className="flex flex-wrap gap-1.5">
-                {ICON_OPTIONS.map(({ name: iconName, label, Icon }) => {
+                {CATEGORY_ICON_OPTIONS.map(({ name: iconName, label, icon: Icon }) => {
                   const selected = icon === iconName;
                   return (
                     <button
