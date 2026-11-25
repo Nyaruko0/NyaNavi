@@ -11998,7 +11998,8 @@
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#8b5cf6"
+    "accent": "#8b5cf6",
+    "pinned": true
   },
   {
     "id": "chrome-moehub",
