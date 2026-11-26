@@ -4122,7 +4122,8 @@
     "costTier": "free",
     "costLabel": "免费",
     "nsfw": false,
-    "accent": "#06b6d4"
+    "accent": "#06b6d4",
+    "pinned": true
   },
   {
     "id": "chrome-leetcode",
