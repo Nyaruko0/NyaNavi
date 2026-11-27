@@ -564,6 +564,30 @@
     "accent": "#475569"
   },
   {
+    "id": "langchain-doc-cn",
+    "name": "LangChain 中文文档",
+    "shortName": "LC",
+    "url": "https://langchain-doc.cn/",
+    "category": "dev_work",
+    "description": "LangChain / LangGraph 大模型应用与 Agent 开发中文文档与教程。",
+    "tags": [
+      "LangChain",
+      "AI开发",
+      "LLM",
+      "Agent",
+      "开发文档",
+      "Python"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [
+      "网页端"
+    ],
+    "nsfw": false,
+    "pinned": false,
+    "accent": "#10b981"
+  },
+  {
     "id": "github",
     "name": "GitHub",
     "shortName": "GH",
