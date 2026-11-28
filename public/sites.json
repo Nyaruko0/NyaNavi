@@ -1,5 +1,19 @@
 [
   {
+    "id": "custom-1795878695406",
+    "name": "Agent Journey",
+    "url": "https://www.agent-journey.cn/",
+    "category": "dev_work",
+    "description": "面试题库",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
+    "tags": [],
+    "nsfw": false,
+    "pinned": true,
+    "accent": "#38bdf8"
+  },
+  {
     "id": "custom-1795850749480",
     "name": "Cloudflare",
     "url": "https://dash.cloudflare.com/",
