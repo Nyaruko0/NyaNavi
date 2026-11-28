@@ -15,15 +15,41 @@ interface OAuthCallbackPayload extends OAuthMemberSession {
   /** 仅当 Cloudflare Worker 认证为站长本人且配置了 ADMIN_GITHUB_PAT 时一次性回传 */
   adminToken?: string;
   privateRepo?: string;
+  /** 由前端发起登录时生成并经 Worker 原样回传的一次性防伪造 nonce */
+  clientNonce?: string;
 }
 
 const STORAGE_OAUTH_MEMBER_KEY = 'nyanavi_oauth_member_v1';
+const SESSION_OAUTH_NONCE_KEY = 'nyanavi_oauth_nonce_v1';
 
-export function getOAuthLoginUrl(): string | null {
+function generateClientNonce(): string {
+  const bytes = new Uint8Array(18);
+  crypto.getRandomValues(bytes);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+export function isOAuthConfigured(): boolean {
+  return Boolean(OAUTH_WORKER_URL.replace(/\/+$/, ''));
+}
+
+/**
+ * 构造一次性 OAuth 登录地址并保存本标签页 clientNonce，防止第三方构造伪造 #nya_oauth 链接注入会话
+ */
+export function prepareOAuthLoginUrl(): string | null {
   const base = OAUTH_WORKER_URL.replace(/\/+$/, '');
   if (!base) return null;
   const redirect = `${window.location.origin}${window.location.pathname}`;
-  return `${base}/login?redirect=${encodeURIComponent(redirect)}`;
+  const nonce = generateClientNonce();
+  try {
+    sessionStorage.setItem(SESSION_OAUTH_NONCE_KEY, nonce);
+  } catch {
+    // ignore storage errors
+  }
+  return `${base}/login?redirect=${encodeURIComponent(redirect)}&client_nonce=${encodeURIComponent(nonce)}`;
 }
 
 function decodeBase64UrlUtf8(b64url: string): string {
@@ -38,16 +64,34 @@ function decodeBase64UrlUtf8(b64url: string): string {
 }
 
 /**
- * 读取并消费 URL hash 中的 OAuth 登录回传参数（读取后立即清除 hash 保持地址栏整洁）
+ * 读取并消费 URL hash 中的 OAuth 登录回传参数（核验一次性 clientNonce 后立即清除 hash）
  */
 export function consumeOAuthHashCallback(): OAuthCallbackPayload | null {
   const hash = window.location.hash || '';
   const match = hash.match(/nya_oauth=([A-Za-z0-9\-_]+)/);
   if (!match) return null;
 
+  let expectedNonce: string | null = null;
+  try {
+    expectedNonce = sessionStorage.getItem(SESSION_OAUTH_NONCE_KEY);
+    sessionStorage.removeItem(SESSION_OAUTH_NONCE_KEY);
+  } catch {
+    expectedNonce = null;
+  }
+
+  // 立即清理地址栏 hash，避免令牌残留历史记录
+  window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+
   try {
     const parsed = JSON.parse(decodeBase64UrlUtf8(match[1])) as OAuthCallbackPayload;
-    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    // 防会话注入：若本标签页发起了登录，必须严格核验 clientNonce 一致（若无期望 nonce 则拒绝外来链接）
+    if (!expectedNonce) {
+      return null;
+    }
+    if (parsed.clientNonce && parsed.clientNonce !== expectedNonce) {
+      return null;
+    }
+
     if (parsed && typeof parsed.login === 'string' && parsed.login.trim()) {
       const session: OAuthMemberSession = {
         login: parsed.login.trim(),
@@ -63,7 +107,7 @@ export function consumeOAuthHashCallback(): OAuthCallbackPayload | null {
       };
     }
   } catch {
-    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    return null;
   }
   return null;
 }

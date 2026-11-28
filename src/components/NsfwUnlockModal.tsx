@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flame, Lock, SlidersHorizontal, X } from 'lucide-react';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface NsfwUnlockModalProps {
   open: boolean;
@@ -14,6 +15,7 @@ export const NsfwUnlockModal: React.FC<NsfwUnlockModalProps> = ({
   onOpenSettings,
   onClose,
 }) => {
+  useEscapeKey(open, onClose);
   if (!open) return null;
 
   return (

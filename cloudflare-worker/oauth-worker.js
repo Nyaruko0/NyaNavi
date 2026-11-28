@@ -12,16 +12,23 @@
  *   https://<你的Worker子域名>.workers.dev/callback
  */
 
-const ALLOWED_ORIGINS = [
-  'https://nyaruko0.github.io',
-  'http://127.0.0.1:5173',
-  'http://localhost:5173',
+const ALLOWED_REDIRECT_RULES = [
+  { origin: 'https://nyaruko0.github.io', pathPrefix: '/NyaNavi' },
+  { origin: 'http://127.0.0.1:5173', pathPrefix: '/' },
+  { origin: 'http://localhost:5173', pathPrefix: '/' },
 ];
+
+const STATE_COOKIE_NAME = 'nya_oauth_state';
+const NONCE_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 
 function isAllowedRedirect(urlStr) {
   try {
     const u = new URL(urlStr);
-    return ALLOWED_ORIGINS.includes(u.origin);
+    return ALLOWED_REDIRECT_RULES.some((rule) => {
+      if (u.origin !== rule.origin) return false;
+      if (rule.pathPrefix === '/') return true;
+      return u.pathname === rule.pathPrefix || u.pathname.startsWith(`${rule.pathPrefix}/`);
+    });
   } catch {
     return false;
   }
@@ -47,6 +54,31 @@ function fromBase64Url(b64url) {
   return new TextDecoder().decode(bytes);
 }
 
+/** 常量时间字符串比较，避免签名与 nonce 时序侧信道 */
+function timingSafeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
+    return false;
+  }
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+function getCookie(request, name) {
+  const raw = request.headers.get('Cookie') || '';
+  for (const part of raw.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    const key = part.slice(0, idx).trim();
+    if (key === name) {
+      return decodeURIComponent(part.slice(idx + 1).trim());
+    }
+  }
+  return '';
+}
+
 async function hmacSign(message, secret) {
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -68,6 +100,7 @@ async function hmacSign(message, secret) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const isHttps = url.protocol === 'https:';
 
     // 健康检查
     if (url.pathname === '/' || url.pathname === '/health') {
@@ -77,20 +110,25 @@ export default {
       );
     }
 
-    // 1. 发起 GitHub OAuth 登录（仅申请 read:user 最小只读身份权限）
+    // 1. 发起 GitHub OAuth 登录（仅申请 read:user 最小只读身份权限，并绑定一次性 HttpOnly Cookie 防 Login CSRF）
     if (url.pathname === '/login') {
       const redirect = url.searchParams.get('redirect') || 'https://nyaruko0.github.io/NyaNavi/';
       if (!isAllowedRedirect(redirect)) {
-        return new Response('Forbidden redirect origin', { status: 403 });
+        return new Response('Forbidden redirect URL', { status: 403 });
       }
       if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
         return new Response('Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET', { status: 500 });
       }
 
+      const rawClientNonce = url.searchParams.get('client_nonce') || '';
+      const clientNonce = NONCE_PATTERN.test(rawClientNonce) ? rawClientNonce : '';
+      const cookieNonce = crypto.randomUUID();
+
       const statePayload = JSON.stringify({
         redirect,
         ts: Date.now(),
-        nonce: crypto.randomUUID(),
+        cookieNonce,
+        ...(clientNonce ? { clientNonce } : {}),
       });
       const stateData = toBase64Url(statePayload);
       const stateSig = await hmacSign(stateData, env.GITHUB_CLIENT_SECRET);
@@ -103,10 +141,26 @@ export default {
       ghAuthUrl.searchParams.set('scope', 'read:user');
       ghAuthUrl.searchParams.set('state', state);
 
-      return Response.redirect(ghAuthUrl.toString(), 302);
+      const cookieAttrs = [
+        `${STATE_COOKIE_NAME}=${encodeURIComponent(cookieNonce)}`,
+        'HttpOnly',
+        'SameSite=Lax',
+        'Path=/callback',
+        'Max-Age=600',
+        ...(isHttps ? ['Secure'] : []),
+      ].join('; ');
+
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: ghAuthUrl.toString(),
+          'Set-Cookie': cookieAttrs,
+          'Cache-Control': 'no-store',
+        },
+      });
     }
 
-    // 2. GitHub 回调：服务端换取用户信息后立即丢弃 OAuth access_token；仅对站长本人下发 ADMIN_GITHUB_PAT
+    // 2. GitHub 回调：校验 HMAC 签名 + Cookie 绑定防 CSRF；仅对站长本人下发 ADMIN_GITHUB_PAT
     if (url.pathname === '/callback') {
       const code = url.searchParams.get('code');
       const state = url.searchParams.get('state');
@@ -116,14 +170,25 @@ export default {
 
       const [stateData, stateSig] = state.split('.');
       const expectedSig = await hmacSign(stateData, env.GITHUB_CLIENT_SECRET);
-      if (stateSig !== expectedSig) {
+      if (!timingSafeEqual(stateSig, expectedSig)) {
         return new Response('Invalid OAuth state signature', { status: 403 });
       }
 
-      const parsedState = JSON.parse(fromBase64Url(stateData));
+      let parsedState;
+      try {
+        parsedState = JSON.parse(fromBase64Url(stateData));
+      } catch {
+        return new Response('Malformed OAuth state', { status: 400 });
+      }
+
       const redirect = parsedState.redirect;
       if (!isAllowedRedirect(redirect) || Date.now() - parsedState.ts > 10 * 60 * 1000) {
         return new Response('OAuth state expired or forbidden', { status: 403 });
+      }
+
+      const cookieNonce = getCookie(request, STATE_COOKIE_NAME);
+      if (!cookieNonce || !timingSafeEqual(cookieNonce, String(parsedState.cookieNonce || ''))) {
+        return new Response('OAuth CSRF state mismatch', { status: 403 });
       }
 
       const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
@@ -167,6 +232,7 @@ export default {
         login: user.login,
         avatarUrl: user.avatar_url || '',
         exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 天有效
+        ...(parsedState.clientNonce ? { clientNonce: parsedState.clientNonce } : {}),
       };
 
       // 仅当 GitHub 官方 OAuth 认证返回的正是站长本人且配置了 ADMIN_GITHUB_PAT 时，
@@ -179,13 +245,22 @@ export default {
       const sessionPayload = JSON.stringify(sessionObj);
       const encodedSession = toBase64Url(sessionPayload);
 
-      // 使用 URL hash (#nya_oauth=...) 回传，不留服务器访问日志，前端读取后立即擦除
+      const clearCookie = [
+        `${STATE_COOKIE_NAME}=`,
+        'HttpOnly',
+        'SameSite=Lax',
+        'Path=/callback',
+        'Max-Age=0',
+        ...(isHttps ? ['Secure'] : []),
+      ].join('; ');
+
       const target = new URL(redirect);
       target.hash = `nya_oauth=${encodedSession}`;
       return new Response(null, {
         status: 302,
         headers: {
           Location: target.toString(),
+          'Set-Cookie': clearCookie,
           'Cache-Control': 'no-store',
         },
       });

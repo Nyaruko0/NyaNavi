@@ -98,13 +98,12 @@ export function scoreSiteMatch(site: SiteItem, rawQuery: string): number {
   const tokens = q.split(/\s+/).filter(Boolean);
   const name = site.name.toLowerCase();
   const shortName = (site.shortName || '').toLowerCase();
-  const url = site.url.toLowerCase();
+  const url = site.url.toLowerCase().replace(/^https?:\/\/(www\.)?/, '');
   const tags = (site.tags || []).join(' ').toLowerCase();
   const clients = (site.clients || []).join(' ').toLowerCase();
   const desc = (site.description || '').toLowerCase();
   const baseText = `${name} ${shortName} ${tags} ${desc}`;
   const alias = buildSearchAlias(baseText);
-  const fullHaystack = `${name} ${shortName} ${url} ${tags} ${clients} ${desc} ${site.costLabel.toLowerCase()} ${alias}`;
 
   let totalScore = 0;
 
@@ -124,16 +123,19 @@ export function scoreSiteMatch(site: SiteItem, rawQuery: string): number {
     } else if (desc.includes(token) || alias.includes(token)) {
       tokenScore = 52;
     } else {
-      // 模糊子序列容错匹配（优先在站名与域名里找）
+      // 模糊子序列容错匹配：仅在站名、简称、主机名与标签中匹配，避免长简介跨词误命中噪音
       const cleanToken = token.replace(/[^a-z0-9\u4e00-\u9fa5]/g, '');
       if (cleanToken.length >= 2) {
+        const hostOnly = url.split('/')[0] || '';
         const nameSub = subsequenceScore(cleanToken, name.replace(/\s+/g, ''));
-        const urlSub = subsequenceScore(cleanToken, url.replace(/^https?:\/\/(www\.)?/, ''));
-        const fullSub = subsequenceScore(cleanToken, fullHaystack.replace(/\s+/g, ''));
+        const shortSub = subsequenceScore(cleanToken, shortName.replace(/\s+/g, ''));
+        const hostSub = subsequenceScore(cleanToken, hostOnly);
+        const tagSub = subsequenceScore(cleanToken, tags.replace(/\s+/g, ''));
         tokenScore = Math.max(
           nameSub > 0 ? nameSub + 12 : 0,
-          urlSub > 0 ? urlSub + 6 : 0,
-          fullSub,
+          shortSub > 0 ? shortSub + 10 : 0,
+          hostSub > 0 ? hostSub + 6 : 0,
+          tagSub,
         );
       }
     }

@@ -6647,7 +6647,7 @@
     "name": "绅士导航",
     "shortName": "绅士",
     "url": "https://www.gal123.com",
-    "category": "anime_community",
+    "category": "acg_community",
     "description": "绅士导航",
     "tags": [
       "ACG导航"
@@ -12563,12 +12563,12 @@
     "accent": "#8b5cf6"
   },
   {
-    "id": "nekohouse",
-    "name": "Nekohouse",
-    "shortName": "Neko",
-    "url": "https://nekohouse.su/",
+    "id": "pawchive",
+    "name": "Pawchive",
+    "shortName": "Paw",
+    "url": "https://pawchive.pw/",
     "category": "acg_resources",
-    "description": "类 Kemono 风格的创作者赞助内容归档站，收录 Patreon / Fanbox / Fantia 画师作品，常用于画风参考与素材检索。",
+    "description": "社区驱动的创作者赞助内容归档站，收录 Patreon / Pixiv Fanbox / Discord 画师作品，常用于画风参考与素材检索。",
     "tags": [
       "画师归档",
       "Fanbox",

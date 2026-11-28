@@ -273,6 +273,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             type="text"
             value={query}
             onChange={(e) => onChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                if (query) {
+                  onChange('');
+                } else {
+                  e.currentTarget.blur();
+                }
+              }
+            }}
             placeholder={placeholderText}
             className="w-full bg-transparent text-base text-slate-800 placeholder-slate-400 outline-none dark:text-slate-100 dark:placeholder-slate-500"
           />

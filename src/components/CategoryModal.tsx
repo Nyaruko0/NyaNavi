@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { CATEGORY_ICON_OPTIONS } from '../config/categoryIcons';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 import type { AppMode, CategoryId, CategoryMeta } from '../types';
 import { inferCategoryMode } from '../utils/siteRules';
 
@@ -43,6 +44,8 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
   const [icon, setIcon] = useState('Folder');
   const [listFilter, setListFilter] = useState<AppMode | 'all'>(defaultMode);
   const [draggingId, setDraggingId] = useState<CategoryId | null>(null);
+
+  useEscapeKey(open, onClose);
 
   useEffect(() => {
     if (!open) return;

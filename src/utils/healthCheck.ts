@@ -1,24 +1,38 @@
 import type { HealthResult } from '../types';
 
-let localProxyAvailable: boolean | null = null;
+let localProxyAvailable: boolean | null = import.meta.env.DEV ? null : false;
+let localProxyProbe: Promise<boolean> | null = null;
+
+async function ensureLocalProxyAvailable(): Promise<boolean> {
+  if (localProxyAvailable !== null) return localProxyAvailable;
+  if (!localProxyProbe) {
+    localProxyProbe = fetch('/api/check?url=https%3A%2F%2Fexample.com', { cache: 'no-store' })
+      .then((res) => {
+        const contentType = res.headers.get('content-type') || '';
+        const ok = res.ok && contentType.includes('application/json');
+        localProxyAvailable = ok;
+        return ok;
+      })
+      .catch(() => {
+        localProxyAvailable = false;
+        return false;
+      });
+  }
+  return localProxyProbe;
+}
 
 async function checkViaLocalProxy(url: string): Promise<HealthResult | null> {
-  if (localProxyAvailable === false) return null;
+  const available = await ensureLocalProxyAvailable();
+  if (!available) return null;
+
   try {
     const res = await fetch(`/api/check?url=${encodeURIComponent(url)}`, {
       cache: 'no-store',
     });
-    if (!res.ok) {
-      localProxyAvailable = false;
-      return null;
-    }
+    if (!res.ok) return null;
     const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      localProxyAvailable = false;
-      return null;
-    }
+    if (!contentType.includes('application/json')) return null;
     const data = await res.json();
-    localProxyAvailable = true;
     return {
       state: data.state ?? (data.ok ? 'online' : 'offline'),
       latency: data.latency,
@@ -28,7 +42,6 @@ async function checkViaLocalProxy(url: string): Promise<HealthResult | null> {
       checkedAt: Date.now(),
     };
   } catch {
-    localProxyAvailable = false;
     return null;
   }
 }
@@ -50,7 +63,7 @@ async function checkViaBrowserNoCors(url: string): Promise<HealthResult> {
     return {
       state: latency > 4500 ? 'warn' : 'online',
       latency,
-      note: latency > 4500 ? '可连通但较慢' : '本机可达',
+      note: latency > 4500 ? '网络可达但较慢（未校验状态码）' : '网络可达（未校验状态码）',
       mode: 'browser-nocors',
       checkedAt: Date.now(),
     };
@@ -70,8 +83,8 @@ async function checkViaBrowserNoCors(url: string): Promise<HealthResult> {
 
 /**
  * 双模站点存活检测：
- * - 本地 dev 环境走 Vite 中间件 `/api/check`（精确 HTTP 状态码 + CF 盾识别）
- * - GitHub Pages 静态部署环境自动降级为浏览器 `no-cors` 本机网络探测
+ * - 本地 dev 环境走 Vite 中间件 `/api/check`（精确 HTTP 状态码 + CF 盾识别，且并发去重防重复探测）
+ * - 生产静态部署环境直接走浏览器 `no-cors` 网络连通探测，不再产生 `/api/check` 404 请求
  */
 export async function checkSiteHealth(url: string): Promise<HealthResult> {
   const proxyResult = await checkViaLocalProxy(url);

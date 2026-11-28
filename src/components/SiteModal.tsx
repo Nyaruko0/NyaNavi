@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Briefcase, Fish, Flame, X } from 'lucide-react';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 import type { AppMode, CategoryId, CategoryMeta, CostTier, SiteItem } from '../types';
 import { getCategoriesForMode, inferSiteMode, isPrivateSite } from '../utils/siteRules';
+import { SiteModalSearchFields } from './SiteModalSearchFields';
 
 interface SiteModalProps {
   open: boolean;
@@ -47,11 +49,15 @@ export const SiteModal: React.FC<SiteModalProps> = ({
   const [costLabel, setCostLabel] = useState('免费');
   const [searchUrl, setSearchUrl] = useState('');
   const [searchNote, setSearchNote] = useState('');
+  const [searchRisk, setSearchRisk] = useState<SiteItem['searchRisk'] | ''>('');
   const [clientsText, setClientsText] = useState('');
   const [tagsText, setTagsText] = useState('');
   const [privateOnly, setPrivateOnly] = useState(false);
   const [accent, setAccent] = useState(ACCENT_PRESETS[0]);
   const [icon, setIcon] = useState('');
+  const [urlError, setUrlError] = useState<string | null>(null);
+
+  useEscapeKey(open, onClose);
 
   const modeCategories = useMemo(
     () => getCategoriesForMode(categories, siteMode),
@@ -84,11 +90,13 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setCostLabel(editingSite.costLabel);
       setSearchUrl(editingSite.searchUrl || '');
       setSearchNote(editingSite.searchNote || '');
+      setSearchRisk(editingSite.searchRisk || '');
       setClientsText((editingSite.clients || []).join(', '));
       setTagsText((editingSite.tags || []).join(', '));
       setPrivateOnly(isPrivateSite(editingSite));
       setAccent(editingSite.accent || ACCENT_PRESETS[0]);
       setIcon(editingSite.icon || '');
+      setUrlError(null);
     } else {
       const allowed = getCategoriesForMode(categories, defaultMode);
       const initCat = allowed.find((c) => c.id === PREFERRED_CATEGORY_BY_MODE[defaultMode]) || allowed[0];
@@ -102,11 +110,13 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       setCostLabel('免费');
       setSearchUrl('');
       setSearchNote('');
+      setSearchRisk('');
       setClientsText('');
       setTagsText('');
       setPrivateOnly(false);
       setAccent(ACCENT_PRESETS[Math.floor(Math.random() * ACCENT_PRESETS.length)]);
       setIcon('');
+      setUrlError(null);
     }
   }, [open, editingSite, defaultMode, categories]);
 
@@ -119,6 +129,17 @@ export const SiteModal: React.FC<SiteModalProps> = ({
     const normalizedUrl = /^https?:\/\//i.test(url.trim())
       ? url.trim()
       : `https://${url.trim()}`;
+
+    try {
+      const parsed = new URL(normalizedUrl);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        setUrlError('仅支持 http:// 或 https:// 网址');
+        return;
+      }
+    } catch {
+      setUrlError('请输入合法的网址（例如 https://example.com）');
+      return;
+    }
 
     const isPrivate = privateOnly || category === 'private_vault';
     const isNsfw = siteMode === 'nsfw' || isPrivate;
@@ -134,7 +155,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       costLabel: costLabel.trim() || '免费',
       searchUrl: searchUrl.trim() || undefined,
       searchNote: searchNote.trim() || undefined,
-      searchRisk: editingSite?.searchRisk,
+      searchRisk: searchRisk || undefined,
       clients: clientsText
         .split(/[,，]/)
         .map((s) => s.trim())
@@ -148,6 +169,7 @@ export const SiteModal: React.FC<SiteModalProps> = ({
       pinned: editingSite?.pinned ?? false,
       accent,
       icon: icon.trim() || undefined,
+      fallbackIcon: editingSite?.fallbackIcon,
     };
 
     onSave(site);
@@ -207,10 +229,14 @@ export const SiteModal: React.FC<SiteModalProps> = ({
               type="url"
               required
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                if (urlError) setUrlError(null);
+              }}
               placeholder="https://example.com/"
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
             />
+            {urlError && <p className="mt-1 text-xs text-rose-500">{urlError}</p>}
           </div>
 
           {/* 所属模式（工作 / 摸鱼 / NSFW）三段选择器 */}
@@ -332,58 +358,20 @@ export const SiteModal: React.FC<SiteModalProps> = ({
             />
           </div>
 
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
-              自定义图标 URL（可选，留空自动抓取网站原生 Icon）
-            </label>
-            <input
-              type="url"
-              value={icon}
-              onChange={(e) => setIcon(e.target.value)}
-              placeholder="https://example.com/favicon.png"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
-              站外直搜模板（可选，用 {'{q}'} 占位）
-            </label>
-            <input
-              type="text"
-              value={searchUrl}
-              onChange={(e) => setSearchUrl(e.target.value)}
-              placeholder="例如：https://example.com/search?q={q}"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                客户端 / PWA（逗号分隔）
-              </label>
-              <input
-                type="text"
-                value={clientsText}
-                onChange={(e) => setClientsText(e.target.value)}
-                placeholder="原生 PWA, Mihon, Legado"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                标签（逗号分隔）
-              </label>
-              <input
-                type="text"
-                value={tagsText}
-                onChange={(e) => setTagsText(e.target.value)}
-                placeholder="免登录, 3D二创, 汉化"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:border-pink-400 focus:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-              />
-            </div>
-          </div>
+          <SiteModalSearchFields
+            icon={icon}
+            searchUrl={searchUrl}
+            searchRisk={searchRisk}
+            searchNote={searchNote}
+            clientsText={clientsText}
+            tagsText={tagsText}
+            onChangeIcon={setIcon}
+            onChangeSearchUrl={setSearchUrl}
+            onChangeSearchRisk={setSearchRisk}
+            onChangeSearchNote={setSearchNote}
+            onChangeClientsText={setClientsText}
+            onChangeTagsText={setTagsText}
+          />
 
           <div className="space-y-2 pt-1">
             <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-violet-700 dark:text-violet-300">

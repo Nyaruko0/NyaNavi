@@ -2,6 +2,7 @@ import type { CategoryMeta, SiteItem } from '../types';
 import {
   DEFAULT_PRIVATE_BRANCH,
   DEFAULT_PRIVATE_PATH,
+  isPublicSite,
   normalizePrivateSite,
 } from './siteRules';
 import type { EncryptedVaultPayload } from './vaultCrypto';
@@ -34,6 +35,7 @@ interface GitHubVerifyResult {
 interface GitHubSaveResult {
   commitSha: string;
   commitUrl: string;
+  contentSha?: string;
 }
 
 interface PrivateAdminSettings {
@@ -117,7 +119,7 @@ function ghHeaders(token: string): Record<string, string> {
   };
 }
 
-/** 通用 GitHub Contents API JSON 读取 */
+/** 通用 GitHub Contents API JSON 读取（兼容超过 1 MB 的大文件，自动回退 Git Blobs API） */
 async function fetchGitHubJsonFile<T>(
   owner: string,
   repo: string,
@@ -134,14 +136,36 @@ async function fetchGitHubJsonFile<T>(
   );
   if (!res.ok) return null;
   const body = await res.json();
-  if (!body?.content) return null;
+  const sha = String(body?.sha || '');
+
+  let base64Content: string | undefined =
+    typeof body?.content === 'string' && body.content.trim() ? body.content : undefined;
+
+  // GitHub Contents API 对 > 1 MB 文件不返回 body.content，自动走 Git Blobs API
+  if (!base64Content && sha) {
+    const blobRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/git/blobs/${encodeURIComponent(sha)}`,
+      {
+        headers: ghHeaders(token),
+        cache: 'no-store',
+      },
+    );
+    if (blobRes.ok) {
+      const blobBody = await blobRes.json();
+      if (typeof blobBody?.content === 'string' && blobBody.content.trim()) {
+        base64Content = blobBody.content;
+      }
+    }
+  }
+
+  if (!base64Content) return null;
   return {
-    data: JSON.parse(decodeBase64Utf8(body.content)) as T,
-    sha: String(body.sha || ''),
+    data: JSON.parse(decodeBase64Utf8(base64Content)) as T,
+    sha,
   };
 }
 
-/** 通用 GitHub Contents API JSON 写入（自动获取最新 sha 防冲突） */
+/** 通用 GitHub Contents API JSON 写入（支持可选 expectedSha 乐观锁防止静默覆盖远端最新修改） */
 async function saveGitHubJsonFile(
   owner: string,
   repo: string,
@@ -151,6 +175,7 @@ async function saveGitHubJsonFile(
   payload: unknown,
   message: string,
   errorLabel: string,
+  options?: { expectedSha?: string },
 ): Promise<GitHubSaveResult> {
   let sha: string | undefined;
   const getRes = await fetch(
@@ -163,6 +188,12 @@ async function saveGitHubJsonFile(
   if (getRes.ok) {
     const existing = await getRes.json();
     sha = existing?.sha;
+  }
+
+  if (options?.expectedSha && sha && sha !== options.expectedSha) {
+    throw new Error(
+      `远端 ${filePath} 已被其他设备或提交更新（冲突检测已拦截覆盖），请先点左侧“拉取”刷新最新数据后再保存`,
+    );
   }
 
   const content = encodeBase64Utf8(JSON.stringify(payload, null, 2) + '\n');
@@ -192,6 +223,7 @@ async function saveGitHubJsonFile(
   return {
     commitSha: result?.commit?.sha?.slice(0, 7) || 'updated',
     commitUrl: result?.commit?.html_url || `https://github.com/${owner}/${repo}`,
+    contentSha: typeof result?.content?.sha === 'string' ? result.content.sha : undefined,
   };
 }
 
@@ -273,20 +305,24 @@ export async function fetchSitesFromGitHub(
   return { sites: res.data, sha: res.sha };
 }
 
+/** 写入公开仓库站点（强制内置 isPublicSite 二次过滤兜底，绝不泄露私密库） */
 export async function saveSitesToGitHub(
   config: GitHubConfig,
   sites: SiteItem[],
   commitMessage?: string,
+  options?: { expectedSha?: string; allowPrivate?: boolean },
 ): Promise<GitHubSaveResult> {
+  const payloadSites = options?.allowPrivate ? sites : sites.filter(isPublicSite);
   return saveGitHubJsonFile(
     config.owner,
     config.repo,
     config.branch,
     config.path,
     config.token,
-    sites,
-    commitMessage || `chore(sites): update sites.json (${sites.length} sites) via NyaNavi Admin`,
+    payloadSites,
+    commitMessage || `chore(sites): update sites.json (${payloadSites.length} sites) via NyaNavi Admin`,
     '提交失败',
+    { expectedSha: options?.expectedSha },
   );
 }
 
@@ -373,6 +409,7 @@ export async function savePrivateSitesToGitHub(
     priv,
     normalized,
     `chore(private): update private-sites.json (${normalized.length} sites)`,
+    { allowPrivate: true },
   );
 }
 

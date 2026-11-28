@@ -285,7 +285,12 @@ export function useAuthSync({
 
       if (hasUnsynced || (!hasUnsyncedPrivate && !hasUnsyncedCategories)) {
         const safePublicSites = sites.filter(isPublicSite);
-        const pubRes = await saveSitesToGitHub(ghConfig, safePublicSites);
+        const pubRes = await saveSitesToGitHub(ghConfig, safePublicSites, undefined, {
+          expectedSha: sitesBaseShaRef.current,
+        });
+        if (pubRes.contentSha) {
+          sitesBaseShaRef.current = pubRes.contentSha;
+        }
         setHasUnsynced(false);
         results.push(`公开站 (${pubRes.commitSha})`);
       }
