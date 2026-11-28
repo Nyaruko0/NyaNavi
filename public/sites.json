@@ -1,5 +1,19 @@
 [
   {
+    "id": "custom-1795850749480",
+    "name": "Cloudflare",
+    "url": "https://dash.cloudflare.com/",
+    "category": "dev_work",
+    "description": "Build for the agent era",
+    "costTier": "free",
+    "costLabel": "免费",
+    "clients": [],
+    "tags": [],
+    "nsfw": false,
+    "pinned": true,
+    "accent": "#ec4899"
+  },
+  {
     "id": "south-plus",
     "name": "南+ (South Plus)",
     "shortName": "南+",
