@@ -253,11 +253,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={onReset}
-                title="恢复默认站点"
-                className="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200/80 bg-white/80 py-1.5 text-[11px] font-medium text-slate-600 transition hover:border-rose-200 hover:text-rose-600 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-rose-500/30 dark:hover:text-rose-400"
+                title="重新从线上拉取最新公开站点"
+                className="flex flex-col items-center justify-center gap-1 rounded-xl border border-slate-200/80 bg-white/80 py-1.5 text-[11px] font-medium text-slate-600 transition hover:border-sky-200 hover:text-sky-600 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-sky-500/30 dark:hover:text-sky-400"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                重置
+                拉取
               </button>
             </div>
 

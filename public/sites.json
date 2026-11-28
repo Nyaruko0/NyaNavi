@@ -12412,5 +12412,172 @@
     ],
     "nsfw": true,
     "accent": "#f43f5e"
+  },
+  {
+    "id": "huggingface",
+    "name": "Hugging Face",
+    "shortName": "HF",
+    "url": "https://huggingface.co/",
+    "category": "work_ai",
+    "description": "全球最大开源 AI 模型与数据集社区，几乎所有开源大模型、ComfyUI 与 SD 权重均可免费高速下载。",
+    "tags": [
+      "开源模型",
+      "大模型",
+      "ComfyUI",
+      "AI社区"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://huggingface.co/models?search={q}",
+    "nsfw": false,
+    "accent": "#f59e0b"
+  },
+  {
+    "id": "modelscope",
+    "name": "魔搭社区 (ModelScope)",
+    "shortName": "魔搭",
+    "url": "https://modelscope.cn/",
+    "category": "work_ai",
+    "description": "国内免梯开源模型社区，支持免费算力体验、在线训练 LoRA 与 ComfyUI/大模型高速镜像下载。",
+    "tags": [
+      "国内镜像",
+      "大模型",
+      "LoRA",
+      "免费算力"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://modelscope.cn/models?name={q}",
+    "nsfw": false,
+    "accent": "#6366f1"
+  },
+  {
+    "id": "kaggle",
+    "name": "Kaggle",
+    "shortName": "KG",
+    "url": "https://www.kaggle.com/",
+    "category": "work_ai",
+    "description": "数据科学与 AI 竞赛平台，每周免费提供 30 小时 16G 显存 T4 GPU（单次 12 小时），适合跑模型与实验。",
+    "tags": [
+      "免费GPU",
+      "T4",
+      "Notebook",
+      "AI算力"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.kaggle.com/search?q={q}",
+    "nsfw": false,
+    "accent": "#0ea5e9"
+  },
+  {
+    "id": "google-colab",
+    "name": "Google Colab",
+    "shortName": "Colab",
+    "url": "https://colab.research.google.com/",
+    "category": "work_ai",
+    "description": "谷歌云端 Jupyter Notebook，每日提供免费 15G 显存 T4 GPU 算力，开箱即用运行 Python 与 ComfyUI。",
+    "tags": [
+      "免费GPU",
+      "Jupyter",
+      "云端算力",
+      "Google"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#f97316"
+  },
+  {
+    "id": "baidu-aistudio",
+    "name": "百度飞桨 AI Studio",
+    "shortName": "飞桨",
+    "url": "https://aistudio.baidu.com/",
+    "category": "work_ai",
+    "description": "国内免费 GPU 云端算力与星河社区，每日签到领算力点，支持 V100（16G/32G）显卡运行项目与模型训练。",
+    "tags": [
+      "免费GPU",
+      "国内算力",
+      "V100",
+      "飞桨"
+    ],
+    "costTier": "checkin",
+    "costLabel": "签到免费",
+    "nsfw": false,
+    "accent": "#2563eb"
+  },
+  {
+    "id": "tencent-cloudstudio",
+    "name": "腾讯 Cloud Studio",
+    "shortName": "Cloud",
+    "url": "https://cloudstudio.net/",
+    "category": "work_ai",
+    "description": "腾讯云端 IDE 与免费算力平台，提供免费 GPU（T4 16G / A10 24G）时长额度，适合在线部署与 AI 开发。",
+    "tags": [
+      "免费GPU",
+      "云端IDE",
+      "国内算力",
+      "腾讯云"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": false,
+    "accent": "#0284c7"
+  },
+  {
+    "id": "pinterest",
+    "name": "Pinterest",
+    "shortName": "Pin",
+    "url": "https://www.pinterest.com/",
+    "category": "artworks",
+    "description": "全球视觉灵感瀑布流图库，适合寻找构图、配色、服饰与插画参考，支持以图找相似风格。",
+    "tags": [
+      "灵感图库",
+      "插画参考",
+      "配色构图",
+      "素材"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://www.pinterest.com/search/pins/?q={q}",
+    "nsfw": false,
+    "accent": "#e11d48"
+  },
+  {
+    "id": "tbib",
+    "name": "TBIB (The Big ImageBoard)",
+    "shortName": "TBIB",
+    "url": "https://tbib.org/",
+    "category": "acg_resources",
+    "description": "聚合多家 Booru 图站的超大二次元标签图库，收录海量全年龄与 NSFW 插画，适合画风与 LoRA 训练素材检索。",
+    "tags": [
+      "Booru聚合",
+      "标签图站",
+      "画风素材",
+      "二次元"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "searchUrl": "https://tbib.org/index.php?page=post&s=list&tags={q}",
+    "nsfw": true,
+    "accent": "#8b5cf6"
+  },
+  {
+    "id": "nekohouse",
+    "name": "Nekohouse",
+    "shortName": "Neko",
+    "url": "https://nekohouse.su/",
+    "category": "acg_resources",
+    "description": "类 Kemono 风格的创作者赞助内容归档站，收录 Patreon / Fanbox / Fantia 画师作品，常用于画风参考与素材检索。",
+    "tags": [
+      "画师归档",
+      "Fanbox",
+      "Patreon",
+      "图站"
+    ],
+    "costTier": "free",
+    "costLabel": "免费",
+    "nsfw": true,
+    "accent": "#ec4899"
   }
 ]

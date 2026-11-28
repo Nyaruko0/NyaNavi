@@ -59,28 +59,29 @@ const PADDING_CLASS = {
   compact: 'p-3.5',
 };
 
-export const SiteCard: React.FC<SiteCardProps> = ({
-  site,
-  health,
-  cleanedQuery,
-  canManage,
-  appearance,
-  canReorder = false,
-  isFirst = false,
-  isLast = false,
-  isDragging = false,
-  isDragOver = false,
-  onMove,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  onDragEnd,
-  onNavigate,
-  onTogglePin,
-  onEdit,
-  onDelete,
-  onCheckHealth,
-}) => {
+export const SiteCard: React.FC<SiteCardProps> = React.memo(
+  ({
+    site,
+    health,
+    cleanedQuery,
+    canManage,
+    appearance,
+    canReorder = false,
+    isFirst = false,
+    isLast = false,
+    isDragging = false,
+    isDragOver = false,
+    onMove,
+    onDragStart,
+    onDragOver,
+    onDrop,
+    onDragEnd,
+    onNavigate,
+    onTogglePin,
+    onEdit,
+    onDelete,
+    onCheckHealth,
+  }) => {
   const host = getDisplayHostname(site.url);
   const isCompact = appearance.density === 'compact';
   const showDesc =
@@ -359,4 +360,21 @@ export const SiteCard: React.FC<SiteCardProps> = ({
       </div>
     </article>
   );
-};
+},
+  (prev, next) =>
+    prev.site === next.site &&
+    prev.health === next.health &&
+    prev.cleanedQuery === next.cleanedQuery &&
+    prev.canManage === next.canManage &&
+    prev.appearance === next.appearance &&
+    prev.canReorder === next.canReorder &&
+    prev.isFirst === next.isFirst &&
+    prev.isLast === next.isLast &&
+    prev.isDragging === next.isDragging &&
+    prev.isDragOver === next.isDragOver &&
+    prev.onNavigate === next.onNavigate &&
+    prev.onTogglePin === next.onTogglePin &&
+    prev.onEdit === next.onEdit &&
+    prev.onDelete === next.onDelete &&
+    prev.onCheckHealth === next.onCheckHealth,
+);
